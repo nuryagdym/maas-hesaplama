@@ -1,0 +1,172 @@
+{
+    "MONTHS": ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+    "CALCULATION_CONSTANTS": {
+        "monthDayCount": 30,
+        "stampTaxRate": 0.00759,  
+        "employee": {
+            "SGKDeductionRate": 0.14,
+            "SGDPDeductionRate": 0.075,
+            "unemploymentInsuranceRate": 0.01,
+            "pensionerUnemploymentInsuranceRate": 0
+        },
+        "employer": {
+            "SGKDeductionRate": 0.205,
+            "SGDPDeductionRate": 0.245,
+            "employerDiscount5746": 0.05,
+            "unemploymentInsuranceRate": 0.02,
+            "pensionerUnemploymentInsuranceRate": 0,
+            "SGK5746AdditionalDiscount": 0.5
+        }
+    },
+    "EMPLOYEE_EDUCATION_TYPES": {
+        "labelText": "Eğitim Durumu",
+        "options": [
+            {
+                "id": 1,
+                "text": "Diğer AR-GE Personeli",
+                "excemptionRate": 0.8,
+                "isDefault": true
+            },
+            {
+                "id": 2,
+                "text": "Doktoralı veya Temel Bilimler Yüksek Lisanslı",
+                "excemptionRate": 0.95,
+                "isDefault": false
+            },
+            {
+                "id": 3,
+                "text": "Yüksek Lisanslı veya Temel Bilimleri Lisanslı",
+                "excemptionRate": 0.9,
+                "isDefault": false
+            }
+        ]
+    },
+    "DISABILITY_OPTIONS": {
+        "labelText": "Sakatlık Durumu",
+        "options": [
+            {
+                "degree": -1,
+                "text": "Engelli Değil",
+                "isDefault": true
+            },
+            {
+                "degree": 1,
+                "text": "1. Derece Engelli",
+                "isDefault": false
+            },
+            {
+                "degree": 2,
+                "text": "2. Derece Engelli",
+                "isDefault": false
+            },
+            {
+                "degree": 3,
+                "text": "3. Derece Engelli",
+                "isDefault": false
+            }
+        ]
+    },
+    "EMPLOYEE_TYPES": {
+        "labelText": "Çalışan Türü",
+        "options": [
+            {
+                "id": 1,
+                "text": "Standart Çalışan",
+                "AGIApplicable": true,
+                "employerAGIApplicable": false,
+                "employerIncomeTaxApplicable": true,
+                "employerStampTaxApplicable": true,
+                "employerEducationIncomeTaxExcemption": false,
+                "employer5746AdditionalDiscountApplicable": false,
+                "isDefault": true
+            },
+            {
+                "id": 2,
+                "text": "Teknokent Personeli (4691)",
+                "AGIApplicable": false,
+                "employerAGIApplicable": true,
+                "employerIncomeTaxApplicable": false,
+                "employerStampTaxApplicable": false,
+                "employerEducationIncomeTaxExcemption": false,
+                "employer5746AdditionalDiscountApplicable": true,
+                "isDefault": false
+            },
+            {
+                "id": 3,
+                "text": "Ar-Ge Personeli (5746)",
+                "AGIApplicable": true,
+                "employerAGIApplicable": true,
+                "employerIncomeTaxApplicable": true,
+                "employerStampTaxApplicable": false,
+                "employerEducationIncomeTaxExcemption": true,
+                "employer5746AdditionalDiscountApplicable": true,
+                "isDefault": false
+            }
+        ]
+    },
+    "AGI_OPTIONS": {
+        "labelText": "Eş ve Çocuk Durumu",
+        "options": [
+            {
+                "id": 1,
+                "text": "Bekar",
+                "rate": 0.5
+            },
+            {
+                "id": 2,
+                "text": "Eş Çalışan - Ç=0",
+                "rate": 0.5
+            },
+            {
+                "id": 3,
+                "text": "Eş Çalışan - Ç=1",
+                "rate": 0.575
+            },
+            {
+                "id": 4,
+                "text": "Eş Çalışan - Ç=2",
+                "rate": 0.65
+            },
+            {
+                "id": 5,
+                "text": "Eş Çalışan - Ç=3",
+                "rate": 0.75
+            },
+            {
+                "id": 6,
+                "text": "Eş Çalışan - Ç=4",
+                "rate": 0.8
+            },
+            {
+                "id": 7,
+                "text": "Eş Çalışan - Ç>=5",
+                "rate": 0.85
+            },
+            {
+                "id": 8,
+                "text": "Eş Çalışmayan - Ç=0",
+                "rate": 0.6
+            },
+            {
+                "id": 9,
+                "text": "Eş Çalışmayan - Ç=1",
+                "rate": 0.675
+            },
+            {
+                "id": 10,
+                "text": "Eş Çalışmayan - Ç=2",
+                "rate": 0.75
+            },
+            {
+                "id": 11,
+                "text": "Eş Çalışmayan - Ç=3",
+                "rate": 0.8
+            },
+            {
+                "id": 12,
+                "text": "Eş Çalışmayan - Ç>=4",
+                "rate": 0.85
+            }
+        ]
+    }
+}

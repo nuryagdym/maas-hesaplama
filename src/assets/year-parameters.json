@@ -1,0 +1,193 @@
+{
+    "yearParameters": [
+        {
+            "year": 2020,
+            "minGrossWage": 2943,
+            "SGKCeil": 22072.5,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 22000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 49000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 180000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": 600000
+                },
+                {
+                    "rate": 0.4,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 1400
+                },
+                {
+                    "degree": 2,
+                    "amount": 790
+                },
+                {
+                    "degree": 3,
+                    "amount": 350
+                }
+            ]
+        },
+        {
+            "year": 2019,
+            "minGrossWage": 2558.4,
+            "SGKCeil": 19188,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 18000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 40000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 148000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 1200
+                },
+                {
+                    "degree": 2,
+                    "amount": 650
+                },
+                {
+                    "degree": 3,
+                    "amount": 290
+                }
+            ]
+        },
+        {
+            "year": 2018,
+            "minGrossWage": 2029.5,
+            "SGKCeil": 15221.4,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 14800
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 34000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 120000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 1000
+                },
+                {
+                    "degree": 2,
+                    "amount": 530
+                },
+                {
+                    "degree": 3,
+                    "amount": 240
+                }
+            ]
+        },
+        {
+            "year": 2017,
+            "minGrossWage": 1777.5,
+            "SGKCeil": 13331.4,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 13000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 30000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 110000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 900
+                },
+                {
+                    "degree": 2,
+                    "amount": 470
+                },
+                {
+                    "degree": 3,
+                    "amount": 210
+                }
+            ]
+        },
+        {
+            "year": 2016,
+            "minGrossWage": 1647,
+            "SGKCeil": 10705.5,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 12600
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 30000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 110000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 900
+                },
+                {
+                    "degree": 2,
+                    "amount": 460
+                },
+                {
+                    "degree": 3,
+                    "amount": 210
+                }
+            ]
+        }
+    ]
+}

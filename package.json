@@ -1,6 +1,12 @@
 {
   "name": "salary-calculator",
-  "version": "0.0.0",
+  "description": "Salary calculator for Turkey",
+  "version": "1.0.0",
+  "author": {
+    "name": "Nuryagdy Mustapayev",
+    "email": "nuryagdy@mustapayev.com",
+    "url": "https://mustapayev.com"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,16 +15,22 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.3",
+    "@angular/cdk": "^9.1.2",
     "@angular/common": "~9.0.3",
     "@angular/compiler": "~9.0.3",
     "@angular/core": "~9.0.3",
+    "@angular/flex-layout": "^9.0.0-beta.29",
     "@angular/forms": "~9.0.3",
+    "@angular/material": "^9.1.2",
     "@angular/platform-browser": "~9.0.3",
     "@angular/platform-browser-dynamic": "~9.0.3",
     "@angular/router": "~9.0.3",
+    "jquery": "^3.4.1",
+    "ngx-currency": "^2.2.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
