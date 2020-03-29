@@ -62,11 +62,11 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 ## Adding a new year datas
 
 - yeni yıla ait parametreler (SGK taven, asgari ücret, vergi dilimler, engelli vergi indirimleri) kolay bir şekilde eklenebilinmesi için build kodlarından ayrı tuttum. 
-Yıl parametreleri: [year-parameters.json](assets/year-parameters.json). 
+Yıl parametreleri: [year-parameters.json](src/assets/year-parameters.json). 
 Sıralama önemli değildir, kütüphane kendisi yılları büyükten küçüğe sıralıyor, vergi dilimlerin de sıralaması önemli değildir.
 
 ## Input Parameters
 
-- Input parametreler [fixtures.json](assets/fixtures.json) dosya içindedir, kolayca güncellenebilmesi için bunu da build kodların dışında bıkratım.
+- Input parametreler [fixtures.json](src/assets/fixtures.json) dosya içindedir, kolayca güncellenebilmesi için bunu da build kodların dışında bıkratım.
 - Sıralama JSON dosyada nasılsa o şekilde kullanıcıya gösterilir.
 
