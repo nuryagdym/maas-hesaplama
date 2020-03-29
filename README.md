@@ -1,27 +1,72 @@
 # SalaryCalculator
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
+Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
-## Development server
+* [Demo](https://mustapayev.com/maas-hesaplama/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installation
 
-## Code scaffolding
+1. Clone the repo
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+    ```shell
+    git clone https://github.com/nuryagdym/maas-hesaplama.git
+    ```
+2.  Install dependencies
 
-## Build
+    ```shell
+    cd maas-hesaplama
+    npm install
+    ```
+3.  Start serving
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+    ```shell
+    ng serve
+    ```
+4. Build the library
 
-## Running unit tests
+    ```shell
+    ng build --prod --aot
+    ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Calculation Modes
 
-## Running end-to-end tests
+- Brütten Nete
+- Netten Brüte (AGİ dahil ve AGİ hariç)
+- Toplam Maliyete göre
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Features
 
-## Further help
+- AGİ
+- Teknokent, Ar-Ge personeli (4691 ve 5746) indirimi
+- Ar-Ge personeli eğitim durumu indirimi
+- İşveren Bağ-Kur 5 puanlık prim indirimi
+- Sakatlık durumu
+- Emekli çalışan
+- Part time çalışan
+- Toplam yıllık ve dönemlik maliyetler
+- Aylık ortalama maliyetler
+- İşveren Maaliyeti
+- Anlık hesaplama, User Input'ların her hangi biri değiştiği zaman hesaplama gerçekleşir
+- Ayın TL tutarı girildiğinde bir sonraki ay tutarları otomatik doldurulur
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Notes
+
+- Her yıl için 1 asgari ücret belirelenebilir, dolasıyla asgari ücretin yılda 2 kere zamlandığı durumu desteklemez. Yeterli kadar istek olursa üzerinde çalışabilirim.
+
+- Asgari ücretin altında hesaplama yapmamaktadır, asgari ücretten daha düşük değer girilirse asgari ücrete göre hesaplama yapar.
+
+- hesaplamada Javascript ile alakalı hafif hatalar olabilir. Örneğin JS 29.43 * 3 == 88.28999999999999 olarak hesaplıyor, bu yüzden Toplam Yıllık maaliyetlerde 0-10 kuruş fark gösterebilir.
+
+- Netten brüte hesaplayan bir formül bulamadığım için, netten brüte ve toplam maliyete göre hesaplamaları binary search yöntemiyle hesaplanmaktadır.
+
+## Adding a new year datas
+
+- yeni yıla ait parametreler (SGK taven, asgari ücret, vergi dilimler, engelli vergi indirimleri) kolay bir şekilde eklenebilinmesi için build kodlarından ayrı tuttum. 
+Yıl parametreleri: [year-parameters.json](assets/year-parameters.json). 
+Sıralama önemli değildir, kütüphane kendisi yılları büyükten küçüğe sıralıyor, vergi dilimlerin de sıralaması önemli değildir.
+
+## Input Parameters
+
+- Input parametreler [fixtures.json](assets/fixtures.json) dosya içindedir, kolayca güncellenebilmesi için bunu da build kodların dışında bıkratım.
+- Sıralama JSON dosyada nasılsa o şekilde kullanıcıya gösterilir.
+
