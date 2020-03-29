@@ -17,8 +17,6 @@
             </mat-form-field>
           </div>
 
-
-
           <div class="" fxflex>
             <mat-slide-toggle class="example-margin" [(ngModel)]='showEmployeerCosts'
               (change)="toggleCompanyRelatedColumns(showEmployeerCosts)">
@@ -121,7 +119,7 @@
             <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Gün Sayısı </th>
             <td mat-cell *matCellDef="let element; let i = index;" style="max-width: 2rem;">
               <mat-form-field>
-                <input type="number" matInput [(ngModel)]="dayCounts[i]" min="1"
+                <input type="number" matInput [(ngModel)]="dayCounts[i]" (ngModelChange)="calculate()" min="0"
                   max="{{yearCalculationModel.monthDayCount}}">
               </mat-form-field>
             </td>

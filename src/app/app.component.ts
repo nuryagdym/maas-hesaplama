@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
   employerDiscount5746: boolean;
   isPensioner: boolean;
   showEmployeerCosts:boolean; 
-  fullView: boolean;
 
   loading = false;
   
@@ -113,8 +112,8 @@ export class AppComponent implements OnInit {
     this.AGIIncludedNet = false;
     this.employerDiscount5746 = false;
     this.isPensioner = false;
-    this.fullView = true;
-    this.showEmployeerCosts = true;
+
+    this.showEmployeerCosts = false;
     this.toggleCompanyRelatedColumns(this.showEmployeerCosts);    
   }
 
