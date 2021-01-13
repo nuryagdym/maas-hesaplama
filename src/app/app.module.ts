@@ -17,6 +17,7 @@ import {MatCardModule} from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ENVIRONMENT_SPECIFIC_PROVIDERS } from 'src/environments/environment';
+import {MatIconModule} from "@angular/material/icon";
 
 registerLocaleData(localeTR, 'tr');
 
@@ -38,6 +39,7 @@ registerLocaleData(localeTR, 'tr');
     MatSlideToggleModule,
     MatTooltipModule,
     MatCardModule,
+    MatIconModule,
     MatSnackBarModule
   ],
   providers: [

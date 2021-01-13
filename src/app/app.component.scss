@@ -56,3 +56,14 @@
   .th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
       min-width: 5rem;
   }
+
+  .download-btn {
+      color: #04ad8c;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      mat-icon {
+        transform: scale(1.2);
+        margin-left: 10px;
+      }
+  }

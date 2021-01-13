@@ -5,7 +5,8 @@ import { finalize } from "rxjs/operators";
 import { forkJoin } from "rxjs";
 import { YearCalculationModel } from "./core/models/year-calculation.model";
 import { MatSnackBar } from "@angular/material/snack-bar";
-
+import * as XLSX from "xlsx";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "salary-app-root",
@@ -156,6 +157,18 @@ export class AppComponent implements OnInit {
     this.calculate();
   }
 
+  exportExcel() {
+      /* table id is passed over here */
+      const element = document.getElementById("salary-table");
+      const ws: XLSX.WorkSheet = XLSX .utils.table_to_sheet(element, {raw: true, display: true});
+
+      /* generate workbook and add the worksheet */
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sayfa1");
+
+      /* save to file */
+      XLSX.writeFile(wb, "maas-hesaplama-tablosu-" + (new DatePipe("en-US")).transform(Date.now(), "yyyy-MM-dd") + ".xlsx");
+  }
 
   calculate() {
     this.yearCalculationModel.year = this.selectedYear;
