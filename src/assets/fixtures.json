@@ -2,19 +2,23 @@
     "MONTHS": ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
     "CALCULATION_CONSTANTS": {
         "monthDayCount": 30,
-        "stampTaxRate": 0.00759,  
+        "stampTaxRate": 0.00759,
         "employee": {
             "SGKDeductionRate": 0.14,
+            "SGKEmployerDeductionRate": 0,
             "SGDPDeductionRate": 0.075,
             "unemploymentInsuranceRate": 0.01,
+            "employerUnemploymentInsuranceRate": 0,
             "pensionerUnemploymentInsuranceRate": 0
         },
         "employer": {
             "SGKDeductionRate": 0.205,
+            "SGKEmployerDeductionRate": 0,
             "SGDPDeductionRate": 0.245,
             "employerDiscount5746": 0.05,
             "unemploymentInsuranceRate": 0.02,
             "pensionerUnemploymentInsuranceRate": 0,
+            "employerUnemploymentInsuranceRate": 0,
             "SGK5746AdditionalDiscount": 0.5
         }
     },

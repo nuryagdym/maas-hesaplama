@@ -4,7 +4,7 @@
     <mat-card class="example-card">
       <mat-card-content>
         <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
- 
+
 
           <div class="" fxflex>
             <mat-form-field>
@@ -88,6 +88,13 @@
           <div class="" fxflex>
             <mat-slide-toggle [(ngModel)]='isPensioner' class="example-margin" (ngModelChange)="calculate()">
               Emekli Çalışan
+            </mat-slide-toggle>
+          </div>
+
+          <div class="" fxflex>
+            <mat-slide-toggle [(ngModel)]='isEmployer' class="example-margin" (ngModelChange)="calculate()"
+                              matTooltip="Şirket ortağı veya işveren maaşı hesaplama">
+              İşveren
             </mat-slide-toggle>
           </div>
 
@@ -231,7 +238,7 @@
             <td mat-footer-cell *matFooterCellDef class="employerCosts">
               {{yearCalculationModel.employerFinalIncomeTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
-          
+
           <ng-container matColumnDef="employerTotalCost">
             <th mat-header-cell *matHeaderCellDef class="employerCosts"> Toplam </th>
             <td mat-cell *matCellDef="let element" class="employerCosts">

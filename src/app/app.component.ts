@@ -35,16 +35,17 @@ export class AppComponent implements OnInit {
   AGIIncludedNet: boolean;
   employerDiscount5746: boolean;
   isPensioner: boolean;
-  showEmployeerCosts:boolean; 
+  isEmployer: boolean;
+  showEmployeerCosts: boolean;
 
   loading = false;
-  
+
   displayedColumns: string[] = ["monthName", "dayInput", "salaryInput", "calculatedGrossSalary", "employeeSGKDeduction", "employeeUnemploymentInsuranceDeduction",
     "appliedTaxSlicesAsString", "employeeIncomeTax", "stampTax", "netSalary", "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction",
     "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
   columnsToDisplay: string[] = [];
 
-  displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction", "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax", 
+  displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction", "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax",
   "avgStampTax", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction",
   "avgEmployerFinalIncomeTax", "avgEmployerTotalCost"];
   avgColumnsToDisplay: string[] = [];
@@ -53,9 +54,9 @@ export class AppComponent implements OnInit {
   groupHeaderDisplayedColumns = ["first-group", "second-group", "third-group", "forth-group"];
   groupHeaderColumnsToDisplay = [];
 
-  employerColumns: string[] = ["employerSGKDeduction", "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction", 
+  employerColumns: string[] = ["employerSGKDeduction", "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction",
   "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost",
-  "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerFinalIncomeTax", 
+  "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerFinalIncomeTax",
   "avgEmployerTotalCost", "forth-group"];
 
   constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
@@ -68,7 +69,7 @@ export class AppComponent implements OnInit {
     forkJoin(
       this.parametersService.yearParameters,
       this.parametersService.allParameters
-    ) 
+    )
       .pipe(finalize(() => {
 
       }))
@@ -86,12 +87,12 @@ export class AppComponent implements OnInit {
         this.loading = false;
       },
       err => {
-        alert(err.url + " dosyası yüklenemedi");    
+        alert(err.url + " dosyası yüklenemedi");
       })
   }
 
   private setDefaults() {
-    
+
     this.selectedYear = this.yearParameters[0];
 
     this.dayCounts = new Array(this.months.length);
@@ -112,15 +113,16 @@ export class AppComponent implements OnInit {
     this.AGIIncludedNet = false;
     this.employerDiscount5746 = false;
     this.isPensioner = false;
+    this.isEmployer = false;
 
     this.showEmployeerCosts = false;
-    this.toggleCompanyRelatedColumns(this.showEmployeerCosts);    
+    this.toggleCompanyRelatedColumns(this.showEmployeerCosts);
   }
 
   toggleCompanyRelatedColumns(show: boolean) {
-    
+
     if (!show && this.columnsToDisplay.length == 0) {
-    
+
       this.columnsToDisplay = this.displayedColumns.filter((col) => this.employerColumns.includes(col));
       this.displayedColumns = this.displayedColumns.filter(col => !this.columnsToDisplay.includes(col));
 
@@ -166,6 +168,7 @@ export class AppComponent implements OnInit {
     this.yearCalculationModel.dayCounts = [...this.dayCounts];
     this.yearCalculationModel.isAGIIncludedNet = this.AGIIncludedNet;
     this.yearCalculationModel.isPensioner = this.isPensioner;
+    this.yearCalculationModel.isEmployer = this.isEmployer;
     this.yearCalculationModel.employeeDisability = this.selectedDisability;
     try{
       this.yearCalculationModel.calculate();

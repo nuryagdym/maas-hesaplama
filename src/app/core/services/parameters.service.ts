@@ -34,36 +34,40 @@ interface AllParametersResponse {
 }
 export interface CalculationConstants{
   monthDayCount: number;
-  stampTaxRate: number;  
+  stampTaxRate: number;
   employee: {
       SGKDeductionRate: number;
+      SGKEmployerDeductionRate: number;
       SGDPDeductionRate: number;
       unemploymentInsuranceRate: number;
+      employerUnemploymentInsuranceRate: number;
       pensionerUnemploymentInsuranceRate: number;
   };
   employer: {
       SGKDeductionRate: number;
+      SGKEmployerDeductionRate: number;
       SGDPDeductionRate: number;
       employerDiscount5746: number;
       unemploymentInsuranceRate: number;
       pensionerUnemploymentInsuranceRate: number;
+      employerUnemploymentInsuranceRate: number;
       SGK5746AdditionalDiscount: number;
   };
 }
 
 export interface EmployeeEducationTypes {
   labelText: string;
-  options: 
+  options:
       {
           id: number;
           text: string;
           excemptionRate: number;
-      }[]  
+      }[]
 }
 
 export interface DisabilityOptions {
   labelText: string;
-  options: 
+  options:
       {
           id: number;
           degree: number;
@@ -73,7 +77,7 @@ export interface DisabilityOptions {
 
 export interface EmployeeTypes {
   labelText: string;
-  options: 
+  options:
       {
           id: number;
           text: string;
@@ -83,12 +87,12 @@ export interface EmployeeTypes {
           employerStampTaxApplicable: boolean;
           employerEducationIncomeTaxExcemption: boolean;
           employer5746AdditionalDiscountApplicable: boolean;
-      }[]  
+      }[]
 }
 
 export interface AGIOptions {
   labelText: string;
-  options: 
+  options:
       {
           id: number;
           text: string;
@@ -102,19 +106,19 @@ export interface AGIOptions {
 })
 export class ParametersService {
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
   get allParameters(): Observable<AllParametersResponse>{
     return this.http.get<AllParametersResponse>(environment.baseURL + 'assets/fixtures.json');
-  } 
+  }
 
   get yearParameters(): Observable<any>{
 
     return this.http.get<{yearParameters: yearParameterResponse[]}>(environment.baseURL + 'assets/year-parameters.json').pipe(
       map(response => {
-        
+
         const params: YearDataModel[] = [];
         response.yearParameters.forEach(item => {
           const newParam = new YearDataModel();
@@ -148,7 +152,7 @@ export class ParametersService {
         //sort tax slices in ascending order
         params.forEach(item => {
           item.taxSlices.sort((a, b) => a.rate - b.rate);
-        });        
+        });
         return params;
       })
     );

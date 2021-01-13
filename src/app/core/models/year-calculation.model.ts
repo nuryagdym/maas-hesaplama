@@ -2,24 +2,25 @@ import { MonthCalculationModel } from './month-calculation.model';
 import { YearDataModel } from './year-data.model';
 
 export class YearCalculationModel {
-    
+
     private _year: YearDataModel;
     private _months: MonthCalculationModel[];
     private _enteredAmounts: number[];
     private _workedDays: number[];
-    
+
     private _calcMode: string;
     private _isPensioner: boolean;
+    private _isEmployer: boolean;
     private _isAGIIncludedNet: boolean;
     private _applyEmployerDiscount5746: boolean;
     private _AGI: any;
     private _employeeType: object;
-    private _employeeEduType: any;    
+    private _employeeEduType: any;
     private _employeeDisability: any;
-    private _numOfCalculatedMonths: number;    
+    private _numOfCalculatedMonths: number;
 
     private _parameters:any;
-    
+
     constructor(months: string[], salaryConsants: any){
 
         this._parameters = salaryConsants;
@@ -90,13 +91,21 @@ export class YearCalculationModel {
         this._workedDays = days;
     }
 
+    get isEmployer(): boolean {
+      return this._isEmployer;
+    }
+
+    set isEmployer(value: boolean) {
+      this._isEmployer = value;
+    }
+
     calculate(){
         this._numOfCalculatedMonths = 0;
         let result = 0;
         this._months.forEach((m, i) => {
-            result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i], 
+            result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.excemptionRate,
-                this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isPensioner, this._employeeDisability.degree);
+                this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isPensioner, this._isEmployer, this._employeeDisability.degree);
             if(m.calculatedGrossSalary > 0) this._numOfCalculatedMonths++;
         });
     }
@@ -123,7 +132,7 @@ export class YearCalculationModel {
     get avgEmployeeSGKDeduction(){
         return this._numOfCalculatedMonths > 0 ? this.employeeSGKDeduction / this._numOfCalculatedMonths : 0;
     }
-    
+
     get employeeUnemploymentInsuranceDeduction(){
         let total = this._months.reduce((total, month) => total + month.employeeUnemploymentInsuranceDeduction, 0);
         return isNaN(total) ? 0 : total;
@@ -151,11 +160,11 @@ export class YearCalculationModel {
 
     get employerStampTax(){
         let total = this._months.reduce((total, month) => total + month.employerStampTax, 0);
-        return isNaN(total) ? 0 : total;  
+        return isNaN(total) ? 0 : total;
     }
 
     get avgEmployerStampTax(){
-        return this._numOfCalculatedMonths > 0 ? this.employerStampTax / this._numOfCalculatedMonths : 0; 
+        return this._numOfCalculatedMonths > 0 ? this.employerStampTax / this._numOfCalculatedMonths : 0;
     }
 
     get netSalary(){
@@ -165,7 +174,7 @@ export class YearCalculationModel {
     get avgNetSalary(){
         return this._numOfCalculatedMonths > 0 ? this.netSalary / this._numOfCalculatedMonths : 0;
     }
-    
+
     get AGIamount(){
         let total = this._months.reduce((total, month) => total + month.AGIamount, 0);
         return isNaN(total) ? 0 : total;
@@ -209,10 +218,10 @@ export class YearCalculationModel {
     }
 
     get employerUnemploymentInsuranceDeduction(){
-        
+
         let total = this._months.reduce((total, month) => {
             return total + month.employerUnemploymentInsuranceDeduction
-        }, 
+        },
         0);
         return isNaN(total) ? 0 : total;
     }
@@ -233,7 +242,7 @@ export class YearCalculationModel {
         return isNaN(total) ? 0 : total;
     }
 
-    
+
     get avgEmployerTotalCost(){
         return this._numOfCalculatedMonths > 0 ? this.employerTotalCost / this._numOfCalculatedMonths : 0;
     }
@@ -266,5 +275,5 @@ export class YearCalculationModel {
         if(workedDays == 0) return 0;
         return this.employerHalfTotalCost(half) / workedDays;
     }
-    
+
 }
