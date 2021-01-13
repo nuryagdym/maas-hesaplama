@@ -1,6 +1,47 @@
 {
     "yearParameters": [
         {
+          "year": 2021,
+          "minGrossWage": 3577.50,
+          "SGKCeil": 26831.4,
+          "taxSlices": [
+            {
+              "rate": 0.15,
+              "ceil": 24000
+            },
+            {
+              "rate": 0.2,
+              "ceil": 53000
+            },
+            {
+              "rate": 0.27,
+              "ceil": 190000
+            },
+            {
+              "rate": 0.35,
+              "ceil": 650000
+            },
+            {
+              "rate": 0.4,
+              "ceil": null
+            }
+          ],
+          "disabledMonthlyIncomeTaxDiscountBases": [
+            {
+              "degree": 1,
+              "amount": 1500
+            },
+            {
+              "degree": 2,
+              "amount": 860
+            },
+            {
+              "degree": 3,
+              "amount": 380
+            }
+          ]
+        },
+        {
             "year": 2020,
             "minGrossWage": 2943,
             "SGKCeil": 22072.5,
