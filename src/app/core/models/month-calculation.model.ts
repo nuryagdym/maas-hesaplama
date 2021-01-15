@@ -137,11 +137,13 @@ export class MonthCalculationModel {
         } else {
             rate = this._parameters.employer.SGKDeductionRate;
         }
-        if (rate > 0 && applyEmployerDiscount5746) {
-            rate -= this._parameters.employer.employerDiscount5746;
-        }
-        if (employeeType.employer5746AdditionalDiscountApplicable) {
-            rate *= this._parameters.employer.SGK5746AdditionalDiscount;
+        if (!isPensioner) {
+            if (rate > 0 && applyEmployerDiscount5746) {
+                rate -= this._parameters.employer.employerDiscount5746;
+            }
+            if (employeeType.employer5746AdditionalDiscountApplicable) {
+                rate *= this._parameters.employer.SGK5746AdditionalDiscount;
+            }
         }
 
         this._employerSGKDeduction = this.calculatedGrossSalary < yearParams.SGKCeil ? this.calculatedGrossSalary * rate : yearParams.SGKCeil * rate;

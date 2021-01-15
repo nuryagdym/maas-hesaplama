@@ -105,7 +105,7 @@
           </div>
 
           <div class="" fxflex>
-            <mat-slide-toggle matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
+            <mat-slide-toggle [disabled]="isPensioner" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
               [(ngModel)]='employerDiscount5746' class="example-margin" (ngModelChange)="calculate()">
               5510/5746 İndirimi
             </mat-slide-toggle>
