@@ -72,3 +72,33 @@
    max-width: 400px;
 }
 
+::ng-deep {
+  .mat-table {
+    tbody {
+      .mat-row {
+        .mat-cell {
+          .mat-form-field {
+            margin-top: 0;
+            .mat-form-field-wrapper {
+              padding-bottom: 0;
+              .mat-form-field-infix {
+                border-top: none;
+                width: 65px;
+              }
+              .mat-form-field-underline {
+                position: initial;
+              }
+            }
+          }
+        }
+      }
+      tr.mat-row, tr.mat-footer-row {
+        height: 40px;
+      }
+    }
+    .th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+      min-width: initial;
+    }
+  }
+}
+
