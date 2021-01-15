@@ -82,6 +82,8 @@ export interface EmployeeTypes {
           id: number;
           text: string;
           AGIApplicable: boolean;
+          incomeTaxApplicable: boolean;
+          stampTaxApplicable: boolean,
           employerAGIApplicable: boolean;
           employerIncomeTaxApplicable: boolean;
           employerStampTaxApplicable: boolean;

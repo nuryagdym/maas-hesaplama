@@ -90,9 +90,9 @@ export class MonthCalculationModel {
         this.calcDisabledIncomeTaxBaseAmount(yearParams, disabilityDegree, workedDays);
         this.calcEmployeeSGKDeduction(yearParams, isPensioner, isEmployer);
         this.calcEmployeeUnemploymentInsuranceDeduction(yearParams, isPensioner, isEmployer);
-        this.calcStampTax();
+        this.calcStampTax(employeeType);
         this.calcEmployerStampTax(employeeType);
-        this.calcEmployeeIncomeTax(cumIncomeTaxBase, yearParams);
+        this.calcEmployeeIncomeTax(cumIncomeTaxBase, yearParams, employeeType);
 
         this.calcNetSalary();
 
@@ -102,7 +102,7 @@ export class MonthCalculationModel {
         this.calcAGI(yearParams, agiRate, employeeType, workedDays, grossSalary);
         this.calcEmployerAGI(employeeType);
 
-        this.calcEmployerIncomeTaxExcemption(employeeType, employeeEduExcemptionRate);
+        this.calcEmployerIncomeTaxExemption(employeeType, employeeEduExcemptionRate);
     }
 
     private calcNetSalary() {
@@ -143,6 +143,7 @@ export class MonthCalculationModel {
         if (employeeType.employer5746AdditionalDiscountApplicable) {
             rate *= this._parameters.employer.SGK5746AdditionalDiscount;
         }
+
         this._employerSGKDeduction = this.calculatedGrossSalary < yearParams.SGKCeil ? this.calculatedGrossSalary * rate : yearParams.SGKCeil * rate;
     }
 
@@ -180,12 +181,15 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployeeIncomeTax(cumulativeSalary: number, yearParams: YearDataModel) {
-
+    private calcEmployeeIncomeTax(cumulativeSalary: number, yearParams: YearDataModel, employeeType: any) {
+        let tax = 0;
+        if (!employeeType.incomeTaxApplicable) {
+            this._employeeIncomeTax = tax;
+            return;
+        }
         this._appliedTaxSlices = [];
         let incomeBase = this.calcIncomeTaxBase;
         const n = yearParams.taxSlices.length - 1;
-        let tax = 0;
 
         for (let i = 0; i < n && incomeBase > 0; i++) {
             const ceil = yearParams.taxSlices[i].ceil;
@@ -211,7 +215,11 @@ export class MonthCalculationModel {
     }
 
 
-    private calcStampTax() {
+    private calcStampTax(employeeType: any) {
+        if (!employeeType.stampTaxApplicable) {
+            this._stampTax = 0;
+            return;
+        }
         this._stampTax = this.calculatedGrossSalary * this._parameters.stampTaxRate;
     }
 
@@ -247,15 +255,15 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployerIncomeTaxExcemption(employeeType: any, employeeEduExcemptionRate: number){
+    private calcEmployerIncomeTaxExemption(employeeType: any, employeeEduExemptionRate: number) {
 
-        let excemption = 0;
-        if(employeeType.employerIncomeTaxApplicable == false){
-            excemption = this.employeeIncomeTax;
-        }else if(employeeType.employerEducationIncomeTaxExcemption){
-            excemption = employeeEduExcemptionRate * (this.employeeIncomeTax - this.AGIamount) + this.AGIamount;
+        let exemption = 0;
+        if (employeeType.employerIncomeTaxApplicable === false) {
+          exemption = this.employeeIncomeTax;
+        } else if (employeeType.employerEducationIncomeTaxExcemption) {
+          exemption = employeeEduExemptionRate * (this.employeeIncomeTax - this.AGIamount) + this.AGIamount;
         }
-        this._employerIncomeTaxExcemptionAmount = excemption;
+        this._employerIncomeTaxExcemptionAmount = exemption;
     }
 
     /**
