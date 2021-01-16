@@ -10,7 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -27,9 +27,7 @@
     "@angular/material": "^9.1.2",
     "@angular/platform-browser": "~9.0.3",
     "@angular/platform-browser-dynamic": "~9.0.3",
-    "@angular/router": "~9.0.3",
     "file-saver": "^2.0.5",
-    "jquery": "^3.5.0",
     "ngx-currency": "^2.2.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
