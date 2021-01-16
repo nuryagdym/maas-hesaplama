@@ -37,17 +37,21 @@ export class AppComponent implements OnInit {
   employerDiscount5746: boolean;
   isPensioner: boolean;
   isEmployer: boolean;
-  showEmployeerCosts: boolean;
+  showEmployerCosts: boolean;
 
   loading = false;
 
-  displayedColumns: string[] = ["monthName", "dayInput", "salaryInput", "calculatedGrossSalary", "employeeSGKDeduction", "employeeUnemploymentInsuranceDeduction",
-    "appliedTaxSlicesAsString", "employeeIncomeTax", "stampTax", "netSalary", "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction",
+  displayedColumns: string[] = ["monthName", "dayInput", "salaryInput", "calculatedGrossSalary",
+    "employeeSGKDeduction", "employeeUnemploymentInsuranceDeduction",
+    "appliedTaxSlicesAsString", "employeeIncomeTax", "stampTax", "netSalary",
+    "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction",
     "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
   columnsToDisplay: string[] = [];
 
-  displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction", "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax",
-  "avgStampTax", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction",
+  displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction",
+    "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax",
+    "avgStampTax", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction",
+    "avgEmployerUnemploymentInsuranceDeduction",
   "avgEmployerFinalIncomeTax", "avgEmployerTotalCost"];
   avgColumnsToDisplay: string[] = [];
 
@@ -67,9 +71,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this.loading = true;
-    forkJoin(
+    forkJoin([
       this.parametersService.yearParameters,
-      this.parametersService.allParameters
+      this.parametersService.allParameters]
     )
       .pipe(finalize(() => {
 
@@ -89,7 +93,7 @@ export class AppComponent implements OnInit {
       },
       err => {
         alert(err.url + " dosyası yüklenemedi");
-      })
+      });
   }
 
   private setDefaults() {
@@ -116,13 +120,13 @@ export class AppComponent implements OnInit {
     this.isPensioner = false;
     this.isEmployer = false;
 
-    this.showEmployeerCosts = false;
-    this.toggleCompanyRelatedColumns(this.showEmployeerCosts);
+    this.showEmployerCosts = false;
+    this.toggleCompanyRelatedColumns(this.showEmployerCosts);
   }
 
   toggleCompanyRelatedColumns(show: boolean) {
 
-    if (!show && this.columnsToDisplay.length == 0) {
+    if (!show && this.columnsToDisplay.length === 0) {
 
       this.columnsToDisplay = this.displayedColumns.filter((col) => this.employerColumns.includes(col));
       this.displayedColumns = this.displayedColumns.filter(col => !this.columnsToDisplay.includes(col));
@@ -133,17 +137,19 @@ export class AppComponent implements OnInit {
       this.groupHeaderColumnsToDisplay = this.groupHeaderDisplayedColumns.filter((col) => this.employerColumns.includes(col));
       this.groupHeaderDisplayedColumns = this.groupHeaderDisplayedColumns.filter(col => !this.groupHeaderColumnsToDisplay.includes(col));
 
-    }else{
+    } else {
       this.columnsToDisplay.forEach(col => {
         this.displayedColumns.push(col);
-      })
+      });
       this.avgColumnsToDisplay.forEach(col => {
         this.displayedAvgColumns.push(col);
-      })
+      });
       this.groupHeaderColumnsToDisplay.forEach(col => {
         this.groupHeaderDisplayedColumns.push(col);
-      })
-      this.forthGroupColCount = this.columnsToDisplay.length == 0 ? this.displayedColumns.filter((col) => this.employerColumns.includes(col)).length : this.columnsToDisplay.length
+      });
+      this.forthGroupColCount = this.columnsToDisplay.length === 0 ?
+        this.displayedColumns.filter((col) => this.employerColumns.includes(col)).length
+        : this.columnsToDisplay.length;
       this.columnsToDisplay = [];
       this.avgColumnsToDisplay = [];
       this.groupHeaderColumnsToDisplay = [];
@@ -183,9 +189,9 @@ export class AppComponent implements OnInit {
     this.yearCalculationModel.isPensioner = this.isPensioner;
     this.yearCalculationModel.isEmployer = this.isEmployer;
     this.yearCalculationModel.employeeDisability = this.selectedDisability;
-    try{
+    try {
       this.yearCalculationModel.calculate();
-    }catch(e) {
+    } catch (e) {
       this._snackBar.open(e, null, {
         duration: 3 * 1000,
       });
