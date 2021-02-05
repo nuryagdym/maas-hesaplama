@@ -38,14 +38,17 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
 - AGİ
 - Teknokent, Ar-Ge personeli (4691 ve 5746) indirimi
+- 6111 Sayılı Kanun
 - Ar-Ge personeli eğitim durumu indirimi
 - İşveren Bağ-Kur 5 puanlık prim indirimi
 - Sakatlık durumu
 - Emekli çalışan
+- İşveren/Şirket ortağı maaş hesaplama
 - Part time çalışan
 - Toplam yıllık ve dönemlik maliyetler
 - Aylık ortalama maliyetler
 - İşveren Maaliyeti
+- Excel dosya indirebilme
 - Anlık hesaplama, User Input'ların her hangi biri değiştiği zaman hesaplama gerçekleşir
 - Ayın TL tutarı girildiğinde bir sonraki ay tutarları otomatik doldurulur
 

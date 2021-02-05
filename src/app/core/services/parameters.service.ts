@@ -29,7 +29,7 @@ interface AllParametersResponse {
   EMPLOYEE_EDUCATION_TYPES: EmployeeEducationTypes;
   DISABILITY_OPTIONS: DisabilityOptions;
   EMPLOYEE_TYPES: EmployeeTypes;
-  AGI_OPTIONS: AGIOptions
+  AGI_OPTIONS: AGIOptions;
 
 }
 export interface CalculationConstants{
@@ -84,6 +84,7 @@ export interface EmployeeTypes {
           AGIApplicable: boolean;
           incomeTaxApplicable: boolean;
           stampTaxApplicable: boolean,
+          employerSGKApplicable: boolean;
           employerAGIApplicable: boolean;
           employerIncomeTaxApplicable: boolean;
           employerStampTaxApplicable: boolean;

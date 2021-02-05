@@ -129,6 +129,10 @@ export class MonthCalculationModel {
 
     private calcEmployerSGKDeduction(yearParams: YearDataModel, isPensioner: boolean, isEmployer: boolean,
                                      applyEmployerDiscount5746: boolean, employeeType: any) {
+        if (!employeeType.employerSGKApplicable) {
+            this._employerSGKDeduction = 0;
+            return;
+        }
         let rate;
         if (isEmployer) {
             rate = this._parameters.employer.SGKEmployerDeductionRate;
