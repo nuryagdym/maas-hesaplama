@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   selectedCalcMode: string;
 
   AGIIncludedNet: boolean;
+  AGIIncludedTax: boolean;
   employerDiscount5746: boolean;
   isPensioner: boolean;
   isEmployer: boolean;
@@ -116,6 +117,7 @@ export class AppComponent implements OnInit {
     this.selectedDisability = this.disabilityOptions.options[0];
 
     this.AGIIncludedNet = false;
+    this.AGIIncludedTax = true;
     this.employerDiscount5746 = false;
     this.isPensioner = false;
     this.isEmployer = false;
@@ -186,6 +188,7 @@ export class AppComponent implements OnInit {
     this.yearCalculationModel.enteredAmounts = [...this.monthSalaryInputs];
     this.yearCalculationModel.dayCounts = [...this.dayCounts];
     this.yearCalculationModel.isAGIIncludedNet = this.AGIIncludedNet;
+    this.yearCalculationModel.isAGIIncludedTax = this.AGIIncludedTax;
     this.yearCalculationModel.isPensioner = this.isPensioner;
     this.yearCalculationModel.isEmployer = this.isEmployer;
     this.yearCalculationModel.employeeDisability = this.selectedDisability;

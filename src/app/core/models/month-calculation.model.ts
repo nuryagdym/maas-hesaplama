@@ -34,7 +34,7 @@ export class MonthCalculationModel {
     public calculate(calcMode: string, yearParams: YearDataModel,
         enteredAmount: number, workedDays: number, agiRate: number,
         employeeType: object, employeeEduExcemptionRate: number,
-        applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean,
+        applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, isEmployer: boolean, disabilityDegree: number
         ) {
         if(!(enteredAmount > 0 && workedDays > 0)){
@@ -45,9 +45,9 @@ export class MonthCalculationModel {
         if(calcMode === 'GROSS_TO_NET'){
             grossSalary = enteredAmount;
         }else if(calcMode === 'TOTAL_TO_GROSS'){
-            grossSalary = this.findGrossFromTotalCost(yearParams, enteredAmount, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isPensioner, isEmployer, disabilityDegree);
+            grossSalary = this.findGrossFromTotalCost(yearParams, enteredAmount, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, isEmployer, disabilityDegree);
         }else{
-            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedNet, isPensioner, isEmployer, disabilityDegree);
+            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedNet, isAGIIncludedTax, isPensioner, isEmployer, disabilityDegree);
         }
         if(grossSalary === -1) {
             this.resetFields();
@@ -57,7 +57,7 @@ export class MonthCalculationModel {
             grossSalary = yearParams.minGrossWage;
         }
 
-        this._calculate(yearParams, grossSalary, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isPensioner, isEmployer, disabilityDegree);
+        this._calculate(yearParams, grossSalary, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, isEmployer, disabilityDegree);
         return 0;
     }
 
@@ -80,7 +80,7 @@ export class MonthCalculationModel {
     private _calculate(yearParams: YearDataModel,
         grossSalary: number, workedDays: number, agiRate: number,
         employeeType: object, employeeEduExcemptionRate: number,
-        applyEmployerDiscount5746: boolean,
+        applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, isEmployer: boolean, disabilityDegree: number) {
 
         const cumIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeIncomeTaxBase: 0;
@@ -102,7 +102,7 @@ export class MonthCalculationModel {
         this.calcAGI(yearParams, agiRate, employeeType, workedDays, grossSalary);
         this.calcEmployerAGI(employeeType);
 
-        this.calcEmployerIncomeTaxExemption(employeeType, employeeEduExcemptionRate);
+        this.calcEmployerIncomeTaxExemption(employeeType, employeeEduExcemptionRate, isAGIIncludedTax);
     }
 
     private calcNetSalary() {
@@ -226,7 +226,8 @@ export class MonthCalculationModel {
             this._stampTax = 0;
             return;
         }
-        this._stampTax = this.calculatedGrossSalary * this._parameters.stampTaxRate;
+
+        this._stampTax = (this.calculatedGrossSalary * this._parameters.stampTaxRate);
     }
 
     private calcEmployerStampTax(employeeType: any){
@@ -261,13 +262,19 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployerIncomeTaxExemption(employeeType: any, employeeEduExemptionRate: number) {
-
+    private calcEmployerIncomeTaxExemption(employeeType: any, employeeEduExemptionRate: number, isAGIIncludedTax: boolean) {
+        console.log("calcEmployerIncomeTaxExemption isAGIIncludedTax", isAGIIncludedTax);
         let exemption = 0;
         if (employeeType.employerIncomeTaxApplicable === false) {
           exemption = this.employeeIncomeTax;
         } else if (employeeType.employerEducationIncomeTaxExcemption) {
           exemption = employeeEduExemptionRate * (this.employeeIncomeTax - this.AGIamount) + this.AGIamount;
+        }
+
+        if (employeeType.employerIncomeTaxApplicable && isAGIIncludedTax) {
+            console.log("calcEmployerIncomeTaxExemption exemption", exemption);
+            console.log("calcEmployerIncomeTaxExemption AGIamount", this.AGIamount);
+            exemption += this.AGIamount;
         }
         this._employerIncomeTaxExcemptionAmount = exemption;
     }
@@ -293,6 +300,7 @@ export class MonthCalculationModel {
         enteredAmount: number, workedDays: number, agiRate: number,
         employeeType: object, employeeEduExcemptionRate: number,
         applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean,
+                             isAGIIncludedTax: boolean,
         isPensioner: boolean, isEmployer: boolean, disabilityDegree: number){
 
             let left = enteredAmount;
@@ -305,7 +313,7 @@ export class MonthCalculationModel {
                 //could not find
                 if(right < left) return -1;
 
-                this._calculate(yearParams, middle, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isPensioner, isEmployer, disabilityDegree);
+                this._calculate(yearParams, middle, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, isEmployer, disabilityDegree);
                 calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIamount : this.netSalary;
                 if(calcNetSalary > enteredAmount){
                     right = middle;
@@ -336,7 +344,7 @@ export class MonthCalculationModel {
     private findGrossFromTotalCost(yearParams: YearDataModel,
         enteredAmount: number, workedDays: number, agiRate: number,
         employeeType: object, employeeEduExcemptionRate: number,
-        applyEmployerDiscount5746: boolean,
+        applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, isEmployer: boolean, disabilityDegree: number){
 
             let left = enteredAmount / 3;
@@ -349,7 +357,7 @@ export class MonthCalculationModel {
 
                 if(right < left) return -1;
 
-                this._calculate(yearParams, middle, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isPensioner, isEmployer, disabilityDegree);
+                this._calculate(yearParams, middle, workedDays, agiRate, employeeType, employeeEduExcemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, isEmployer, disabilityDegree);
                 calcTotalCost = this.employerTotalCost;
                 if(calcTotalCost > enteredAmount){
                     right = middle;
