@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
     AGIIncludedTax: boolean;
     employerDiscount5746: boolean;
     isPensioner: boolean;
-    isEmployer: boolean;
     showEmployerCosts: boolean;
 
     loading = false;
@@ -126,9 +125,8 @@ export class AppComponent implements OnInit {
         this.AGIIncludedTax = true;
         this.employerDiscount5746 = false;
         this.isPensioner = false;
-        this.isEmployer = false;
 
-        this.showEmployerCosts = false;
+        this.showEmployerCosts = true;
         this.toggleCompanyRelatedColumns(this.showEmployerCosts);
     }
 
@@ -197,7 +195,6 @@ export class AppComponent implements OnInit {
         this.yearCalculationModel.isAGIIncludedTax = this.AGIIncludedTax;
 
         this.yearCalculationModel.isPensioner = this.isPensioner;
-        this.yearCalculationModel.isEmployer = this.isEmployer;
         this.yearCalculationModel.employeeDisability = this.selectedDisability;
         try {
             this.yearCalculationModel.calculate();

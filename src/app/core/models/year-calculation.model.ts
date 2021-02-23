@@ -10,7 +10,6 @@ export class YearCalculationModel {
 
     private _calcMode: string;
     private _isPensioner: boolean;
-    private _isEmployer: boolean;
     private _isAGIIncludedNet: boolean;
     private _isAGIIncludedTax: boolean;
     private _applyEmployerDiscount5746: boolean;
@@ -91,15 +90,6 @@ export class YearCalculationModel {
     set dayCounts(days: number[]){
         this._workedDays = days;
     }
-
-    get isEmployer(): boolean {
-      return this._isEmployer;
-    }
-
-    set isEmployer(value: boolean) {
-      this._isEmployer = value;
-    }
-
     get isAGIIncludedTax(): boolean {
         return this._isAGIIncludedTax;
     }
@@ -113,7 +103,7 @@ export class YearCalculationModel {
         this._months.forEach((m, i) => {
             result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.excemptionRate,
-                this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax, this._isPensioner, this._isEmployer, this._employeeDisability.degree);
+                this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax, this._isPensioner, this._employeeDisability.degree);
             if(m.calculatedGrossSalary > 0) this._numOfCalculatedMonths++;
         });
     }

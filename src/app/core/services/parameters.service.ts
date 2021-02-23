@@ -37,20 +37,16 @@ export interface CalculationConstants{
   stampTaxRate: number;
   employee: {
       SGKDeductionRate: number;
-      SGKEmployerDeductionRate: number;
       SGDPDeductionRate: number;
       unemploymentInsuranceRate: number;
-      employerUnemploymentInsuranceRate: number;
       pensionerUnemploymentInsuranceRate: number;
   };
   employer: {
       SGKDeductionRate: number;
-      SGKEmployerDeductionRate: number;
       SGDPDeductionRate: number;
       employerDiscount5746: number;
       unemploymentInsuranceRate: number;
       pensionerUnemploymentInsuranceRate: number;
-      employerUnemploymentInsuranceRate: number;
       SGK5746AdditionalDiscount: number;
   };
 }
@@ -81,10 +77,14 @@ export interface EmployeeTypes {
       {
           id: number;
           text: string;
+          desc: string;
+          SGKApplicable: boolean;
+          unemploymentInsuranceApplicable: boolean;
           AGIApplicable: boolean;
           incomeTaxApplicable: boolean;
           stampTaxApplicable: boolean,
           employerSGKApplicable: boolean;
+          employerUnemploymentInsuranceApplicable: boolean,
           employerAGIApplicable: boolean;
           employerIncomeTaxApplicable: boolean;
           employerStampTaxApplicable: boolean;

@@ -67,7 +67,9 @@
             <mat-form-field>
               <mat-label>{{employeeTypes.labelText}}</mat-label>
               <mat-select [(ngModel)]='selectedEmployeeType' (ngModelChange)="calculate()">
-                <mat-option *ngFor="let op of employeeTypes.options" [value]="op">
+                <mat-option *ngFor="let op of employeeTypes.options" [value]="op"
+                            matTooltip="{{op.desc}}"
+                >
                   {{op.text}}
                 </mat-option>
               </mat-select>
@@ -94,13 +96,6 @@
           <div class="" fxflex>
             <mat-slide-toggle [(ngModel)]='isPensioner' class="example-margin" (ngModelChange)="calculate()">
               Emekli Çalışan
-            </mat-slide-toggle>
-          </div>
-
-          <div class="" fxflex>
-            <mat-slide-toggle [(ngModel)]='isEmployer' class="example-margin" (ngModelChange)="calculate()"
-                              matTooltip="Şirket ortağı veya işveren maaşı hesaplama">
-              İşveren
             </mat-slide-toggle>
           </div>
 
