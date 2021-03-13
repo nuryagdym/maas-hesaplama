@@ -1,5 +1,6 @@
 import { MonthCalculationModel } from './month-calculation.model';
 import { YearDataModel } from './year-data.model';
+import {EmployeeType} from "../services/parameters.service";
 
 export class YearCalculationModel {
 
@@ -14,7 +15,7 @@ export class YearCalculationModel {
     private _isAGIIncludedTax: boolean;
     private _applyEmployerDiscount5746: boolean;
     private _AGI: any;
-    private _employeeType: object;
+    private _employeeType: EmployeeType;
     private _employeeEduType: any;
     private _employeeDisability: any;
     private _numOfCalculatedMonths: number;

@@ -1,4 +1,5 @@
 import { YearDataModel } from './year-data.model';
+import {EmployeeType} from "../services/parameters.service";
 
 export class MonthCalculationModel {
     monthName: string;
@@ -33,7 +34,7 @@ export class MonthCalculationModel {
 
     public calculate(calcMode: string, yearParams: YearDataModel,
         enteredAmount: number, workedDays: number, agiRate: number,
-        employeeType: object, employeeEduExemptionRate: number,
+        employeeType: EmployeeType, employeeEduExemptionRate: number,
         applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, disabilityDegree: number
         ) {
@@ -79,7 +80,7 @@ export class MonthCalculationModel {
 
     private _calculate(yearParams: YearDataModel,
         grossSalary: number, workedDays: number, agiRate: number,
-        employeeType: object, employeeEduExemptionRate: number,
+        employeeType: EmployeeType, employeeEduExemptionRate: number,
         applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, disabilityDegree: number) {
 
@@ -111,7 +112,7 @@ export class MonthCalculationModel {
     }
 
 
-    private calcEmployeeSGKDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: any) {
+    private calcEmployeeSGKDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: EmployeeType) {
         let rate = 0;
         if (!employeeType.SGKApplicable) {
             return this._employeeSGKDeduction = 0;
@@ -129,7 +130,7 @@ export class MonthCalculationModel {
     }
 
     private calcEmployerSGKDeduction(yearParams: YearDataModel, isPensioner: boolean,
-                                     applyEmployerDiscount5746: boolean, employeeType: any) {
+                                     applyEmployerDiscount5746: boolean, employeeType: EmployeeType) {
         if (!employeeType.employerSGKApplicable) {
             this._employerSGKDeduction = 0;
             return;
@@ -152,7 +153,7 @@ export class MonthCalculationModel {
         this._employerSGKDeduction = this.calculatedGrossSalary < yearParams.SGKCeil ? this.calculatedGrossSalary * rate : yearParams.SGKCeil * rate;
     }
 
-    private calcEmployeeUnemploymentInsuranceDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: any) {
+    private calcEmployeeUnemploymentInsuranceDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: EmployeeType) {
         let rate = 0;
         if (!employeeType.unemploymentInsuranceApplicable) {
             return this._employeeUnemploymentInsuranceDeduction = 0;
@@ -170,7 +171,7 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployerUnemploymentInsuranceDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: any) {
+    private calcEmployerUnemploymentInsuranceDeduction(yearParams: YearDataModel, isPensioner: boolean, employeeType: EmployeeType) {
         let rate = 0;
         if (!employeeType.employerUnemploymentInsuranceApplicable) {
             return this._employerUnemploymentInsuranceDeduction = 0;
@@ -188,7 +189,7 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployeeIncomeTax(cumulativeSalary: number, yearParams: YearDataModel, employeeType: any) {
+    private calcEmployeeIncomeTax(cumulativeSalary: number, yearParams: YearDataModel, employeeType: EmployeeType) {
         let tax = 0;
         if (!employeeType.incomeTaxApplicable) {
             this._employeeIncomeTax = tax;
@@ -222,7 +223,7 @@ export class MonthCalculationModel {
     }
 
 
-    private calcStampTax(employeeType: any) {
+    private calcStampTax(employeeType: EmployeeType) {
         if (!employeeType.stampTaxApplicable) {
             this._stampTax = 0;
             return;
@@ -231,11 +232,11 @@ export class MonthCalculationModel {
         this._stampTax = (this.calculatedGrossSalary * this._parameters.stampTaxRate);
     }
 
-    private calcEmployerStampTax(employeeType: any){
+    private calcEmployerStampTax(employeeType: EmployeeType){
         this._employerStampTax = employeeType.employerStampTaxApplicable ? this._stampTax : 0;
     }
 
-    private calcAGI(yearParams: YearDataModel, AGIRate: number, employeeType: any, workedDays: number, grossSalary: number) {
+    private calcAGI(yearParams: YearDataModel, AGIRate: number, employeeType: EmployeeType, workedDays: number, grossSalary: number) {
         if (employeeType.AGIApplicable) {
             let minWage = yearParams.minGrossWage * workedDays / this._parameters.monthDayCount;
             if(grossSalary < minWage) minWage = grossSalary;
@@ -245,7 +246,7 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployerAGI(employeeType: any) {
+    private calcEmployerAGI(employeeType: EmployeeType) {
         this._employerAGIamount = employeeType.employerAGIApplicable ? this._AGIamount : 0
     }
 
@@ -263,7 +264,7 @@ export class MonthCalculationModel {
         }
     }
 
-    private calcEmployerIncomeTaxExemption(employeeType: any, employeeEduExemptionRate: number, isAGIIncludedTax: boolean) {
+    private calcEmployerIncomeTaxExemption(employeeType: EmployeeType, employeeEduExemptionRate: number, isAGIIncludedTax: boolean) {
         let exemption = 0;
         if (employeeType.employerIncomeTaxApplicable === false) {
           exemption = this.employeeIncomeTax;
@@ -295,7 +296,7 @@ export class MonthCalculationModel {
      */
     private findGrossFromNet(yearParams: YearDataModel,
         enteredAmount: number, workedDays: number, agiRate: number,
-        employeeType: object, employeeEduExemptionRate: number,
+        employeeType: EmployeeType, employeeEduExemptionRate: number,
         applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean,
                              isAGIIncludedTax: boolean,
         isPensioner: boolean, disabilityDegree: number){
@@ -339,7 +340,7 @@ export class MonthCalculationModel {
      */
     private findGrossFromTotalCost(yearParams: YearDataModel,
         enteredAmount: number, workedDays: number, agiRate: number,
-        employeeType: object, employeeEduExemptionRate: number,
+        employeeType: EmployeeType, employeeEduExemptionRate: number,
         applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
         isPensioner: boolean, disabilityDegree: number){
 

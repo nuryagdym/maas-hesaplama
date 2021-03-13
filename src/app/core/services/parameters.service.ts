@@ -72,25 +72,26 @@ export interface DisabilityOptions {
 }
 
 export interface EmployeeTypes {
-  labelText: string;
-  options:
-      {
-          id: number;
-          text: string;
-          desc: string;
-          SGKApplicable: boolean;
-          unemploymentInsuranceApplicable: boolean;
-          AGIApplicable: boolean;
-          incomeTaxApplicable: boolean;
-          stampTaxApplicable: boolean,
-          employerSGKApplicable: boolean;
-          employerUnemploymentInsuranceApplicable: boolean,
-          employerAGIApplicable: boolean;
-          employerIncomeTaxApplicable: boolean;
-          employerStampTaxApplicable: boolean;
-          employerEducationIncomeTaxExemption: boolean;
-          employer5746AdditionalDiscountApplicable: boolean;
-      }[]
+    labelText: string;
+    options: EmployeeType[];
+}
+
+export interface EmployeeType {
+    id: number;
+    text: string;
+    desc: string;
+    SGKApplicable: boolean;
+    unemploymentInsuranceApplicable: boolean;
+    AGIApplicable: boolean;
+    incomeTaxApplicable: boolean;
+    stampTaxApplicable: boolean;
+    employerSGKApplicable: boolean;
+    employerUnemploymentInsuranceApplicable: boolean;
+    employerAGIApplicable: boolean;
+    employerIncomeTaxApplicable: boolean;
+    employerStampTaxApplicable: boolean;
+    employerEducationIncomeTaxExemption: boolean;
+    employer5746AdditionalDiscountApplicable: boolean;
 }
 
 export interface AGIOptions {

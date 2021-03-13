@@ -4,7 +4,8 @@ import {
     AGIOptions,
     EmployeeTypes,
     EmployeeEducationTypes,
-    DisabilityOptions
+    DisabilityOptions,
+    EmployeeType
 } from "./core/services/parameters.service";
 import {YearDataModel} from "./core/models/year-data.model";
 import {finalize} from "rxjs/operators";
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit {
 
     selectedYear: YearDataModel;
     selectedAGIOption: any;
-    selectedEmployeeType: any;
+    selectedEmployeeType: EmployeeType;
     selectedEmployeeEducationType: any;
     selectedDisability: any;
     selectedCalcMode: string;
