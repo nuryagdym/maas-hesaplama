@@ -80,7 +80,7 @@
             <mat-form-field>
               <mat-label>{{employeeEducationTypes.labelText}}</mat-label>
               <mat-select [(ngModel)]='selectedEmployeeEducationType'
-                          [disabled]="!selectedEmployeeType.employerEducationIncomeTaxExcemption"
+                          [disabled]="!selectedEmployeeType.employerEducationIncomeTaxExemption"
                           (ngModelChange)="calculate()">
                 <mat-option *ngFor="let op of employeeEducationTypes.options" [value]="op">
                   {{op.text}}

@@ -57,7 +57,7 @@ export interface EmployeeEducationTypes {
       {
           id: number;
           text: string;
-          excemptionRate: number;
+          exemptionRate: number;
       }[]
 }
 
@@ -88,7 +88,7 @@ export interface EmployeeTypes {
           employerAGIApplicable: boolean;
           employerIncomeTaxApplicable: boolean;
           employerStampTaxApplicable: boolean;
-          employerEducationIncomeTaxExcemption: boolean;
+          employerEducationIncomeTaxExemption: boolean;
           employer5746AdditionalDiscountApplicable: boolean;
       }[]
 }

@@ -102,7 +102,7 @@ export class YearCalculationModel {
         let result = 0;
         this._months.forEach((m, i) => {
             result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i],
-                this._AGI.rate, this._employeeType, this._employeeEduType.excemptionRate,
+                this._AGI.rate, this._employeeType, this._employeeEduType.exemptionRate,
                 this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax, this._isPensioner, this._employeeDisability.degree);
             if(m.calculatedGrossSalary > 0) this._numOfCalculatedMonths++;
         });

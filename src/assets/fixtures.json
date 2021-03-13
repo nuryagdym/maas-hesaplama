@@ -24,17 +24,17 @@
             {
                 "id": 1,
                 "text": "Diğer AR-GE Personeli",
-                "excemptionRate": 0.8
+                "exemptionRate": 0.8
             },
             {
                 "id": 2,
                 "text": "Doktoralı veya Temel Bilimler Yüksek Lisanslı",
-                "excemptionRate": 0.95
+                "exemptionRate": 0.95
             },
             {
                 "id": 3,
                 "text": "Yüksek Lisanslı veya Temel Bilimleri Lisanslı",
-                "excemptionRate": 0.9
+                "exemptionRate": 0.9
             }
         ]
     },
@@ -76,7 +76,7 @@
                 "employerAGIApplicable": false,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
-                "employerEducationIncomeTaxExcemption": false,
+                "employerEducationIncomeTaxExemption": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -93,7 +93,7 @@
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": false,
                 "employerStampTaxApplicable": false,
-                "employerEducationIncomeTaxExcemption": false,
+                "employerEducationIncomeTaxExemption": false,
                 "employer5746AdditionalDiscountApplicable": true
             },
             {
@@ -110,7 +110,7 @@
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": false,
                 "employerStampTaxApplicable": false,
-                "employerEducationIncomeTaxExcemption": false,
+                "employerEducationIncomeTaxExemption": false,
                 "employer5746AdditionalDiscountApplicable": true
             },
             {
@@ -127,7 +127,7 @@
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": false,
-                "employerEducationIncomeTaxExcemption": true,
+                "employerEducationIncomeTaxExemption": true,
                 "employer5746AdditionalDiscountApplicable": true
             },
             {
@@ -144,7 +144,7 @@
                 "employerAGIApplicable": false,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
-                "employerEducationIncomeTaxExcemption": false,
+                "employerEducationIncomeTaxExemption": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -161,7 +161,7 @@
                 "employerAGIApplicable": false,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
-                "employerEducationIncomeTaxExcemption": false,
+                "employerEducationIncomeTaxExemption": false,
                 "employer5746AdditionalDiscountApplicable": false
             }
         ]
