@@ -20,8 +20,16 @@
     color: #f52300;
   }
 
+    .exemptions {
+        >.active {
+            color: #1b00ff;
+        }
+    }
   .employerCosts {
     color: #04ad8c;
+      &.final {
+          color: #ffa012;
+      }
   }
 
   .mat-footer-row,

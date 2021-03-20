@@ -8,6 +8,7 @@ export class YearCalculationModel {
     private _months: MonthCalculationModel[];
     private _enteredAmounts: number[];
     private _workedDays: number[];
+    private _researchAndDevelopmentWorkedDays: number[];
 
     private _calcMode: string;
     private _isPensioner: boolean;
@@ -91,6 +92,13 @@ export class YearCalculationModel {
     set dayCounts(days: number[]){
         this._workedDays = days;
     }
+    get researchAndDevelopmentWorkedDays(): number[] {
+        return this._researchAndDevelopmentWorkedDays;
+    }
+
+    set researchAndDevelopmentWorkedDays(value: number[]) {
+        this._researchAndDevelopmentWorkedDays = value;
+    }
     get isAGIIncludedTax(): boolean {
         return this._isAGIIncludedTax;
     }
@@ -102,7 +110,7 @@ export class YearCalculationModel {
         this._numOfCalculatedMonths = 0;
         let result = 0;
         this._months.forEach((m, i) => {
-            result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i],
+            result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i], this._workedDays[i], this._researchAndDevelopmentWorkedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.exemptionRate,
                 this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax, this._isPensioner, this._employeeDisability.degree);
             if(m.calculatedGrossSalary > 0) this._numOfCalculatedMonths++;
@@ -162,8 +170,17 @@ export class YearCalculationModel {
         return isNaN(total) ? 0 : total;
     }
 
-    get avgEmployerStampTax(){
+    get avgEmployerStampTax() {
         return this._numOfCalculatedMonths > 0 ? this.employerStampTax / this._numOfCalculatedMonths : 0;
+    }
+
+    get employerStampTaxExemption() {
+        const total = this._months.reduce((total, month) => total + month.employerStampTaxExemption, 0);
+        return isNaN(total) ? 0 : total;
+    }
+
+    get avgEmployerStampTaxExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.employerStampTaxExemption / this._numOfCalculatedMonths : 0;
     }
 
     get netSalary(){
@@ -231,6 +248,13 @@ export class YearCalculationModel {
     get employerFinalIncomeTax(){
         let total = this._months.reduce((total, month) => total + month.employerFinalIncomeTax, 0);
         return isNaN(total) ? 0 : total;
+    }
+    get employerIncomeTaxExemptionAmount() {
+        const total = this._months.reduce((total, month) => total + month.employerIncomeTaxExemptionAmount, 0);
+        return isNaN(total) ? 0 : total;
+    }
+    get avgEmployerIncomeTaxExemptionAmount() {
+        return this._numOfCalculatedMonths > 0 ? this.employerIncomeTaxExemptionAmount / this._numOfCalculatedMonths : 0;
     }
     get avgEmployerFinalIncomeTax(){
         return this._numOfCalculatedMonths > 0 ? this.employerFinalIncomeTax / this._numOfCalculatedMonths : 0;

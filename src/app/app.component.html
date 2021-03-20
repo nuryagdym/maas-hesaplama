@@ -100,7 +100,7 @@
           </div>
 
           <div class="" fxflex>
-            <mat-slide-toggle [disabled]="isPensioner" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
+            <mat-slide-toggle [disabled]="isPensioner || !selectedEmployeeType.employer5746AdditionalDiscountApplicable" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
               [(ngModel)]='employerDiscount5746' class="example-margin" (ngModelChange)="calculate()">
               5510/5746 İndirimi
             </mat-slide-toggle>
@@ -122,7 +122,7 @@
             <td mat-cell *matCellDef="let element"> {{element.monthName}} </td>
             <td mat-footer-cell *matFooterCellDef> Toplam</td>
           </ng-container>
-
+        <!-- INPUTS BEGIN -->
           <ng-container matColumnDef="dayInput">
             <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Gün Sayısı</th>
             <td mat-cell *matCellDef="let element; let i = index;" style="max-width: 2rem;">
@@ -133,7 +133,16 @@
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
-
+            <ng-container matColumnDef="researchAndDevelopmentDayInput">
+                <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Ar-Ge<br>Gün Sayısı</th>
+                <td mat-cell *matCellDef="let element; let i = index;" style="max-width: 2rem;">
+                    <mat-form-field>
+                        <input type="number" matInput [(ngModel)]="researchAndDevelopmentDayCounts[i]" (ngModelChange)="calculate()" min="0"
+                               max="{{yearCalculationModel.monthDayCount}}" [disabled]="!selectedEmployeeType.researchAndDevelopmentTaxExemption">
+                    </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
           <ng-container matColumnDef="salaryInput">
             <th mat-header-cell *matHeaderCellDef style="max-width: 7rem;">
 
@@ -152,7 +161,8 @@
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
-
+            <!-- INPUTS END -->
+            <!-- EMPLOYEE-GROUP START -->
           <ng-container matColumnDef="calculatedGrossSalary">
             <th mat-header-cell *matHeaderCellDef> Bordroya<br>Esas Brüt</th>
             <td mat-cell *matCellDef="let element; let i = index;">
@@ -192,6 +202,17 @@
             <td mat-footer-cell *matFooterCellDef class="deductions">
               {{yearCalculationModel.employeeIncomeTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="employerIncomeTaxExemptionAmount">
+                <th mat-header-cell *matHeaderCellDef class="exemptions">
+                    <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">Gelir Vergisi<br>İstisnası</span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="exemptions">
+                    <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">{{element.employerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}}</span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef class="exemptions">
+                    <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">{{yearCalculationModel.employerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}}</span>
+                </td>
+            </ng-container>
           <ng-container matColumnDef="stampTax">
             <th mat-header-cell *matHeaderCellDef class="deductions"> Damga<br>Vergisi</th>
             <td mat-cell *matCellDef="let element" class="deductions"> {{element.stampTax | number : '1.2-2' : 'tr'}}
@@ -199,6 +220,13 @@
             <td mat-footer-cell *matFooterCellDef class="deductions">
               {{yearCalculationModel.stampTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="employerStampTaxExemption">
+                <th mat-header-cell *matHeaderCellDef class="exemptions "><span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">Damga<br>Vergisi<br>İstisnası</span></th>
+                <td mat-cell *matCellDef="let element" class="exemptions"><span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">{{element.employerStampTaxExemption | number : '1.2-2' : 'tr'}}</span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef class="exemptions">
+                    <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">{{yearCalculationModel.employerStampTaxExemption | number : '1.2-2' : 'tr'}}</span></td>
+            </ng-container>
           <ng-container matColumnDef="netSalary">
             <th mat-header-cell *matHeaderCellDef> Net Ücret</th>
             <td mat-cell *matCellDef="let element"> {{element.netSalary | number : '1.2-2' : 'tr'}} </td>
@@ -215,6 +243,8 @@
             <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.finalNetSalary | number : '1.2-2' : 'tr'}}
             </td>
           </ng-container>
+            <!-- EMPLOYEE-GROUP END -->
+            <!-- EMPLOYER-GROUP START -->
           <ng-container matColumnDef="employerSGKDeduction">
             <th mat-header-cell *matHeaderCellDef class="employerCosts">
               SGK Payı
@@ -226,30 +256,44 @@
           </ng-container>
 
           <ng-container matColumnDef="employerUnemploymentInsuranceDeduction">
-            <th mat-header-cell *matHeaderCellDef class="employerCosts"> İşsizlik Payı</th>
+            <th mat-header-cell *matHeaderCellDef class="employerCosts">İşsizlik Payı</th>
             <td mat-cell *matCellDef="let element" class="employerCosts">
               {{element.employerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
             <td mat-footer-cell *matFooterCellDef class="employerCosts">
               {{yearCalculationModel.employerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="employerTotalSGKCost">
+                <th mat-header-cell *matHeaderCellDef class="employerCosts final">Toplam<br>SGK Ödemesi</th>
+                <td mat-cell *matCellDef="let element" class="employerCosts final">
+                    {{element.employerTotalSGKCost | number : '1.2-2' : 'tr'}} </td>
+                <td mat-footer-cell *matFooterCellDef class="employerCosts final">
+                    {{yearCalculationModel.employerTotalSGKCost | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
+
           <ng-container matColumnDef="employerFinalIncomeTax">
-            <th mat-header-cell *matHeaderCellDef class="employerCosts">
-              Gelir Vergisi<br>
-              <mat-slide-toggle [(ngModel)]="AGIIncludedTax"
+            <th mat-header-cell *matHeaderCellDef class="employerCosts final" matTooltip="AGİ hariç gelir vergisi">
+              Gelir Vergisi<br>Ödemesi<br>
+<!--              <mat-slide-toggle [(ngModel)]="AGIIncludedTax"
                                 (ngModelChange)="calculate()"
                                 matTooltip="AGİ'yi gelir vergisinden çıkar"
               >
                 AGI hariç
-              </mat-slide-toggle>
+              </mat-slide-toggle>-->
             </th>
-            <td mat-cell *matCellDef="let element" class="employerCosts">
+            <td mat-cell *matCellDef="let element" class="employerCosts final">
               {{element.employerFinalIncomeTax | number : '1.2-2' : 'tr'}} </td>
-            <td mat-footer-cell *matFooterCellDef class="employerCosts">
+            <td mat-footer-cell *matFooterCellDef class="employerCosts final">
               {{yearCalculationModel.employerFinalIncomeTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
-
+            <ng-container matColumnDef="employerFinalStampTax">
+                <th mat-header-cell *matHeaderCellDef class="employerCosts final">Damga Vergi<br>Ödemesi</th>
+                <td mat-cell *matCellDef="let element" class="employerCosts final">
+                    {{element.employerStampTax | number : '1.2-2' : 'tr'}} </td>
+                <td mat-footer-cell *matFooterCellDef class="employerCosts final">
+                    {{yearCalculationModel.employerStampTax | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
           <ng-container matColumnDef="employerTotalCost">
-            <th mat-header-cell *matHeaderCellDef class="employerCosts"> Toplam</th>
+            <th mat-header-cell *matHeaderCellDef class="employerCosts">Toplam<br>Maliyet</th>
             <td mat-cell *matCellDef="let element" class="employerCosts">
               {{element.employerTotalCost | number : '1.2-2' : 'tr'}} </td>
             <td mat-footer-cell *matFooterCellDef class="employerCosts">
@@ -265,10 +309,10 @@
             </td>
             <td mat-footer-cell *matFooterCellDef class="employerCosts"></td>
           </ng-container>
-
+            <!-- EMPLOYER-GROUP END -->
           <!-- AVG fields footer row BEGIN -->
           <ng-container matColumnDef="avgTitle" sticky>
-            <td mat-footer-cell *matFooterCellDef [attr.colspan]="3"> Aylık Ortalama</td>
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="4"> Aylık Ortalama</td>
           </ng-container>
           <ng-container matColumnDef="avgCalculatedGrossSalary">
             <td mat-footer-cell *matFooterCellDef>
@@ -287,10 +331,18 @@
             <td mat-footer-cell *matFooterCellDef class="deductions">
               {{yearCalculationModel.avgEmployeeIncomeTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="avgEmployerIncomeTaxExemptionAmount">
+                <td mat-footer-cell *matFooterCellDef class="exemptions">
+                    {{yearCalculationModel.avgEmployerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
           <ng-container matColumnDef="avgStampTax">
             <td mat-footer-cell *matFooterCellDef class="deductions">
               {{yearCalculationModel.avgStampTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="avgEmployerStampTaxExemption">
+                <td mat-footer-cell *matFooterCellDef class="exemptions">
+                    {{yearCalculationModel.avgEmployerStampTaxExemption | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
           <ng-container matColumnDef="avgNetSalary">
             <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.avgNetSalary | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
@@ -309,10 +361,18 @@
             <td mat-footer-cell *matFooterCellDef class="employerCosts">
               {{yearCalculationModel.avgEmployerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="avgEmployerTotalSGKCost">
+                <td mat-footer-cell *matFooterCellDef class="employerCosts final">
+                    {{yearCalculationModel.avgEmployerTotalSGKCost | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
           <ng-container matColumnDef="avgEmployerFinalIncomeTax">
-            <td mat-footer-cell *matFooterCellDef class="employerCosts">
+            <td mat-footer-cell *matFooterCellDef class="employerCosts final">
               {{yearCalculationModel.avgEmployerFinalIncomeTax | number : '1.2-2' : 'tr'}} </td>
           </ng-container>
+            <ng-container matColumnDef="avgEmployerStampTax">
+                <td mat-footer-cell *matFooterCellDef class="employerCosts final">
+                    {{yearCalculationModel.avgEmployerStampTax | number : '1.2-2' : 'tr'}} </td>
+            </ng-container>
           <ng-container matColumnDef="avgEmployerTotalCost">
             <td mat-footer-cell *matFooterCellDef [attr.colspan]="2" class="employerCosts">
               {{yearCalculationModel.avgEmployerTotalCost | number : '1.2-2' : 'tr'}} </td>
@@ -320,13 +380,13 @@
           <!-- AVG fields footer row END -->
 
           <ng-container matColumnDef="first-group">
-            <th mat-header-cell *matHeaderCellDef class="group-header" [attr.colspan]="4">
+            <th mat-header-cell *matHeaderCellDef class="group-header" [attr.colspan]="5">
 
             </th>
           </ng-container>
 
           <ng-container matColumnDef="second-group">
-            <th mat-header-cell *matHeaderCellDef class="group-header deductions" [attr.colspan]="5">
+            <th mat-header-cell *matHeaderCellDef class="group-header deductions" [attr.colspan]="7">
               Yasal Kesintiler
             </th>
           </ng-container>

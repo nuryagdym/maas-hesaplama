@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
     months: string[];
     monthSalaryInputs: number[];
     dayCounts: number[];
+    researchAndDevelopmentDayCounts: number[];
     AGIOptions: AGIOptions;
     employeeTypes: EmployeeTypes;
     employeeEducationTypes: EmployeeEducationTypes;
@@ -48,17 +49,17 @@ export class AppComponent implements OnInit {
 
     loading = false;
 
-    displayedColumns: string[] = ["monthName", "dayInput", "salaryInput", "calculatedGrossSalary",
+    displayedColumns: string[] = ["monthName", "dayInput", "researchAndDevelopmentDayInput", "salaryInput", "calculatedGrossSalary",
         "employeeSGKDeduction", "employeeUnemploymentInsuranceDeduction",
-        "appliedTaxSlicesAsString", "employeeIncomeTax", "stampTax", "netSalary",
-        "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction",
+        "appliedTaxSlicesAsString", "employeeIncomeTax", "employerIncomeTaxExemptionAmount", "stampTax", "employerStampTaxExemption", "netSalary",
+        "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction", "employerTotalSGKCost", "employerFinalStampTax",
         "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
     columnsToDisplay: string[] = [];
 
     displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction",
-        "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax",
-        "avgStampTax", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction",
-        "avgEmployerUnemploymentInsuranceDeduction",
+        "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",
+        "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction",
+        "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerTotalSGKCost", "avgEmployerStampTax",
         "avgEmployerFinalIncomeTax", "avgEmployerTotalCost"];
     avgColumnsToDisplay: string[] = [];
 
@@ -67,8 +68,10 @@ export class AppComponent implements OnInit {
     groupHeaderColumnsToDisplay = [];
 
     employerColumns: string[] = ["employerSGKDeduction", "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction",
-        "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost",
+        "employerFinalIncomeTax", "employerTotalSGKCost", "employerFinalStampTax",
+        "employerTotalCost", "employerSemesterTotalCost",
         "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerFinalIncomeTax",
+        "avgEmployerTotalSGKCost", "avgEmployerStampTax",
         "avgEmployerTotalCost", "forth-group"];
 
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
@@ -109,6 +112,9 @@ export class AppComponent implements OnInit {
 
         this.dayCounts = new Array(this.months.length);
         this.dayCounts.fill(this.yearCalculationModel.monthDayCount);
+
+        this.researchAndDevelopmentDayCounts = new Array(this.months.length);
+        this.researchAndDevelopmentDayCounts.fill(this.yearCalculationModel.monthDayCount);
 
         this.monthSalaryInputs = new Array(this.months.length);
         this.monthSalaryInputs.fill(0);
@@ -192,6 +198,7 @@ export class AppComponent implements OnInit {
         this.yearCalculationModel.employerDiscount5746 = this.employerDiscount5746;
         this.yearCalculationModel.enteredAmounts = [...this.monthSalaryInputs];
         this.yearCalculationModel.dayCounts = [...this.dayCounts];
+        this.yearCalculationModel.researchAndDevelopmentWorkedDays = [...this.researchAndDevelopmentDayCounts];
         this.yearCalculationModel.isAGIIncludedNet = this.AGIIncludedNet;
         this.yearCalculationModel.isAGIIncludedTax = this.AGIIncludedTax;
 

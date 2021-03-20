@@ -72,8 +72,8 @@ export interface DisabilityOptions {
 }
 
 export interface EmployeeTypes {
-    labelText: string;
-    options: EmployeeType[];
+  labelText: string;
+  options: EmployeeType[];
 }
 
 export interface EmployeeType {
@@ -84,8 +84,10 @@ export interface EmployeeType {
     unemploymentInsuranceApplicable: boolean;
     AGIApplicable: boolean;
     incomeTaxApplicable: boolean;
+    researchAndDevelopmentTaxExemption: boolean;
     stampTaxApplicable: boolean;
     employerSGKApplicable: boolean;
+    researchAndDevelopmentEmployerSGKExemption: boolean;
     employerUnemploymentInsuranceApplicable: boolean;
     employerAGIApplicable: boolean;
     employerIncomeTaxApplicable: boolean;
