@@ -309,46 +309,41 @@ export class MonthCalculationModel {
     }
 
     /**
-     *
-     * @param yearParams
-     * @param enteredAmount
-     * @param workedDays
-     * @param researchAndDevelopmentWorkedDays
-     * @param agiRate
-     * @param employeeType
-     * @param employeeEduExemptionRate
-     * @param applyEmployerDiscount5746
-     * @param isAGIIncludedNet
-     * @param isAGIIncludedTax
-     * @param isPensioner
-     * @param disabilityDegree
-     *
      * @summary finds equivalent gross salary from the entered net amount using binary search
      * @returns gross salary
      */
     private findGrossFromNet(yearParams: YearDataModel,
-        enteredAmount: number, workedDays: number,
-                             researchAndDevelopmentWorkedDays: number, agiRate: number,
-        employeeType: EmployeeType, employeeEduExemptionRate: number,
-        applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean,
+                             enteredAmount: number,
+                             workedDays: number,
+                             researchAndDevelopmentWorkedDays: number,
+                             agiRate: number,
+                             employeeType: EmployeeType,
+                             employeeEduExemptionRate: number,
+                             applyEmployerDiscount5746: boolean,
+                             isAGIIncludedNet: boolean,
                              isAGIIncludedTax: boolean,
-        isPensioner: boolean, disabilityDegree: number){
+                             isPensioner: boolean,
+                             disabilityDegree: number) {
 
             let left = enteredAmount;
             let right = 3 * enteredAmount;
-            let middle = (right + left) / 2
-            let itLimit = 100;
+            let middle = (right + left) / 2;
+            const itLimit = 100;
             let calcNetSalary = null;
-            for (let i = 0; i < itLimit && calcNetSalary != enteredAmount; i++){
+            for (let i = 0; i < itLimit && Math.abs(calcNetSalary - enteredAmount) > 0.0001; i++){
 
-                //could not find
-                if(right < left) return -1;
+                // could not find
+                if (right < left) {
+                    return -1;
+                }
 
-                this._calculate(yearParams, middle, workedDays, researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
+                this._calculate(yearParams, middle, workedDays, researchAndDevelopmentWorkedDays,
+                    agiRate, employeeType, employeeEduExemptionRate,
+                    applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
                 calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIamount : this.netSalary;
-                if(calcNetSalary > enteredAmount){
+                if (calcNetSalary > enteredAmount) {
                     right = middle;
-                }else{
+                } else {
                     left = middle;
                 }
                 middle = (right + left) / 2;
@@ -357,44 +352,40 @@ export class MonthCalculationModel {
     }
 
     /**
-     *
-     * @param yearParams
-     * @param enteredAmount
-     * @param workedDays
-     * @param researchAndDevelopmentWorkedDays
-     * @param agiRate
-     * @param employeeType
-     * @param employeeEduExemptionRate
-     * @param applyEmployerDiscount5746
-     * @param isAGIIncludedTax
-     * @param isPensioner
-     * @param disabilityDegree
-     *
      * @summary finds equivalent gross salary from the entered total cost amount using binary search
      * @returns gross Salary
      */
     private findGrossFromTotalCost(yearParams: YearDataModel,
-        enteredAmount: number, workedDays: number,
-                                   researchAndDevelopmentWorkedDays: number, agiRate: number,
-        employeeType: EmployeeType, employeeEduExemptionRate: number,
-        applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
-        isPensioner: boolean, disabilityDegree: number){
+                                   enteredAmount: number,
+                                   workedDays: number,
+                                   researchAndDevelopmentWorkedDays: number,
+                                   agiRate: number,
+                                   employeeType: EmployeeType,
+                                   employeeEduExemptionRate: number,
+                                   applyEmployerDiscount5746: boolean,
+                                   isAGIIncludedTax: boolean,
+                                   isPensioner: boolean,
+                                   disabilityDegree: number) {
 
             let left = enteredAmount / 3;
             let right = enteredAmount;
-            let middle = (right + left) / 2
-            let itLimit = 100;
+            let middle = (right + left) / 2;
+            const itLimit = 100;
             let calcTotalCost = null;
 
-            for (let i = 0, o = 0, n = 0; i < itLimit && calcTotalCost != enteredAmount; i++){
+            for (let i = 0; i < itLimit && Math.abs(calcTotalCost - enteredAmount) > 0.0001; i++){
 
-                if(right < left) return -1;
+                // could not find
+                if (right < left) {
+                    return -1;
+                }
 
-                this._calculate(yearParams, middle, workedDays, researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
+                this._calculate(yearParams, middle, workedDays, researchAndDevelopmentWorkedDays, agiRate, employeeType,
+                    employeeEduExemptionRate, applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
                 calcTotalCost = this.employerTotalCost;
-                if(calcTotalCost > enteredAmount){
+                if (calcTotalCost > enteredAmount) {
                     right = middle;
-                }else{
+                } else {
                     left = middle;
                 }
                 middle = (right + left) / 2;
