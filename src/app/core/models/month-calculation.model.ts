@@ -69,11 +69,13 @@ export class MonthCalculationModel {
         this._employeeUnemploymentInsuranceDeduction = 0;
         this._employeeIncomeTax = 0;
         this._employerIncomeTaxExemptionAmount = 0;
+        this._employeeDisabledIncomeTaxBaseAmount = 0;
 
         this._employerUnemploymentInsuranceDeduction = 0;
         this._stampTax = 0;
         this._netSalary = 0;
         this._AGIamount = 0;
+        this._employerAGIamount = 0;
 
         this._employerSGKDeduction = 0;
         this._employerStampTax = 0;
@@ -367,12 +369,12 @@ export class MonthCalculationModel {
                                    disabilityDegree: number) {
 
         let left = enteredAmount / 3;
-        let right = enteredAmount;
+        let right = enteredAmount * 2;
         let middle = (right + left) / 2;
         const itLimit = 100;
         let calcTotalCost = null;
-
-        for (let i = 0; i < itLimit && Math.abs(calcTotalCost - enteredAmount) > 0.0001; i++) {
+        let i;
+        for (i = 0; i < itLimit && Math.abs(calcTotalCost - enteredAmount) > 0.0001; i++) {
 
             // could not find
             if (right < left) {
@@ -388,6 +390,10 @@ export class MonthCalculationModel {
                 left = middle;
             }
             middle = (right + left) / 2;
+        }
+
+        if (i === itLimit) {
+            return -1;
         }
         return middle;
     }
@@ -424,7 +430,7 @@ export class MonthCalculationModel {
     }
 
     public get appliedTaxSlicesAsString() {
-        return this.appliedTaxSlices.map(o => o.rate * 100).join('-');
+        return this.appliedTaxSlices.map(o => o.rate * 100).join("-");
     }
 
     public get finalNetSalary() {
