@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
                     this.disabilityOptions = allParams.DISABILITY_OPTIONS;
                     this.employeeEducationTypes = allParams.EMPLOYEE_EDUCATION_TYPES;
                     this.yearCalculationModel = new YearCalculationModel(this.months, allParams.CALCULATION_CONSTANTS);
-                    this.calcModes = this.yearCalculationModel.calculationModes;
+                    this.calcModes = YearCalculationModel.calculationModes;
 
                     this.setDefaults();
                     this.loading = false;
