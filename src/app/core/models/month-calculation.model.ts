@@ -86,7 +86,8 @@ export class MonthCalculationModel {
     public static calcEmployeeSGKExemption(yearParams: YearDataModel,
                                            employeeType: EmployeeType,
                                            workedDays: number,
-                                           constants: CalculationConstants): number {
+                                           constants: CalculationConstants,
+                                           employeeSGKDeduction: number): number {
         let exemption = 0;
         if (!employeeType.SGKApplicable) {
             return exemption;
@@ -94,8 +95,22 @@ export class MonthCalculationModel {
         if (employeeType.SGKMinWageBasedExemption) {
             exemption = yearParams.minGrossWage * constants.employee.SGKDeductionRate
                 * workedDays / constants.monthDayCount;
+        } else if (employeeType.SGKMinWageBased17103Exemption) {
+            const totalSGKRate = this.calcTotalSGKRate(constants);
+            exemption = (yearParams.minGrossWage / totalSGKRate) * constants.employee.SGKDeductionRate
+                * workedDays / constants.monthDayCount;
+            exemption = Math.min(employeeSGKDeduction, exemption);
         }
         return exemption;
+    }
+
+    /**
+     * basically returns 0.375
+     * @param constants
+     */
+    public static calcTotalSGKRate(constants: CalculationConstants) {
+        return constants.employee.SGKDeductionRate + constants.employee.unemploymentInsuranceRate
+        + constants.employer.SGKDeductionRate + constants.employer.unemploymentInsuranceRate;
     }
 
     public static calcEmployeeUnemploymentInsuranceDeduction(isPensioner: boolean,
@@ -144,7 +159,8 @@ export class MonthCalculationModel {
     public static calcEmployeeUnemploymentInsuranceExemption(yearParams: YearDataModel,
                                                              employeeType: EmployeeType,
                                                              workedDays: number,
-                                                             constants: CalculationConstants): number {
+                                                             constants: CalculationConstants,
+                                                             employeeUnemploymentInsuranceDeduction: number): number {
         let exemption = 0;
         if (!employeeType.unemploymentInsuranceApplicable) {
             return exemption;
@@ -154,6 +170,11 @@ export class MonthCalculationModel {
             exemption = yearParams.minGrossWage
                 * constants.employee.unemploymentInsuranceRate
                 * workedDays / constants.monthDayCount;
+        } else if (employeeType.SGKMinWageBased17103Exemption) {
+            const totalSGKRate = this.calcTotalSGKRate(constants);
+            exemption = (yearParams.minGrossWage / totalSGKRate) * constants.employee.unemploymentInsuranceRate
+                * workedDays / constants.monthDayCount;
+            exemption = Math.min(employeeUnemploymentInsuranceDeduction, exemption);
         }
         return exemption;
     }
@@ -248,7 +269,8 @@ export class MonthCalculationModel {
                                            SGKBase: number,
                                            isPensioner: boolean,
                                            applyEmployerDiscount5746: boolean,
-                                           workedDays: number): number {
+                                           workedDays: number,
+                                           employerSGKDeduction: number): number {
         let exemption = 0;
         if (!employeeType.employerSGKApplicable) {
             return exemption;
@@ -257,6 +279,12 @@ export class MonthCalculationModel {
             const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, applyEmployerDiscount5746,
                 employeeType, constants, 0, (SGKBase - minWageSGKBase));
+        } else if (employeeType.SGKMinWageBased17103Exemption) {
+            const totalSGKRate = this.calcTotalSGKRate(constants);
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate, workedDays, constants.monthDayCount);
+            exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, applyEmployerDiscount5746,
+                employeeType, constants, 0, minWageSGKBase);
+            exemption = Math.min(employerSGKDeduction, exemption);
         }
         return exemption;
     }
@@ -282,7 +310,9 @@ export class MonthCalculationModel {
                                                              employeeType: EmployeeType,
                                                              constants: CalculationConstants,
                                                              SGKBase: number,
-                                                             workedDays: number) {
+                                                             workedDays: number,
+                                                             isPensioner: boolean,
+                                                             employerUnemploymentInsuranceDeduction: number) {
         let exemption = 0;
         if (!employeeType.employerUnemploymentInsuranceApplicable) {
             return exemption;
@@ -291,6 +321,13 @@ export class MonthCalculationModel {
             exemption = (SGKBase - (yearParams.minGrossWage
                 * workedDays / constants.monthDayCount))
                 * constants.employer.unemploymentInsuranceRate;
+        } else if (employeeType.SGKMinWageBased17103Exemption) {
+            const totalSGKRate = this.calcTotalSGKRate(constants);
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate,
+                workedDays, constants.monthDayCount);
+            exemption = MonthCalculationModel.calcEmployerUnemploymentInsuranceDeduction(isPensioner,
+                employeeType, constants, minWageSGKBase);
+            exemption = Math.min(employerUnemploymentInsuranceDeduction, exemption);
         }
         return exemption;
     }
@@ -471,13 +508,13 @@ export class MonthCalculationModel {
             this._parameters, this.SGKBase);
 
         this._employeeSGKExemptionAmount = MonthCalculationModel.calcEmployeeSGKExemption(yearParams, employeeType,
-            workedDays, this._parameters);
+            workedDays, this._parameters, this.employeeSGKDeduction);
 
         this._employeeUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployeeUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
 
         this._employeeUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployeeUnemploymentInsuranceExemption(yearParams,
-            employeeType, workedDays, this._parameters);
+            employeeType, workedDays, this._parameters, this.employeeUnemploymentInsuranceDeduction);
 
         this._stampTax = MonthCalculationModel.calcStampTax(employeeType, this._parameters, this.calculatedGrossSalary);
 
@@ -497,13 +534,13 @@ export class MonthCalculationModel {
             employeeType, this._parameters, researchAndDevelopmentWorkedDays, this.SGKBase);
 
         this._employerSGKExemptionAmount = MonthCalculationModel.calcEmployerSGKExemption(yearParams, employeeType,
-            this._parameters, this.SGKBase, isPensioner, applyEmployerDiscount5746, workedDays);
+            this._parameters, this.SGKBase, isPensioner, applyEmployerDiscount5746, workedDays, this.employerSGKDeduction);
 
         this._employerUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployerUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
 
         this._employerUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployerUnemploymentInsuranceExemption(yearParams,
-            employeeType, this._parameters, this.SGKBase, workedDays);
+            employeeType, this._parameters, this.SGKBase, workedDays, isPensioner, this.employerUnemploymentInsuranceDeduction);
 
         this._AGIamount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax);
 
