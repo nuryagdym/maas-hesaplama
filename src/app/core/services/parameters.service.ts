@@ -81,6 +81,10 @@ export interface EmployeeType {
     id: number;
     text: string;
     desc: string;
+    // show order
+    order: number;
+    // show to users or not
+    show: boolean;
     SGKApplicable: boolean;
     unemploymentInsuranceApplicable: boolean;
     AGIApplicable: boolean;
@@ -118,7 +122,15 @@ export class ParametersService {
     }
 
     get allParameters(): Observable<AllParametersResponse> {
-        return this.http.get<AllParametersResponse>(environment.baseURL + "assets/fixtures.json");
+        return this.http.get<AllParametersResponse>(environment.baseURL + "assets/fixtures.json").pipe(map((params) => {
+            params.EMPLOYEE_TYPES.options = params.EMPLOYEE_TYPES.options.filter((a) => {
+                return a.show;
+            });
+            params.EMPLOYEE_TYPES.options.sort((a, b) => {
+                return a.order - b.order;
+            });
+            return params;
+        }));
     }
 
     get yearParameters(): Observable<any> {
