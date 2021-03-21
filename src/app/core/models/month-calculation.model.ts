@@ -298,21 +298,16 @@ export class MonthCalculationModel {
     public static calcAGI(yearParams: YearDataModel,
                           AGIRate: number,
                           employeeType: EmployeeType,
-                          monthDayCount: number,
-                          workedDays: number,
-                          grossSalary: number) {
+                          employeeTax: number
+    ) {
         let agi = 0;
         if (!employeeType.AGIApplicable) {
             return agi;
         }
 
-        let minWage = yearParams.minGrossWage * workedDays / monthDayCount;
-        if (grossSalary < minWage) {
-            minWage = grossSalary;
-        }
-        agi = minWage * AGIRate * yearParams.taxSlices[0].rate;
+        agi = yearParams.minGrossWage * AGIRate * yearParams.taxSlices[0].rate;
 
-        return agi;
+        return Math.min(agi, employeeTax);
     }
 
     public static calcEmployerIncomeTaxExemption(yearParams: YearDataModel,
@@ -510,8 +505,7 @@ export class MonthCalculationModel {
         this._employerUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployerUnemploymentInsuranceExemption(yearParams,
             employeeType, this._parameters, this.SGKBase, workedDays);
 
-        this._AGIamount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType,
-            this._parameters.monthDayCount, workedDays, grossSalary);
+        this._AGIamount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax);
 
         this._employerAGIamount = MonthCalculationModel.calcEmployerAGI(employeeType, this._AGIamount);
 
