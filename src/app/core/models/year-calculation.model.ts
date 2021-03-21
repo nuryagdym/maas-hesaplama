@@ -159,6 +159,24 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employeeSGKDeduction / this._numOfCalculatedMonths : 0;
     }
 
+    get employeeSGKExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.employeeSGKExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployeeSGKExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.employeeSGKExemption / this._numOfCalculatedMonths : 0;
+    }
+
+    get employeeFinalSGKDeduction() {
+        const totalSum = this._months.reduce((total, month) => total + month.employeeFinalSGKDeduction, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployeeFinalSGKDeduction() {
+        return this._numOfCalculatedMonths > 0 ? this.employeeFinalSGKDeduction / this._numOfCalculatedMonths : 0;
+    }
+
     get employeeUnemploymentInsuranceDeduction() {
         const totalSum = this._months.reduce((total, month) => total + month.employeeUnemploymentInsuranceDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
@@ -166,6 +184,15 @@ export class YearCalculationModel {
 
     get avgEmployeeUnemploymentInsuranceDeduction() {
         return this._numOfCalculatedMonths > 0 ? this.employeeUnemploymentInsuranceDeduction / this._numOfCalculatedMonths : 0;
+    }
+
+    get employeeUnemploymentInsuranceExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.employeeUnemploymentInsuranceExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployeeUnemploymentInsuranceExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.employeeUnemploymentInsuranceExemption / this._numOfCalculatedMonths : 0;
     }
 
     get employeeIncomeTax() {
@@ -249,6 +276,15 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employerSGKDeduction / this._numOfCalculatedMonths : 0;
     }
 
+    get employerSGKExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.employerSGKExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployerSGKExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.employerSGKExemption / this._numOfCalculatedMonths : 0;
+    }
+
     get employerTotalSGKCost() {
         const totalSum = this._months.reduce((total, month) => total + month.employerTotalSGKCost, 0);
         return isNaN(totalSum) ? 0 : totalSum;
@@ -266,6 +302,15 @@ export class YearCalculationModel {
 
     get avgEmployerUnemploymentInsuranceDeduction() {
         return this._numOfCalculatedMonths > 0 ? this.employerUnemploymentInsuranceDeduction / this._numOfCalculatedMonths : 0;
+    }
+
+    get employerUnemploymentInsuranceExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.employerUnemploymentInsuranceExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployerUnemploymentInsuranceExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.employerUnemploymentInsuranceExemption / this._numOfCalculatedMonths : 0;
     }
 
     get employerFinalIncomeTax() {

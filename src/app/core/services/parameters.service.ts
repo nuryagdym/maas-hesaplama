@@ -86,9 +86,11 @@ export interface EmployeeType {
     // show to users or not
     show: boolean;
     SGKApplicable: boolean;
+    SGKMinWageBasedExemption: boolean;
     unemploymentInsuranceApplicable: boolean;
     AGIApplicable: boolean;
     incomeTaxApplicable: boolean;
+    taxMinWageBasedExemption: boolean;
     researchAndDevelopmentTaxExemption: boolean;
     stampTaxApplicable: boolean;
     employerSGKApplicable: boolean;

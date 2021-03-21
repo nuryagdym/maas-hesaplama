@@ -50,16 +50,23 @@ export class AppComponent implements OnInit {
     loading = false;
 
     displayedColumns: string[] = ["monthName", "dayInput", "researchAndDevelopmentDayInput", "salaryInput", "calculatedGrossSalary",
-        "employeeSGKDeduction", "employeeUnemploymentInsuranceDeduction",
-        "appliedTaxSlicesAsString", "employeeIncomeTax", "employerIncomeTaxExemptionAmount", "stampTax", "employerStampTaxExemption", "netSalary",
-        "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerUnemploymentInsuranceDeduction", "employerTotalSGKCost", "employerFinalStampTax",
+        "employeeSGKDeduction", "employeeSGKExemption", "employeeUnemploymentInsuranceDeduction", "employeeUnemploymentInsuranceExemption",
+        "appliedTaxSlicesAsString", "employeeIncomeTax", "employerIncomeTaxExemptionAmount",
+        "stampTax", "employerStampTaxExemption", "netSalary",
+        "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerSGKExemption",
+        "employerUnemploymentInsuranceDeduction", "employerUnemploymentInsuranceExemption",
+        "employerTotalSGKCost", "employerFinalStampTax",
         "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
     columnsToDisplay: string[] = [];
 
-    displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary", "avgEmployeeSGKDeduction",
-        "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",
-        "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary", "avgEmployerSGKDeduction",
-        "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerTotalSGKCost", "avgEmployerStampTax",
+    displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary",
+        "avgEmployeeSGKDeduction", "avgEmployeeSGKExemption",
+        "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeUnemploymentInsuranceExemption",
+        "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",
+        "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary",
+        "avgEmployerSGKDeduction", "avgEmployerSGKExemption",
+        "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerUnemploymentInsuranceExemption",
+        "avgEmployerTotalSGKCost", "avgEmployerStampTax",
         "avgEmployerFinalIncomeTax", "avgEmployerTotalCost"];
     avgColumnsToDisplay: string[] = [];
 
@@ -67,10 +74,14 @@ export class AppComponent implements OnInit {
     groupHeaderDisplayedColumns = ["first-group", "second-group", "third-group", "forth-group"];
     groupHeaderColumnsToDisplay = [];
 
-    employerColumns: string[] = ["employerSGKDeduction", "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction",
+    employerColumns: string[] = ["employerSGKDeduction", "employerSGKExemption",
+        "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction",
         "employerFinalIncomeTax", "employerTotalSGKCost", "employerFinalStampTax",
         "employerTotalCost", "employerSemesterTotalCost",
-        "avgEmployerSGKDeduction", "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerFinalIncomeTax",
+        "avgEmployerSGKDeduction", "avgEmployerSGKExemption",
+        "avgEmployerUnemploymentInsuranceDeduction", "employerUnemploymentInsuranceExemption",
+        "avgEmployerUnemploymentInsuranceExemption",
+        "avgEmployerFinalIncomeTax",
         "avgEmployerTotalSGKCost", "avgEmployerStampTax",
         "avgEmployerTotalCost", "forth-group"];
 
