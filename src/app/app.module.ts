@@ -18,12 +18,14 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ENVIRONMENT_SPECIFIC_PROVIDERS } from "src/environments/environment";
 import {MatIconModule} from "@angular/material/icon";
+import { SalaryCalculatorComponent } from "./components/salary-calculator/salary-calculator.component";
 
 registerLocaleData(localeTR, "tr");
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SalaryCalculatorComponent
   ],
   imports: [
     BrowserModule,
