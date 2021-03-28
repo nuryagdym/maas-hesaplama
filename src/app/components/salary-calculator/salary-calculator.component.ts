@@ -90,7 +90,6 @@ export class SalaryCalculatorComponent implements OnInit {
         "avgEmployerTotalCost", "forth-group"];
 
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
-
     }
 
     ngOnInit() {
@@ -133,7 +132,7 @@ export class SalaryCalculatorComponent implements OnInit {
 
         this.monthSalaryInputs = new Array(this.months.length);
 
-        this.monthSalaryInputs.fill(0);
+        this.monthSalaryInputs.fill(this.selectedYear.minGrossWage);
 
         this.selectedCalcMode = this.calcModes.options[0].id;
         this.selectedAGIOption = this.AGIOptions.options[0];
@@ -151,6 +150,7 @@ export class SalaryCalculatorComponent implements OnInit {
 
         this.showEmployerCosts = true;
         this.toggleCompanyRelatedColumns(this.showEmployerCosts);
+        this.calculate();
     }
 
     toggleCompanyRelatedColumns(show: boolean) {
@@ -165,7 +165,8 @@ export class SalaryCalculatorComponent implements OnInit {
 
             this.groupHeaderColumnsToDisplay = this.groupHeaderDisplayedColumns.filter((col) => this.employerColumns.includes(col));
             this.groupHeaderDisplayedColumns = this.groupHeaderDisplayedColumns.filter(
-                col => !this.groupHeaderColumnsToDisplay.includes(col));
+                col => !this.groupHeaderColumnsToDisplay.includes(col)
+            );
 
         } else {
             this.columnsToDisplay.forEach(col => {
@@ -229,5 +230,4 @@ export class SalaryCalculatorComponent implements OnInit {
             });
         }
     }
-
 }
