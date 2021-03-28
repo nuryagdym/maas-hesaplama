@@ -57,9 +57,9 @@ export class SalaryComparatorComponent implements OnInit {
         "employerTotalSGKCost",
         "employerFinalStampTax",
         "employerFinalIncomeTax",
-        "employerTotalCost",
         "employerFirstSemesterTotalCost",
         "employerSecondSemesterTotalCost",
+        "employerTotalCost",
     ];
 
     private parameters: any;

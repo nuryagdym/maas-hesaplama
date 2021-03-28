@@ -199,15 +199,9 @@
                         <td mat-cell *matCellDef="let element" class="employer-costs final">
                             {{element.avgEmployerStampTax | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="employerTotalCost">
-                        <th mat-header-cell *matHeaderCellDef class="employer-costs">Toplam<br>Maliyet</th>
-                        <td mat-cell *matCellDef="let element" class="employer-costs">
-                            {{element.avgEmployerTotalCost | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-
                     <ng-container matColumnDef="employerFirstSemesterTotalCost">
                         <th mat-header-cell *matHeaderCellDef class="employer-costs">
-                            <span>Birinci<br>Dönem Ortalaması</span>
+                            <span>Birinci<br>Dönem<br>Maliyet</span>
                         </th>
                         <td mat-cell *matCellDef="let element; let i=index" class="employer-costs">
                             <span>{{element.yearHalfEmployerAvgTotalCost((i < 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
@@ -215,13 +209,17 @@
                     </ng-container>
                     <ng-container matColumnDef="employerSecondSemesterTotalCost">
                         <th mat-header-cell *matHeaderCellDef class="employer-costs">
-                            <span>İkinci<br>Dönem Ortalaması</span>
+                            <span>İkinci<br>Dönem<br>Maliyet</span>
                         </th>
                         <td mat-cell *matCellDef="let element; let i=index" class="employer-costs">
                             <span>{{element.yearHalfEmployerAvgTotalCost((i >= 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
                         </td>
                     </ng-container>
-
+                    <ng-container matColumnDef="employerTotalCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">Toplam<br>Maliyet</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerTotalCost | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
