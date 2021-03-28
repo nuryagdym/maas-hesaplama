@@ -1,12 +1,9 @@
 <ng-container *ngIf="!loading">
     <div class="container">
-
-        <mat-card class="example-card">
+        <mat-card>
             <mat-card-content>
                 <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
-
-
-                    <div class="" fxflex>
+                    <div>
                         <mat-form-field>
                             <mat-label>{{calcModes.labelText}}</mat-label>
                             <mat-select [(ngModel)]='selectedCalcMode' (ngModelChange)="calculate()">
@@ -16,13 +13,12 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
-                    <div class="" fxflex>
+                    <div>
                         <a style="cursor: pointer" (click)="exportExcel()" class="download-btn">
                             Excel indir <mat-icon>cloud_download</mat-icon>
                         </a>
                     </div>
-                    <div class="" fxflex>
+                    <div>
                         <mat-slide-toggle class="example-margin" [(ngModel)]='showEmployerCosts'
                                           (change)="toggleCompanyRelatedColumns(showEmployerCosts)">
                             İşveren Maliyeti Göster
@@ -31,7 +27,7 @@
                 </div>
 
                 <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
-                    <div class="" fxflex>
+                    <div>
                         <mat-form-field>
                             <mat-label>Yıl</mat-label>
                             <mat-select [(ngModel)]="selectedYear" (ngModelChange)="calculate()">
@@ -41,7 +37,6 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
                     <mat-form-field>
                         <mat-label>{{AGIOptions.labelText}}</mat-label>
                         <mat-select [(ngModel)]='selectedAGIOption' [disabled]="!selectedEmployeeType.AGIApplicable"
@@ -51,8 +46,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-
-                    <div class="" fxflex>
+                    <div>
                         <mat-form-field>
                             <mat-label>{{disabilityOptions.labelText}}</mat-label>
                             <mat-select [(ngModel)]='selectedDisability' (ngModelChange)="calculate()">
@@ -62,8 +56,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
-                    <div class="" fxflex >
+                    <div>
                         <mat-form-field>
                             <mat-label>{{employeeTypes.labelText}}</mat-label>
                             <mat-select [(ngModel)]='selectedEmployeeType' (ngModelChange)="calculate()">
@@ -75,8 +68,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
-                    <div class="" fxflex>
+                    <div>
                         <mat-form-field>
                             <mat-label>{{employeeEducationTypes.labelText}}</mat-label>
                             <mat-select [(ngModel)]='selectedEmployeeEducationType'
@@ -88,24 +80,20 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
                 </div>
 
                 <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
-
-                    <div class="" fxflex>
+                    <div>
                         <mat-slide-toggle [(ngModel)]='isPensioner' class="example-margin" (ngModelChange)="calculate()">
                             Emekli Çalışan
                         </mat-slide-toggle>
                     </div>
-
-                    <div class="" fxflex>
+                    <div>
                         <mat-slide-toggle [disabled]="isPensioner || !selectedEmployeeType.employer5746AdditionalDiscountApplicable" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
                                           [(ngModel)]='employerDiscount5746' class="example-margin" (ngModelChange)="calculate()">
                             5510/5746 İndirimi
                         </mat-slide-toggle>
                     </div>
-
                 </div>
             </mat-card-content>
         </mat-card>
@@ -512,7 +500,6 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
                     <tr mat-footer-row *matFooterRowDef="displayedAvgColumns"></tr>
-
 
                 </table>
             </mat-card-content>
