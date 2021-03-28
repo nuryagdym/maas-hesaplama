@@ -1,16 +1,16 @@
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpMockRequestInterceptor } from 'src/app/core/interceptors/mock.interceptor';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HttpMockRequestInterceptor} from "src/app/core/interceptors/mock.interceptor";
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  baseURL: "http://localhost:3000/" 
+    production: false,
+    baseURL: "http://localhost:4200/"
 };
 export const ENVIRONMENT_SPECIFIC_PROVIDERS = [
-  { provide: HTTP_INTERCEPTORS, useClass: HttpMockRequestInterceptor, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: HttpMockRequestInterceptor, multi: true}
 ];
 /*
  * For easier debugging in development mode, you can import the following file
@@ -19,4 +19,4 @@ export const ENVIRONMENT_SPECIFIC_PROVIDERS = [
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import "zone.js/dist/zone-error";  // Included with Angular CLI.

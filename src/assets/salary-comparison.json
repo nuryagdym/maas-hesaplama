@@ -1,0 +1,22 @@
+{
+    "employeeTypeConfigurations": [
+        {
+            "employeeTypeId": 1
+        },
+        {
+            "employeeTypeId": 2
+        },
+        {
+            "employeeTypeId": 3
+        },
+        {
+            "employeeTypeId": 4
+        },
+        {
+            "employeeTypeId": 6
+        },
+        {
+            "employeeTypeId": 7
+        }
+    ]
+}

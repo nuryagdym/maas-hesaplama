@@ -1,0 +1,237 @@
+<ng-container *ngIf="!loading">
+    <div class="container">
+        <mat-card class="example-card">
+            <mat-card-content>
+                <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
+                    <div>
+                        <mat-form-field>
+                            <mat-label>{{calcModes.labelText}}</mat-label>
+                            <mat-select [(ngModel)]='selectedCalcMode' (ngModelChange)="calculateAll()">
+                                <mat-option *ngFor="let op of calcModes.options" [value]="op.id">
+                                    {{op.text}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <a style="cursor: pointer" (click)="exportExcel()" class="download-btn">
+                            Excel indir
+                            <mat-icon>cloud_download</mat-icon>
+                        </a>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Yıl</mat-label>
+                            <mat-select [(ngModel)]="selectedYear" (ngModelChange)="calculateAll()">
+                                <mat-option *ngFor="let p of yearParameters" [value]="p">
+                                    {{p.year}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
+                    <mat-form-field>
+                        <mat-label>Maaş</mat-label>
+                        <input type="text" matInput
+                               [(ngModel)]="salaryInput"
+                               currencyMask
+                               [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                               (ngModelChange)="priceInputChanged(0, $event)"
+                        >
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>{{AGIOptions.labelText}}</mat-label>
+                        <mat-select [(ngModel)]='selectedAGIOption'
+                                    (ngModelChange)="calculateAll()">
+                            <mat-option *ngFor="let op of AGIOptions.options" [value]="op">
+                                {{op.text}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div>
+                        <mat-form-field>
+                            <mat-label>{{disabilityOptions.labelText}}</mat-label>
+                            <mat-select [(ngModel)]='selectedDisability' (ngModelChange)="calculateAll()">
+                                <mat-option *ngFor="let op of disabilityOptions.options" [value]="op">
+                                    {{op.text}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+
+        <!-- Comparison Table BEGIN -->
+        <mat-card class="mat-elevation-z3 calculation-card">
+            <mat-card-content>
+                <table id="salary-compare-table" mat-table [dataSource]="employeeTypeCalculations" style="width: 100%;">
+                    <ng-container matColumnDef="employeeType" sticky>
+                        <th mat-header-cell *matHeaderCellDef>{{employeeTypes.labelText}}</th>
+                        <td mat-cell *matCellDef="let element; let i=index">{{element.employeeType.text}}
+                            <mat-slide-toggle *ngIf="element.employeeType.employer5746AdditionalDiscountApplicable"
+                                matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
+                                [(ngModel)]='employerDiscount5746[i]' class="example-margin" (ngModelChange)="calculate(i)">
+                                5510/5746 İndirimi
+                            </mat-slide-toggle>
+                            <mat-form-field *ngIf="element.employeeType.employerEducationIncomeTaxExemption">
+                                <mat-select [(ngModel)]='employeeTypesEducationType[i]'
+                                            (ngModelChange)="calculate(i)">
+                                    <mat-option *ngFor="let op of employeeEducationTypes.options" [value]="op">
+                                        {{op.text}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <!-- EMPLOYEE-GROUP START -->
+                    <ng-container matColumnDef="calculatedGrossSalary">
+                        <th mat-header-cell *matHeaderCellDef> Bordroya<br>Esas Brüt</th>
+                        <td mat-cell *matCellDef="let element;">
+                            {{element.avgCalculatedGrossSalary | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employeeSGKExemption">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions">
+                            <span class="active">Çalışan<br>SGK Primi<br>İstinası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span class="{{element.avgEmployeeSGKExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployeeSGKExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employeeUnemploymentInsuranceExemption">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions">
+                            <span class="active">Çalışan<br>İşsizlik<br>Sigortası<br>İstinası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span class="{{element.avgEmployeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerIncomeTaxExemptionAmount">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions">
+                            <span class="active">Gelir Vergisi<br>İstisnası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span class="{{element.avgEmployerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerStampTaxExemption">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions ">
+                            <span class="active">Damga<br>Vergisi<br>İstisnası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span class="{{element.avgEmployerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployerStampTaxExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="finalNetSalary">
+                        <th mat-header-cell *matHeaderCellDef>Maaş
+                            <mat-slide-toggle *ngIf="selectedCalcMode == 'NET_TO_GROSS'" [(ngModel)]='AGIIncludedNet'
+                                              [disabled]="selectedCalcMode != 'NET_TO_GROSS'"
+                                              (ngModelChange)="calculateAll()">
+                                AGI dahil
+                            </mat-slide-toggle>
+                        </th>
+                        <td mat-cell
+                            *matCellDef="let element"> {{element.avgFinalNetSalary | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerSGKDeduction">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">
+                            SGK Payı
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerSGKDeduction | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employerSGKExemption">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions">
+                            <span class="active">SGK Payı<br>İstisnası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span class="{{element.avgEmployerSGKExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployerSGKExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerUnemploymentInsuranceDeduction">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">İşsizlik Payı</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerUnemploymentInsuranceExemption">
+                        <th mat-header-cell *matHeaderCellDef class="exemptions">
+                            <span class="active">İşsizlik Payı<br>İstisnası</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="exemptions">
+                            <span
+                                class="{{element.avgEmployerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployerUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employerTotalSGKCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs final">Toplam<br>SGK Ödemesi</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs final">
+                            {{element.avgEmployerTotalSGKCost | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employerFinalIncomeTax">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs final"
+                            matTooltip="AGİ hariç gelir vergisi">
+                            Gelir Vergisi<br>Ödemesi<br>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs final">
+                            {{element.avgEmployerFinalIncomeTax | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerFinalStampTax">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs final">Damga Vergi<br>Ödemesi</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs final">
+                            {{element.avgEmployerStampTax | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerTotalCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">Toplam<br>Maliyet</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerTotalCost | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="employerFirstSemesterTotalCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">
+                            <span>Birinci<br>Dönem Ortalaması</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i=index" class="employer-costs">
+                            <span>{{element.yearHalfEmployerAvgTotalCost((i < 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerSecondSemesterTotalCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">
+                            <span>İkinci<br>Dönem Ortalaması</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i=index" class="employer-costs">
+                            <span>{{element.yearHalfEmployerAvgTotalCost((i >= 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+        <!-- Comparison Table END -->
+        <div class="mat-card">
+            <p>* Tabloda gösterilen değerler yıllık ortamala değerlerdir.<br>* Hesaplamalar 30 iş günü üzerinden yapılmaktadır.
+            </p>
+
+        </div>
+    </div>
+</ng-container>

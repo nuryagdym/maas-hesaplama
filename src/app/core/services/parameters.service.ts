@@ -125,6 +125,12 @@ export class ParametersService {
 
     }
 
+    get salaryComparisonConfig(): Observable<{employeeTypeConfigurations: [{employeeTypeId: number}]}> {
+        return this.http.get<any>(environment.baseURL + "assets/salary-comparison.json").pipe(map((params) => {
+            return params;
+        }));
+    }
+
     get allParameters(): Observable<AllParametersResponse> {
         return this.http.get<AllParametersResponse>(environment.baseURL + "assets/fixtures.json").pipe(map((params) => {
             params.EMPLOYEE_TYPES.options = params.EMPLOYEE_TYPES.options.filter((a) => {

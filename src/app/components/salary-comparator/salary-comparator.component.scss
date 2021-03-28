@@ -1,0 +1,15 @@
+th > .mat-form-field, td > .mat-form-field, th > .mat-slide-toggle{
+    width: 90%;
+    margin-top: 0.5rem;
+}
+
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type{
+    padding-right: 0;
+}
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type{
+    padding-left: 0;
+}
+
+.th.mat-header-cell{
+    min-width: 5rem;
+}
