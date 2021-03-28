@@ -1,6 +1,6 @@
 import {MonthCalculationModel} from "./month-calculation.model";
 import {YearDataModel} from "./year-data.model";
-import {EmployeeType} from "../services/parameters.service";
+import {EmployeeEducationType, EmployeeType} from "../services/parameters.service";
 
 export class YearCalculationModel {
 
@@ -17,7 +17,7 @@ export class YearCalculationModel {
     private _applyEmployerDiscount5746: boolean;
     private _AGI: any;
     private _employeeType: EmployeeType;
-    private _employeeEduType: any;
+    private _employeeEduType: EmployeeEducationType;
     private _employeeDisability: any;
     private _numOfCalculatedMonths: number;
 
@@ -78,11 +78,15 @@ export class YearCalculationModel {
         this._AGI = agi;
     }
 
-    set employeeType(type: any) {
+    get employeeType(): EmployeeType {
+        return this._employeeType;
+    }
+
+    set employeeType(type: EmployeeType) {
         this._employeeType = type;
     }
 
-    set employeeEduType(type: any) {
+    set employeeEduType(type: EmployeeEducationType) {
         this._employeeEduType = type;
     }
 

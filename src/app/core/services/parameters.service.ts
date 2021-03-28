@@ -54,12 +54,13 @@ export interface CalculationConstants {
 
 export interface EmployeeEducationTypes {
     labelText: string;
-    options:
-        {
-            id: number;
-            text: string;
-            exemptionRate: number;
-        }[];
+    options: EmployeeEducationType[];
+}
+
+export interface EmployeeEducationType {
+    id: number;
+    text: string;
+    exemptionRate: number;
 }
 
 export interface DisabilityOptions {
