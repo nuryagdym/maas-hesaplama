@@ -2,3 +2,48 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.calculation-card{
+    .mat-card-content{
+        overflow-x: auto;
+    }
+}
+.deductions {
+    color: #f52300;
+}
+
+.exemptions {
+    >.active {
+        color: #1b00ff;
+    }
+}
+.employer-costs {
+    color: #04ad8c;
+    &.final {
+        color: #ffa012;
+    }
+}
+
+.mat-footer-row,
+.mat-header-row {
+    font-weight: 500;
+}
+
+tr.mat-footer-row {
+    background-color: #efefef;
+}
+
+tr.mat-row:hover {
+    background: whitesmoke;
+}
+
+.download-btn {
+    color: #04ad8c;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    mat-icon {
+        transform: scale(1.2);
+        margin-left: 10px;
+    }
+}

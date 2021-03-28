@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {YearDataModel} from "../../core/models/year-data.model";
 import {YearCalculationModel} from "../../core/models/year-calculation.model";
 import {
@@ -18,7 +18,7 @@ import {DatePipe} from "@angular/common";
 @Component({
   selector: "app-salary-calculator",
   templateUrl: "./salary-calculator.component.html",
-  styleUrls: ["./salary-calculator.component.scss"]
+  styleUrls: ["./salary-calculator.component.scss"],
 })
 export class SalaryCalculatorComponent implements OnInit {
 
@@ -71,7 +71,11 @@ export class SalaryCalculatorComponent implements OnInit {
     avgColumnsToDisplay: string[] = [];
 
     forthGroupColCount = 1;
-    groupHeaderDisplayedColumns = ["first-group", "second-group", "third-group", "forth-group"];
+    groupHeaderDisplayedColumns = [
+        "first-group",
+        "second-group",
+        "third-group",
+        "forth-group"];
     groupHeaderColumnsToDisplay = [];
 
     employerColumns: string[] = ["employerSGKDeduction", "employerSGKExemption",

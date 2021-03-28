@@ -2,7 +2,7 @@
     text-align: center;
     font-size: 1rem;
 }
-.verticalCol {
+.vertical-col {
     width: 2rem;
     border-left-width: 1px;
     border-left-style: solid;
@@ -16,30 +16,6 @@
     }
 }
 
-.deductions {
-    color: #f52300;
-}
-
-.exemptions {
-    >.active {
-        color: #1b00ff;
-    }
-}
-.employerCosts {
-    color: #04ad8c;
-    &.final {
-        color: #ffa012;
-    }
-}
-
-.mat-footer-row,
-.mat-header-row {
-    font-weight: 500;
-}
-
-tr.mat-footer-row {
-    background-color: #efefef;
-}
 
 th > .mat-form-field, td > .mat-form-field, th > .mat-slide-toggle{
     width: 90%;
@@ -53,9 +29,6 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
     padding-left: 0;
 }
 
-tr.mat-row:hover {
-    background: whitesmoke;
-}
 .calculation-card{
     .mat-card-content{
         overflow-x: auto;
@@ -65,16 +38,6 @@ tr.mat-row:hover {
     min-width: 5rem;
 }
 
-.download-btn {
-    color: #04ad8c;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    mat-icon {
-        transform: scale(1.2);
-        margin-left: 10px;
-    }
-}
 
 ::ng-deep .mat-select-panel-wrap .mat-select-panel {
     max-width: 400px;
