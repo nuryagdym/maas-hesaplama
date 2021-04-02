@@ -15,6 +15,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {SalaryCalculatorComponent} from "./components/salary-calculator/salary-calculator.component";
+import {SalaryComparatorComponent} from "./components/salary-comparator/salary-comparator.component";
+import {MatTabsModule} from "@angular/material/tabs";
 
 describe("AppComponent", () => {
     beforeEach(async(() => {
@@ -34,10 +37,13 @@ describe("AppComponent", () => {
                 MatTooltipModule,
                 MatCardModule,
                 MatIconModule,
-                MatSnackBarModule
+                MatSnackBarModule,
+                MatTabsModule,
             ],
             declarations: [
-                AppComponent
+                AppComponent,
+                SalaryCalculatorComponent,
+                SalaryComparatorComponent,
             ],
         }).compileComponents();
     }));
