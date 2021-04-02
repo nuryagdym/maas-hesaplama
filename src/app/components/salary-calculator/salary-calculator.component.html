@@ -115,7 +115,7 @@
                         <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Gün Sayısı</th>
                         <td mat-cell *matCellDef="let element; let i = index;" style="max-width: 2rem;">
                             <mat-form-field>
-                                <input type="number" matInput [(ngModel)]="dayCounts[i]" (ngModelChange)="calculate()" min="0"
+                                <input type="number" matInput [(ngModel)]="dayCounts[i]" (change)="onDayCountChange(i)" min="0"
                                        max="{{yearCalculationModel.monthDayCount}}">
                             </mat-form-field>
                         </td>
@@ -125,7 +125,7 @@
                         <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Ar-Ge<br>Gün Sayısı</th>
                         <td mat-cell *matCellDef="let element; let i = index;" style="max-width: 2rem;">
                             <mat-form-field>
-                                <input type="number" matInput [(ngModel)]="researchAndDevelopmentDayCounts[i]" (ngModelChange)="calculate()" min="0"
+                                <input type="number" matInput [(ngModel)]="researchAndDevelopmentDayCounts[i]" (change)="onResearchAndDevelopmentDayCountChange(i)" min="0"
                                        max="{{yearCalculationModel.monthDayCount}}" [disabled]="!selectedEmployeeType.researchAndDevelopmentTaxExemption">
                             </mat-form-field>
                         </td>

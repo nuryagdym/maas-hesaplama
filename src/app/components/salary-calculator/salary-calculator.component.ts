@@ -194,6 +194,23 @@ export class SalaryCalculatorComponent implements OnInit {
         this.calculate();
     }
 
+    onDayCountChange(index) {
+        this.dayCounts[index] = Math.min(this.dayCounts[index], this.yearCalculationModel.monthDayCount);
+        if (this.selectedEmployeeType.researchAndDevelopmentTaxExemption) {
+            this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index], this.dayCounts[index]);
+        }
+        this.calculate();
+    }
+
+    onResearchAndDevelopmentDayCountChange(index) {
+        this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index],
+            this.yearCalculationModel.monthDayCount);
+        if (this.researchAndDevelopmentDayCounts[index] > this.dayCounts[index]) {
+            this.dayCounts[index] = this.researchAndDevelopmentDayCounts[index];
+        }
+        this.calculate();
+    }
+
     exportExcel() {
         /* table id is passed over here */
         const element = document.getElementById("salary-table");
