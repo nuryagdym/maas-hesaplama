@@ -776,6 +776,11 @@ export class MonthCalculationModel {
             this.employerFinalIncomeTax;
     }
 
+    public get totalSGKExemption() {
+        return this.employerSGKExemption + this.employerUnemploymentInsuranceExemption
+            + this.employeeSGKExemption + this.employeeUnemploymentInsuranceExemption;
+    }
+
     public get employerAGIAmount() {
         return this._employerAGIamount;
     }

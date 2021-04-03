@@ -94,23 +94,36 @@
                         <td mat-cell *matCellDef="let element;">
                             {{element.avgCalculatedGrossSalary | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="employeeSGKExemption">
-                        <th mat-header-cell *matHeaderCellDef class="exemptions">
-                            <span class="active">Çalışan<br>SGK Primi<br>İstinası</span>
+                    <ng-container matColumnDef="finalNetSalary">
+                        <th mat-header-cell *matHeaderCellDef>Maaş
+                            <mat-slide-toggle *ngIf="selectedCalcMode == 'NET_TO_GROSS'" [(ngModel)]='AGIIncludedNet'
+                                              [disabled]="selectedCalcMode != 'NET_TO_GROSS'"
+                                              (ngModelChange)="calculateAll()">
+                                AGI dahil
+                            </mat-slide-toggle>
                         </th>
-                        <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span class="{{element.avgEmployeeSGKExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.avgEmployeeSGKExemption | number : '1.2-2' : 'tr'}}
-                            </span>
-                        </td>
+                        <td mat-cell
+                            *matCellDef="let element"> {{element.avgFinalNetSalary | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="employeeUnemploymentInsuranceExemption">
+                    <ng-container matColumnDef="employerSGKDeduction">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">
+                            İşveren<br>SGK Payı
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerSGKDeduction | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerUnemploymentInsuranceDeduction">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs">İşveren<br>İşsizlik Payı</th>
+                        <td mat-cell *matCellDef="let element" class="employer-costs">
+                            {{element.avgEmployerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="totalSGKExemption">
                         <th mat-header-cell *matHeaderCellDef class="exemptions">
-                            <span class="active">Çalışan<br>İşsizlik<br>Sigortası<br>İstinası</span>
+                            <span class="active">Toplam SGK<br>İstinası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span class="{{element.avgEmployeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.avgEmployeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            <span class="{{element.avgTotalSGKExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgTotalSGKExemption | number : '1.2-2' : 'tr'}}
                             </span>
                         </td>
                     </ng-container>
@@ -134,52 +147,6 @@
                             </span>
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="finalNetSalary">
-                        <th mat-header-cell *matHeaderCellDef>Maaş
-                            <mat-slide-toggle *ngIf="selectedCalcMode == 'NET_TO_GROSS'" [(ngModel)]='AGIIncludedNet'
-                                              [disabled]="selectedCalcMode != 'NET_TO_GROSS'"
-                                              (ngModelChange)="calculateAll()">
-                                AGI dahil
-                            </mat-slide-toggle>
-                        </th>
-                        <td mat-cell
-                            *matCellDef="let element"> {{element.avgFinalNetSalary | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="employerSGKDeduction">
-                        <th mat-header-cell *matHeaderCellDef class="employer-costs">
-                            SGK Payı
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="employer-costs">
-                            {{element.avgEmployerSGKDeduction | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="employerSGKExemption">
-                        <th mat-header-cell *matHeaderCellDef class="exemptions">
-                            <span class="active">SGK Payı<br>İstisnası</span>
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span class="{{element.avgEmployerSGKExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.avgEmployerSGKExemption | number : '1.2-2' : 'tr'}}
-                            </span>
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="employerUnemploymentInsuranceDeduction">
-                        <th mat-header-cell *matHeaderCellDef class="employer-costs">İşsizlik Payı</th>
-                        <td mat-cell *matCellDef="let element" class="employer-costs">
-                            {{element.avgEmployerUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="employerUnemploymentInsuranceExemption">
-                        <th mat-header-cell *matHeaderCellDef class="exemptions">
-                            <span class="active">İşsizlik Payı<br>İstisnası</span>
-                        </th>
-                        <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span
-                                class="{{element.avgEmployerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.avgEmployerUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
-                            </span>
-                        </td>
-                    </ng-container>
-
                     <ng-container matColumnDef="employerTotalSGKCost">
                         <th mat-header-cell *matHeaderCellDef class="employer-costs final">Toplam<br>SGK Ödemesi</th>
                         <td mat-cell *matCellDef="let element" class="employer-costs final">

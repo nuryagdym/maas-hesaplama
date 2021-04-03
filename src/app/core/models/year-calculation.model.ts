@@ -335,6 +335,15 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employerFinalIncomeTax / this._numOfCalculatedMonths : 0;
     }
 
+    get totalSGKExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.totalSGKExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgTotalSGKExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.totalSGKExemption / this._numOfCalculatedMonths : 0;
+    }
+
     get employerTotalCost() {
         const totalSum = this._months.reduce((total, month) => total + month.employerTotalCost, 0);
         return isNaN(totalSum) ? 0 : totalSum;
