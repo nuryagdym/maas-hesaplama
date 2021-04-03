@@ -196,9 +196,8 @@ export class SalaryCalculatorComponent implements OnInit {
 
     onDayCountChange(index) {
         this.dayCounts[index] = Math.min(this.dayCounts[index], this.yearCalculationModel.monthDayCount);
-        if (this.selectedEmployeeType.researchAndDevelopmentTaxExemption) {
-            this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index], this.dayCounts[index]);
-        }
+        // researchAndDevelopmentDayCounts should not be greater than regular work days
+        this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index], this.dayCounts[index]);
         this.calculate();
     }
 
