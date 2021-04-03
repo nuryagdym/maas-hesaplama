@@ -78,12 +78,12 @@
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": true,
-                "researchAndDevelopmentEmployerSGKExemption": false,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -102,12 +102,12 @@
                 "researchAndDevelopmentTaxExemption": true,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": true,
-                "researchAndDevelopmentEmployerSGKExemption": true,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": true
             },
             {
@@ -126,12 +126,12 @@
                 "researchAndDevelopmentTaxExemption": true,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": true,
-                "researchAndDevelopmentEmployerSGKExemption": true,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": true,
+                "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": true
             },
             {
@@ -150,12 +150,12 @@
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": false,
-                "researchAndDevelopmentEmployerSGKExemption": false,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": false,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -174,12 +174,12 @@
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": false,
-                "researchAndDevelopmentEmployerSGKExemption": false,
                 "employerUnemploymentInsuranceApplicable": false,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -197,13 +197,13 @@
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": true,
-                "researchAndDevelopmentEmployerSGKExemption": false,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "taxMinWageBasedExemption": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
             {
@@ -221,13 +221,13 @@
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": true,
-                "researchAndDevelopmentEmployerSGKExemption": false,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerAGIApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "taxMinWageBasedExemption": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             }
         ]

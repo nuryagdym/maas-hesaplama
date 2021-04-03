@@ -96,12 +96,12 @@ export interface EmployeeType {
     researchAndDevelopmentTaxExemption: boolean;
     stampTaxApplicable: boolean;
     employerSGKApplicable: boolean;
-    researchAndDevelopmentEmployerSGKExemption: boolean;
     employerUnemploymentInsuranceApplicable: boolean;
     employerAGIApplicable: boolean;
     employerIncomeTaxApplicable: boolean;
     employerStampTaxApplicable: boolean;
     employerEducationIncomeTaxExemption: boolean;
+    employerSGKDiscount5746Applicable: boolean;
     employer5746AdditionalDiscountApplicable: boolean;
 }
 

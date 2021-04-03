@@ -89,7 +89,7 @@
                         </mat-slide-toggle>
                     </div>
                     <div>
-                        <mat-slide-toggle [disabled]="isPensioner || !selectedEmployeeType.employer5746AdditionalDiscountApplicable" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
+                        <mat-slide-toggle [disabled]="isPensioner || !selectedEmployeeType.employerSGKDiscount5746Applicable" matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
                                           [(ngModel)]='employerDiscount5746' class="example-margin" (ngModelChange)="calculate()">
                             5510/5746 İndirimi
                         </mat-slide-toggle>

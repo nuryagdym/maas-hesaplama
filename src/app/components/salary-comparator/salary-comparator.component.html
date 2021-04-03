@@ -73,7 +73,7 @@
                     <ng-container matColumnDef="employeeType" sticky>
                         <th mat-header-cell *matHeaderCellDef>{{employeeTypes.labelText}}</th>
                         <td mat-cell *matCellDef="let element; let i=index">{{element.employeeType.text}}
-                            <mat-slide-toggle *ngIf="element.employeeType.employer5746AdditionalDiscountApplicable"
+                            <mat-slide-toggle *ngIf="element.employeeType.employerSGKDiscount5746Applicable"
                                 matTooltip="Sigorta primi işveren payında %5 puanlık indirim uygulansın mı?"
                                 [(ngModel)]='employerDiscount5746[i]' class="example-margin" (ngModelChange)="calculate(i)">
                                 5510/5746 İndirimi
