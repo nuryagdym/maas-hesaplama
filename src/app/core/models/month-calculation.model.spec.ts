@@ -398,6 +398,49 @@ describe("MonthCalculationModel", () => {
         expect(roundNumber(month.employerTotalCost)).toEqual(10200);
     });
 
+    it("calculate month for year 2021, from GROSS_TO_NET, 30 work days, gross salary 10000TL, AGI Bekar, Engelli degil, İşveren, Emekli Degil", () => {
+
+        const workedDays = 30;
+        const researchAndDevWorkedDays = 0;
+        const applyEmployerDiscount5746 = false;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const salary = 10000;
+        const employeeType = employeeTypes.options.find((o) => o.id === 5);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            applyEmployerDiscount5746, false, false, false,
+            disabilityOptions.options[0].degree);
+
+        expect(roundNumber(month.stampTax)).toEqual(75.9);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
+        expect(roundNumber(month.employerStampTax)).toEqual(75.9);
+
+        expect(roundNumber(month.employeeSGKDeduction)).toEqual(0);
+        expect(roundNumber(month.employeeSGKExemption)).toEqual(0);
+        expect(roundNumber(month.employeeFinalSGKDeduction)).toEqual(0);
+
+        expect(roundNumber(month.employeeUnemploymentInsuranceDeduction)).toEqual(0);
+        expect(roundNumber(month.employeeUnemploymentInsuranceExemption)).toEqual(0);
+        expect(roundNumber(month.employeeFinalUnemploymentInsuranceDeduction)).toEqual(0);
+
+        expect(roundNumber(month.netSalary)).toEqual(8424.1);
+        expect(roundNumber(month.finalNetSalary)).toEqual(8692.41);
+
+        expect(roundNumber(month.employerSGKDeduction)).toEqual(0);
+        expect(roundNumber(month.employerSGKExemption)).toEqual(0);
+        expect(roundNumber(month.employerFinalSGKDeduction)).toEqual(0);
+
+        expect(roundNumber(month.employerUnemploymentInsuranceDeduction)).toEqual(0);
+        expect(roundNumber(month.employerUnemploymentInsuranceExemption)).toEqual(0);
+        expect(roundNumber(month.employerFinalUnemploymentInsuranceDeduction)).toEqual(0);
+
+        expect(roundNumber(month.employerTotalSGKCost)).toEqual(0);
+        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(roundNumber(month.employeeIncomeTax - month.AGIamount));
+        expect(roundNumber(month.employerTotalCost)).toEqual(10000);
+    });
+
     const roundNumber = (num: number, precision = 2) => {
         return Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision);
     };

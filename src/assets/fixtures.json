@@ -170,7 +170,7 @@
                 "unemploymentInsuranceApplicable": false,
                 "AGIApplicable": true,
                 "incomeTaxApplicable": true,
-                "taxMinWageBasedExemption": true,
+                "taxMinWageBasedExemption": false,
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
                 "employerSGKApplicable": false,
