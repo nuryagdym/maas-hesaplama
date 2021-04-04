@@ -28,7 +28,7 @@ describe("MonthCalculationModel", () => {
         expect(month.employeeUnemploymentInsuranceDeduction).toEqual(100);
         expect(month.appliedTaxSlices.length).toEqual(1);
         expect(roundNumber(month.netSalary)).toEqual(7149.1);
-        expect(roundNumber(month.AGIamount)).toEqual(268.31);
+        expect(roundNumber(month.AGIAmount)).toEqual(268.31);
         expect(roundNumber(month.finalNetSalary)).toEqual(7417.41);
 
         expect(month.employerSGKDeduction).toEqual(2050);
@@ -437,7 +437,7 @@ describe("MonthCalculationModel", () => {
         expect(roundNumber(month.employerFinalUnemploymentInsuranceDeduction)).toEqual(0);
 
         expect(roundNumber(month.employerTotalSGKCost)).toEqual(0);
-        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(roundNumber(month.employeeIncomeTax - month.AGIamount));
+        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(roundNumber(month.employeeIncomeTax - month.AGIAmount));
         expect(roundNumber(month.employerTotalCost)).toEqual(10000);
     });
 

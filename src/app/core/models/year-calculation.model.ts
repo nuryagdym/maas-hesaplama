@@ -21,11 +21,11 @@ export class YearCalculationModel {
     private _employeeDisability: any;
     private _numOfCalculatedMonths: number;
 
-    private _parameters: any;
+    private readonly _parameters: any;
 
-    constructor(months: string[], salaryConsants: any) {
+    constructor(months: string[], salaryConstants: any) {
 
-        this._parameters = salaryConsants;
+        this._parameters = salaryConstants;
 
         this._months = [];
         let previousMonth: MonthCalculationModel;
@@ -262,13 +262,13 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.netSalary / this._numOfCalculatedMonths : 0;
     }
 
-    get AGIamount() {
-        const totalSum = this._months.reduce((total, month) => total + month.AGIamount, 0);
+    get AGIAmount() {
+        const totalSum = this._months.reduce((total, month) => total + month.AGIAmount, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgAGIamount() {
-        return this._numOfCalculatedMonths > 0 ? this.AGIamount / this._numOfCalculatedMonths : 0;
+    get avgAGIAmount() {
+        return this._numOfCalculatedMonths > 0 ? this.AGIAmount / this._numOfCalculatedMonths : 0;
     }
 
     get finalNetSalary() {

@@ -53,7 +53,7 @@ export class SalaryCalculatorComponent implements OnInit {
         "employeeSGKDeduction", "employeeSGKExemption", "employeeUnemploymentInsuranceDeduction", "employeeUnemploymentInsuranceExemption",
         "appliedTaxSlicesAsString", "employeeIncomeTax", "employerIncomeTaxExemptionAmount",
         "stampTax", "employerStampTaxExemption", "netSalary",
-        "AGIamount", "finalNetSalary", "employerSGKDeduction", "employerSGKExemption",
+        "AGIAmount", "finalNetSalary", "employerSGKDeduction", "employerSGKExemption",
         "employerUnemploymentInsuranceDeduction", "employerUnemploymentInsuranceExemption",
         "employerTotalSGKCost", "employerFinalStampTax",
         "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
@@ -68,7 +68,7 @@ export class SalaryCalculatorComponent implements OnInit {
         "avgEmployeeSGKDeduction", "avgEmployeeSGKExemption",
         "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeUnemploymentInsuranceExemption",
         "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",
-        "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIamount", "avgFinalNetSalary",
+        "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIAmount", "avgFinalNetSalary",
         "avgEmployerSGKDeduction", "avgEmployerSGKExemption",
         "avgEmployerUnemploymentInsuranceDeduction", "avgEmployerUnemploymentInsuranceExemption",
         "avgEmployerTotalSGKCost", "avgEmployerStampTax",

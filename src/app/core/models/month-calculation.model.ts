@@ -29,7 +29,7 @@ export class MonthCalculationModel {
     private _employerUnemploymentInsuranceDeduction: number;
     private _employerUnemploymentInsuranceExemptionAmount: number;
 
-    private _AGIamount: number;
+    private _AGIAmount: number;
 
     private _appliedTaxSlices: TaxSliceModel[] = [];
 
@@ -58,9 +58,7 @@ export class MonthCalculationModel {
                                                   monthDayCount: number): number {
         const disability = yearParams.disabledMonthlyIncomeTaxDiscountBases.find(option => option.degree == disabilityDegree);
         let baseAmount = 0;
-        if (!disability) {
-            baseAmount = 0;
-        } else {
+        if (disability) {
             baseAmount = disability.amount * workedDays / monthDayCount;
         }
         return baseAmount;
@@ -70,17 +68,11 @@ export class MonthCalculationModel {
                                            employeeType: EmployeeType,
                                            constants: CalculationConstants,
                                            SGKBase: number): number {
-        let rate = 0;
-        let SGKDeduction = 0;
         if (!employeeType.SGKApplicable) {
-            SGKDeduction = 0;
-            return SGKDeduction;
+            return 0;
         }
-        if (isPensioner) {
-            rate = constants.employee.SGDPDeductionRate;
-        } else {
-            rate = constants.employee.SGKDeductionRate;
-        }
+
+        const rate = isPensioner ? constants.employee.SGDPDeductionRate : constants.employee.SGKDeductionRate;
 
         return SGKBase * rate;
     }
@@ -108,7 +100,6 @@ export class MonthCalculationModel {
 
     /**
      * basically returns 0.375
-     * @param constants
      */
     public static calcTotalSGKRate(constants: CalculationConstants) {
         return constants.employee.SGKDeductionRate + constants.employee.unemploymentInsuranceRate
@@ -259,8 +250,10 @@ export class MonthCalculationModel {
 
         if (!isPensioner && employeeType.employer5746AdditionalDiscountApplicable) {
             if (applyEmployerDiscount5746 && employeeType.employerSGKDiscount5746Applicable) {
-                exemption += SGKBase * (researchAndDevelopmentWorkedDays / workedDays) *
-                    (constants.employer.SGKDeductionRate - constants.employer.employerDiscount5746) * constants.employer.SGK5746AdditionalDiscount;
+                exemption += SGKBase
+                    * (researchAndDevelopmentWorkedDays / workedDays)
+                    * (constants.employer.SGKDeductionRate - constants.employer.employerDiscount5746)
+                    * constants.employer.SGK5746AdditionalDiscount;
             } else {
                 exemption += SGKBase * (researchAndDevelopmentWorkedDays / workedDays) *
                     constants.employer.SGKDeductionRate * constants.employer.SGK5746AdditionalDiscount;
@@ -270,7 +263,8 @@ export class MonthCalculationModel {
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, employeeType, constants, minWageSGKBase);
         } else if (employeeType.SGKMinWageBased17103Exemption) {
             const totalSGKRate = this.calcTotalSGKRate(constants);
-            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate, workedDays, constants.monthDayCount);
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate,
+                workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, employeeType, constants, minWageSGKBase);
             exemption = Math.min(employerSGKDeduction, exemption);
         } else if (employeeType.employerSGKShareTotalExemption) {
@@ -327,12 +321,11 @@ export class MonthCalculationModel {
                           employeeType: EmployeeType,
                           employeeTax: number
     ) {
-        let agi = 0;
         if (!employeeType.AGIApplicable) {
-            return agi;
+            return 0;
         }
 
-        agi = yearParams.minGrossWage * AGIRate * yearParams.taxSlices[0].rate;
+        const agi = yearParams.minGrossWage * AGIRate * yearParams.taxSlices[0].rate;
 
         return Math.min(agi, employeeTax);
     }
@@ -470,7 +463,7 @@ export class MonthCalculationModel {
         this._employerUnemploymentInsuranceExemptionAmount = 0;
         this._stampTax = 0;
         this._netSalary = 0;
-        this._AGIamount = 0;
+        this._AGIAmount = 0;
 
         this._employerSGKDeduction = 0;
         this._employerSGKExemptionAmount = 0;
@@ -526,7 +519,8 @@ export class MonthCalculationModel {
             employeeType, this._parameters, this.SGKBase);
 
         this._employerSGKExemptionAmount = MonthCalculationModel.calcEmployerSGKExemption(yearParams, employeeType,
-            this._parameters, this.SGKBase, isPensioner, applyEmployerDiscount5746, workedDays, researchAndDevelopmentWorkedDays, this.employerSGKDeduction);
+            this._parameters, this.SGKBase, isPensioner, applyEmployerDiscount5746,
+            workedDays, researchAndDevelopmentWorkedDays, this.employerSGKDeduction);
 
         this._employerUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployerUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
@@ -534,11 +528,11 @@ export class MonthCalculationModel {
         this._employerUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployerUnemploymentInsuranceExemption(yearParams,
             employeeType, this._parameters, this.SGKBase, workedDays, isPensioner, this.employerUnemploymentInsuranceDeduction);
 
-        this._AGIamount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax);
+        this._AGIAmount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax);
 
         this._employerIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployerIncomeTaxExemption(yearParams, employeeType,
             this._parameters, employeeEduExemptionRate, isAGIIncludedTax, workedDays,
-            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, this.AGIamount, isPensioner, disabilityDegree);
+            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, this.AGIAmount, isPensioner, disabilityDegree);
     }
 
     /**
@@ -573,7 +567,7 @@ export class MonthCalculationModel {
             this._calculate(yearParams, middle, workedDays, researchAndDevelopmentWorkedDays,
                 agiRate, employeeType, employeeEduExemptionRate,
                 applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
-            calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIamount : this.netSalary;
+            calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIAmount : this.netSalary;
             if (calcNetSalary > enteredAmount) {
                 right = middle;
             } else {
@@ -648,8 +642,7 @@ export class MonthCalculationModel {
 
     public get cumulativeSalary(): number {
         if (this._previousMonth) {
-            const cumSalary: number = this._previousMonth.cumulativeSalary;
-            return this.calculatedGrossSalary + cumSalary;
+            return this.calculatedGrossSalary + this._previousMonth.cumulativeSalary;
         }
         return this.calculatedGrossSalary;
     }
@@ -663,14 +656,13 @@ export class MonthCalculationModel {
 
     public get cumulativeIncomeTaxBase(): number {
         if (this._previousMonth) {
-            const cumBase: number = this._previousMonth.cumulativeIncomeTaxBase;
-            return this.incomeTaxBase + cumBase;
+            return this.incomeTaxBase + this._previousMonth.cumulativeIncomeTaxBase;
         }
         return this.incomeTaxBase;
     }
 
     public get employerFinalIncomeTax() {
-        return this.employeeIncomeTax - this.employerIncomeTaxExemptionAmount - this.AGIamount;
+        return this.employeeIncomeTax - this.employerIncomeTaxExemptionAmount - this.AGIAmount;
     }
 
     public get appliedTaxSlicesAsString() {
@@ -678,7 +670,7 @@ export class MonthCalculationModel {
     }
 
     public get finalNetSalary() {
-        return this.netSalary + this.AGIamount;
+        return this.netSalary + this.AGIAmount;
     }
 
     public get calculatedGrossSalary(): number {
@@ -756,8 +748,8 @@ export class MonthCalculationModel {
         return this._employerStampTaxExemption;
     }
 
-    public get AGIamount(): number {
-        return this._AGIamount;
+    public get AGIAmount(): number {
+        return this._AGIAmount;
     }
 
     public get employerStampTax() {
@@ -770,7 +762,7 @@ export class MonthCalculationModel {
     }
 
     public get employerTotalCost() {
-        return this.netSalary + this.AGIamount + this.employerTotalSGKCost + this.employerStampTax +
+        return this.netSalary + this.AGIAmount + this.employerTotalSGKCost + this.employerStampTax +
             this.employerFinalIncomeTax;
     }
 
