@@ -270,6 +270,8 @@ export class MonthCalculationModel {
             const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate, workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, employeeType, constants, minWageSGKBase);
             exemption = Math.min(employerSGKDeduction, exemption);
+        } else if (employeeType.employerSGKShareTotalExemption) {
+            exemption += employerSGKDeduction;
         }
         return exemption;
     }

@@ -100,6 +100,7 @@ export interface EmployeeType {
     employerIncomeTaxApplicable: boolean;
     employerStampTaxApplicable: boolean;
     employerEducationIncomeTaxExemption: boolean;
+    employerSGKShareTotalExemption: boolean;
     employerSGKDiscount5746Applicable: boolean;
     employer5746AdditionalDiscountApplicable: boolean;
 }

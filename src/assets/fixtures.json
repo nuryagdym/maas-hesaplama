@@ -82,6 +82,7 @@
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": false
             },
@@ -105,6 +106,7 @@
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": true
             },
@@ -128,6 +130,7 @@
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": true,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": true,
                 "employer5746AdditionalDiscountApplicable": true
             },
@@ -146,11 +149,12 @@
                 "taxMinWageBasedExemption": false,
                 "researchAndDevelopmentTaxExemption": false,
                 "stampTaxApplicable": true,
-                "employerSGKApplicable": false,
+                "employerSGKApplicable": true,
                 "employerUnemploymentInsuranceApplicable": true,
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": true,
                 "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
@@ -174,6 +178,7 @@
                 "employerIncomeTaxApplicable": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
@@ -197,6 +202,7 @@
                 "taxMinWageBasedExemption": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             },
@@ -220,6 +226,7 @@
                 "taxMinWageBasedExemption": true,
                 "employerStampTaxApplicable": true,
                 "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
             }
