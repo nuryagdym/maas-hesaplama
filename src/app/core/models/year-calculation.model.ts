@@ -253,15 +253,6 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.AGIamount / this._numOfCalculatedMonths : 0;
     }
 
-    get employerAGIAmount() {
-        const totalSum = this._months.reduce((total, month) => total + month.employerAGIAmount, 0);
-        return isNaN(totalSum) ? 0 : totalSum;
-    }
-
-    get avgEmployerAGIAmount() {
-        return this._numOfCalculatedMonths > 0 ? this.employerAGIAmount / this._numOfCalculatedMonths : 0;
-    }
-
     get finalNetSalary() {
         const totalSum = this._months.reduce((total, month) => total + month.finalNetSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;

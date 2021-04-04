@@ -26,7 +26,6 @@ export class MonthCalculationModel {
     private _employerSGKExemptionAmount: number;
     private _employerUnemploymentInsuranceDeduction: number;
     private _employerUnemploymentInsuranceExemptionAmount: number;
-    private _employerAGIamount: number;
 
     private _AGIamount: number;
 
@@ -405,10 +404,6 @@ export class MonthCalculationModel {
         return employeeType.employerStampTaxApplicable ? (stampTax - stampTaxExemption) : 0;
     }
 
-    private static calcEmployerAGI(employeeType: EmployeeType, AGIAmount: number) {
-        return employeeType.employerAGIApplicable ? AGIAmount : 0;
-    }
-
     constructor(parameters: any) {
         this._parameters = parameters;
     }
@@ -469,7 +464,6 @@ export class MonthCalculationModel {
         this._stampTax = 0;
         this._netSalary = 0;
         this._AGIamount = 0;
-        this._employerAGIamount = 0;
 
         this._employerSGKDeduction = 0;
         this._employerSGKExemptionAmount = 0;
@@ -534,8 +528,6 @@ export class MonthCalculationModel {
             employeeType, this._parameters, this.SGKBase, workedDays, isPensioner, this.employerUnemploymentInsuranceDeduction);
 
         this._AGIamount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax);
-
-        this._employerAGIamount = MonthCalculationModel.calcEmployerAGI(employeeType, this._AGIamount);
 
         this._employerIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployerIncomeTaxExemption(yearParams, employeeType,
             this._parameters, employeeEduExemptionRate, isAGIIncludedTax, workedDays,
@@ -763,17 +755,13 @@ export class MonthCalculationModel {
     }
 
     public get employerTotalCost() {
-        return this.netSalary + this.employerAGIAmount + this.employerTotalSGKCost + this.employerStampTax +
+        return this.netSalary + this.AGIamount + this.employerTotalSGKCost + this.employerStampTax +
             this.employerFinalIncomeTax;
     }
 
     public get totalSGKExemption() {
         return this.employerSGKExemption + this.employerUnemploymentInsuranceExemption
             + this.employeeSGKExemption + this.employeeUnemploymentInsuranceExemption;
-    }
-
-    public get employerAGIAmount() {
-        return this._employerAGIamount;
     }
 
     public get appliedTaxSlices(): TaxSliceModel[] {

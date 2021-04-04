@@ -97,7 +97,6 @@ export interface EmployeeType {
     stampTaxApplicable: boolean;
     employerSGKApplicable: boolean;
     employerUnemploymentInsuranceApplicable: boolean;
-    employerAGIApplicable: boolean;
     employerIncomeTaxApplicable: boolean;
     employerStampTaxApplicable: boolean;
     employerEducationIncomeTaxExemption: boolean;
