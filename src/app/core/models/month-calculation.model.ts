@@ -4,6 +4,8 @@ import {CalculationConstants, EmployeeType} from "../services/parameters.service
 export class MonthCalculationModel {
     monthName: string;
     private _previousMonth: MonthCalculationModel;
+    private _workedDays: number;
+    private _researchAndDevelopmentWorkedDays: number;
     private _employeeDisabledIncomeTaxBaseAmount: number;
     private _employerIncomeTaxExemptionAmount: number;
 
@@ -32,6 +34,7 @@ export class MonthCalculationModel {
     private _appliedTaxSlices: TaxSliceModel[] = [];
 
     private _parameters;
+
 
     public static calcGrossSalary(grossSalary: number, dayCount: number, monthDayCount: number): number {
         return grossSalary * dayCount / monthDayCount;
@@ -416,6 +419,8 @@ export class MonthCalculationModel {
                      applyEmployerDiscount5746: boolean, isAGIIncludedNet: boolean, isAGIIncludedTax: boolean,
                      isPensioner: boolean, disabilityDegree: number
     ) {
+        this._workedDays = workedDays;
+        this._researchAndDevelopmentWorkedDays = researchAndDevelopmentWorkedDays;
         if (!(enteredAmount > 0 && workedDays > 0)) {
             this.resetFields();
             return;
@@ -627,6 +632,14 @@ export class MonthCalculationModel {
 
     set previousMonth(month: MonthCalculationModel) {
         this._previousMonth = month;
+    }
+
+    get workedDays(): number {
+        return this._workedDays;
+    }
+
+    get researchAndDevelopmentWorkedDays(): number {
+        return this._researchAndDevelopmentWorkedDays;
     }
 
     public get employerIncomeTaxExemptionAmount(): number {

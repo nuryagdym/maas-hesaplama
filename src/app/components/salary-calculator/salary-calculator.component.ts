@@ -59,7 +59,12 @@ export class SalaryCalculatorComponent implements OnInit {
         "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
     columnsToDisplay: string[] = [];
 
-    displayedAvgColumns: string[] = ["avgTitle", "avgCalculatedGrossSalary",
+    displayedAvgColumns: string[] = [
+        "avgTitle",
+        "avgWorkDays",
+        "avgResearchAndDevelopmentWorkedDays",
+        "userInput",
+        "avgCalculatedGrossSalary",
         "avgEmployeeSGKDeduction", "avgEmployeeSGKExemption",
         "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeUnemploymentInsuranceExemption",
         "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",

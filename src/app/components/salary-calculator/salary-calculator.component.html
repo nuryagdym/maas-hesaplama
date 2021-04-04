@@ -119,7 +119,7 @@
                                        max="{{yearCalculationModel.monthDayCount}}">
                             </mat-form-field>
                         </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
+                        <td mat-footer-cell *matFooterCellDef>{{yearCalculationModel.totalWorkDays}}</td>
                     </ng-container>
                     <ng-container matColumnDef="researchAndDevelopmentDayInput">
                         <th mat-header-cell *matHeaderCellDef style="max-width: 2rem;"> Ar-Ge<br>Gün Sayısı</th>
@@ -129,7 +129,7 @@
                                        max="{{yearCalculationModel.monthDayCount}}" [disabled]="!selectedEmployeeType.researchAndDevelopmentTaxExemption">
                             </mat-form-field>
                         </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
+                        <td mat-footer-cell *matFooterCellDef>{{yearCalculationModel.totalResearchAndDevelopmentWorkedDays}}</td>
                     </ng-container>
                     <ng-container matColumnDef="salaryInput">
                         <th mat-header-cell *matHeaderCellDef style="max-width: 7rem;">
@@ -172,9 +172,9 @@
                             <span class="{{yearCalculationModel.employeeSGKExemption > 0 ? 'active' : 'passive'}}">Çalışan<br>SGK Primi<br>İstinası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employeeSGKExemption > 0 ? 'active' : 'passive'}}">
-                        {{element.employeeSGKExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employeeSGKExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employeeSGKExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.employeeSGKExemption > 0 ? 'active' : 'passive'}}">
@@ -191,19 +191,19 @@
                     </ng-container>
                     <ng-container matColumnDef="employeeUnemploymentInsuranceExemption">
                         <th mat-header-cell *matHeaderCellDef class="exemptions">
-                    <span class="{{yearCalculationModel.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                        Çalışan<br>İşsizlik<br>Sigortası<br>İstinası
-                    </span>
+                            <span class="{{yearCalculationModel.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                Çalışan<br>İşsizlik<br>Sigortası<br>İstinası
+                            </span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                        {{element.employeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
-                    <span class="{{yearCalculationModel.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                        {{yearCalculationModel.employeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{yearCalculationModel.employeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                {{yearCalculationModel.employeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="appliedTaxSlicesAsString">
@@ -227,9 +227,9 @@
                             <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">Gelir Vergisi<br>İstisnası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
-                        {{element.employerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                {{element.employerIncomeTaxExemptionAmount | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.employerIncomeTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
@@ -246,14 +246,14 @@
                     </ng-container>
                     <ng-container matColumnDef="employerStampTaxExemption">
                         <th mat-header-cell *matHeaderCellDef class="exemptions ">
-                    <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                        Damga<br>Vergisi<br>İstisnası
-                    </span>
+                            <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                Damga<br>Vergisi<br>İstisnası
+                            </span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                        {{element.employerStampTaxExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employerStampTaxExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
@@ -293,9 +293,9 @@
                             <span class="{{yearCalculationModel.employerSGKExemption > 0 ? 'active' : 'passive'}}">SGK Payı<br>İstisnası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employerSGKExemption > 0 ? 'active' : 'passive'}}">
-                        {{element.employerSGKExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employerSGKExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employerSGKExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.employerSGKExemption > 0 ? 'active' : 'passive'}}">
@@ -315,9 +315,9 @@
                             <span class="{{yearCalculationModel.employerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">İşsizlik Payı<br>İstisnası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                    <span class="{{yearCalculationModel.employerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
-                        {{element.employerUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{element.employerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employerUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.employerUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
@@ -375,7 +375,16 @@
                     <!-- EMPLOYER-GROUP END -->
                     <!-- AVG fields footer row BEGIN -->
                     <ng-container matColumnDef="avgTitle" sticky>
-                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="4"> Aylık Ortalama</td>
+                        <td mat-footer-cell *matFooterCellDef> Aylık Ortalama</td>
+                    </ng-container>
+                    <ng-container matColumnDef="avgWorkDays">
+                        <td mat-footer-cell *matFooterCellDef>{{yearCalculationModel.avgWorkDays | number : '1.0-0'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="avgResearchAndDevelopmentWorkedDays">
+                        <td mat-footer-cell *matFooterCellDef>{{yearCalculationModel.avgResearchAndDevelopmentWorkedDays | number : '1.0-0'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="userInput">
+                        <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
                     <ng-container matColumnDef="avgCalculatedGrossSalary">
                         <td mat-footer-cell *matFooterCellDef>

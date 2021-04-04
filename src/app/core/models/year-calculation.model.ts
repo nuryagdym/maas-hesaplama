@@ -145,6 +145,24 @@ export class YearCalculationModel {
         return this._months;
     }
 
+    get totalWorkDays() {
+        const totalSum = this._months.reduce((total, month) => total + month.workedDays, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgWorkDays() {
+        return this._numOfCalculatedMonths > 0 ? this.totalWorkDays / this._numOfCalculatedMonths : 0;
+    }
+
+    get totalResearchAndDevelopmentWorkedDays() {
+        const totalSum = this._months.reduce((total, month) => total + month.researchAndDevelopmentWorkedDays, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgResearchAndDevelopmentWorkedDays() {
+        return this._numOfCalculatedMonths > 0 ? this.totalResearchAndDevelopmentWorkedDays / this._numOfCalculatedMonths : 0;
+    }
+
     get calculatedGrossSalary() {
         const totalSum = this._months.reduce((total, month) => total + month.calculatedGrossSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;
