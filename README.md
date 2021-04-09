@@ -46,6 +46,7 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 - İşveren/Şirket ortağı maaş hesaplama
 - Part time çalışan
 - Toplam yıllık ve dönemlik maliyetler
+- TÜBİTAK dönem ortalama maliyet
 - Aylık ortalama maliyetler
 - İşveren Maaliyeti
 - Excel dosya indirebilme
@@ -62,7 +63,7 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
 - Netten brüte hesaplayan bir formül bulamadığım için, netten brüte ve toplam maliyete göre hesaplamaları binary search yöntemiyle hesaplanmaktadır.
 
-## Adding a new year datas
+## Adding a new year data
 
 - yeni yıla ait parametreler (SGK taven, asgari ücret, vergi dilimler, engelli vergi indirimleri) kolay bir şekilde eklenebilinmesi için build kodlarından ayrı tuttum. 
 Yıl parametreleri: [year-parameters.json](src/assets/year-parameters.json). 

@@ -364,11 +364,20 @@
                     </ng-container>
 
                     <ng-container matColumnDef="employerSemesterTotalCost">
-                        <th mat-header-cell *matHeaderCellDef class="employer-costs vertical-col"><span> Dönem Ortalaması</span>
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs vertical-col"><span>Dönem Ortalaması</span>
                         </th>
                         <td mat-cell *matCellDef="let element; let i=index" [attr.rowspan]="6"
                             [style.display]="i%6 != 0 ? 'none' : ''" class="vertical-col employer-costs">
                             <span>{{yearCalculationModel.yearHalfEmployerAvgTotalCost((i < 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef class="employer-costs"></td>
+                    </ng-container>
+                    <ng-container matColumnDef="employerSemesterTubitakTotalCost">
+                        <th mat-header-cell *matHeaderCellDef class="employer-costs vertical-col"><span>Tübitak Dön. Ort.</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i=index" [attr.rowspan]="6"
+                            [style.display]="i%6 != 0 ? 'none' : ''" class="vertical-col employer-costs">
+                            <span>{{yearCalculationModel.getSemesterTubitakAvgCost((i < 6) ? 'first' : 'second') | number : '1.2-2' : 'tr'}}</span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="employer-costs"></td>
                     </ng-container>
@@ -479,7 +488,7 @@
                             {{yearCalculationModel.avgEmployerStampTax | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="avgEmployerTotalCost">
-                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="2" class="employer-costs">
+                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="3" class="employer-costs">
                             {{yearCalculationModel.avgEmployerTotalCost | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <!-- AVG fields footer row END -->

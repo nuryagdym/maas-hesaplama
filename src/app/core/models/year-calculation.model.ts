@@ -363,6 +363,24 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employerTotalCost / this._numOfCalculatedMonths : 0;
     }
 
+    getSemesterWorkedDays(half: "first" | "second") {
+        let l = 0;
+        let r = this._months.length - 6;
+        if (half === "second") {
+            l = 6;
+            r = this._months.length;
+        }
+        let workedDays = 0;
+        for (let i = l; i < r; i++) {
+            workedDays += this._months[i].workedDays;
+        }
+        return workedDays;
+    }
+
+    getSemesterTubitakAvgCost(half: "first" | "second") {
+        return this.yearHalfEmployerAvgTotalCost(half, false) *  (this.monthDayCount * 6) / this.getSemesterWorkedDays(half);
+    }
+
     employerHalfTotalCost(half: "first" | "second") {
         let l = 0;
         let r = this._months.length - 6;

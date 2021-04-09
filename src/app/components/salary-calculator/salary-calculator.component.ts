@@ -16,9 +16,9 @@ import * as XLSX from "xlsx";
 import {DatePipe} from "@angular/common";
 
 @Component({
-  selector: "app-salary-calculator",
-  templateUrl: "./salary-calculator.component.html",
-  styleUrls: ["./salary-calculator.component.scss"],
+    selector: "app-salary-calculator",
+    templateUrl: "./salary-calculator.component.html",
+    styleUrls: ["./salary-calculator.component.scss"],
 })
 export class SalaryCalculatorComponent implements OnInit {
 
@@ -56,7 +56,11 @@ export class SalaryCalculatorComponent implements OnInit {
         "AGIAmount", "finalNetSalary", "employerSGKDeduction", "employerSGKExemption",
         "employerUnemploymentInsuranceDeduction", "employerUnemploymentInsuranceExemption",
         "employerTotalSGKCost", "employerFinalStampTax",
-        "employerFinalIncomeTax", "employerTotalCost", "employerSemesterTotalCost"];
+        "employerFinalIncomeTax",
+        "employerTotalCost",
+        "employerSemesterTotalCost",
+        "employerSemesterTubitakTotalCost",
+    ];
     columnsToDisplay: string[] = [];
 
     displayedAvgColumns: string[] = [
@@ -92,7 +96,10 @@ export class SalaryCalculatorComponent implements OnInit {
         "avgEmployerUnemploymentInsuranceExemption",
         "avgEmployerFinalIncomeTax",
         "avgEmployerTotalSGKCost", "avgEmployerStampTax",
-        "avgEmployerTotalCost", "forth-group"];
+        "avgEmployerTotalCost",
+        "forth-group",
+        "employerSemesterTubitakTotalCost",
+    ];
 
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
     }
