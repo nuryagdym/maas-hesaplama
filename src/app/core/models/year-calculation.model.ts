@@ -368,7 +368,7 @@ export class YearCalculationModel {
         let r = this._months.length - 6;
         if (half === "second") {
             l = 6;
-            r = this._months.length - 1;
+            r = this._months.length;
         }
         let total = 0;
         for (let i = l; i < r; i++) {
@@ -377,23 +377,23 @@ export class YearCalculationModel {
         return isNaN(total) ? 0 : total;
     }
 
-    yearHalfEmployerAvgTotalCost(half: "first" | "second") {
+    yearHalfEmployerAvgTotalCost(half: "first" | "second", skipNonWorkedMonths = true) {
         let l = 0;
         let r = this._months.length - 6;
         if (half === "second") {
             l = 6;
-            r = this._months.length - 1;
+            r = this._months.length;
         }
-        let workedDays = 0;
+        let workedMonths = 0;
         for (let i = l; i < r; i++) {
-            if (this._months[i].calculatedGrossSalary > 0) {
-                workedDays++;
+            if (!skipNonWorkedMonths || this._months[i].calculatedGrossSalary > 0) {
+                workedMonths++;
             }
         }
-        if (workedDays === 0) {
+        if (workedMonths === 0) {
             return 0;
         }
-        return this.employerHalfTotalCost(half) / workedDays;
+        return this.employerHalfTotalCost(half) / workedMonths;
     }
 
 }
