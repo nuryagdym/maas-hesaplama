@@ -3,6 +3,11 @@ th > .mat-form-field, td > .mat-form-field, th > .mat-slide-toggle{
     margin-top: 0.5rem;
 }
 
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 th.mat-header-cell:last-of-type, td.mat-cell:last-of-type{
     padding-right: 0;
 }
