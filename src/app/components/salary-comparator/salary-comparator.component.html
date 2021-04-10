@@ -95,7 +95,7 @@
                             {{element.avgCalculatedGrossSalary | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="finalNetSalary">
-                        <th mat-header-cell *matHeaderCellDef>Maaş
+                        <th mat-header-cell *matHeaderCellDef>Tutar
                             <mat-slide-toggle *ngIf="selectedCalcMode == 'NET_TO_GROSS'" [(ngModel)]='AGIIncludedNet'
                                               [disabled]="selectedCalcMode != 'NET_TO_GROSS'"
                                               (ngModelChange)="calculateAll()">
