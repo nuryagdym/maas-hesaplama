@@ -426,11 +426,11 @@ export class MonthCalculationModel {
         if (calcMode === "GROSS_TO_NET") {
             grossSalary = enteredAmount;
         } else if (calcMode === "TOTAL_TO_GROSS") {
-            grossSalary = this.findGrossFromTotalCost(yearParams, enteredAmount, workedDays,
+            grossSalary = this.findGrossFromTotalCost(yearParams, enteredAmount, this._parameters.monthDayCount,
                 researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate,
                 applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree);
         } else {
-            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, workedDays,
+            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, this._parameters.monthDayCount,
                 researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate,
                 applyEmployerDiscount5746, isAGIIncludedNet, isAGIIncludedTax, isPensioner, disabilityDegree);
         }
@@ -594,7 +594,7 @@ export class MonthCalculationModel {
                                    isPensioner: boolean,
                                    disabilityDegree: number) {
 
-        let left = enteredAmount / 3;
+        let left = 0;
         let right = enteredAmount * 2;
         let middle = (right + left) / 2;
         const itLimit = 100;
