@@ -442,6 +442,33 @@ describe("MonthCalculationModel", () => {
     });
 
 
+    it("calculate month for year 2021, from GROSS_TO_NET, 30 work days, gross salary MIN WAGE, AGI Bekar, Engelli degil, Ev Hizmetleri (10 günden fazla), Emekli Degil, 5510 discount", () => {
+
+        const workedDays = 30;
+        const researchAndDevWorkedDays = 0;
+        const applyEmployerDiscount5746 = true;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const salary = yearParams.minGrossWage;
+        const employeeType = employeeTypes.options.find((o) => o.id === 10);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            applyEmployerDiscount5746, false, false, false,
+            disabilityOptions.options[0].degree);
+
+        expect(roundNumber(month.stampTax)).toEqual(0);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
+        expect(roundNumber(month.employerStampTax)).toEqual(0);
+
+        expect(roundNumber(month.netSalary)).toEqual(3040.88);
+        expect(roundNumber(month.finalNetSalary)).toEqual(3040.88);
+
+        expect(roundNumber(month.employerTotalSGKCost)).toEqual(1162.69);
+        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(0);
+        expect(roundNumber(month.employerTotalCost)).toEqual(4203.56);
+    });
+
     it("calculate month for year 2021, from TOTAL_TO_GROSS, 30 days, 30 r&d days, amount 10000 TL, AGI Bekar, Engelli degil, Standart calisan, Emekli Degil", () => {
         const amount = 10000;
         const workedDays = 30;

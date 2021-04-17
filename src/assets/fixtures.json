@@ -229,6 +229,30 @@
                 "employerSGKShareTotalExemption": false,
                 "employerSGKDiscount5746Applicable": false,
                 "employer5746AdditionalDiscountApplicable": false
+            },
+            {
+                "id": 10,
+                "text": "Ev Hizmetleri (10 günden fazla)",
+                "desc": "Temizlik, Çocuk bakımı, Yaşlı bakımı, Hasta bakımı, Bahçıvan",
+                "order": 13,
+                "show": true,
+                "SGKApplicable": true,
+                "SGKMinWageBasedExemption": false,
+                "SGKMinWageBased17103Exemption": false,
+                "unemploymentInsuranceApplicable": true,
+                "AGIApplicable": true,
+                "incomeTaxApplicable": false,
+                "taxMinWageBasedExemption": false,
+                "researchAndDevelopmentTaxExemption": false,
+                "stampTaxApplicable": false,
+                "employerSGKApplicable": true,
+                "employerUnemploymentInsuranceApplicable": true,
+                "employerIncomeTaxApplicable": true,
+                "employerStampTaxApplicable": true,
+                "employerEducationIncomeTaxExemption": false,
+                "employerSGKShareTotalExemption": false,
+                "employerSGKDiscount5746Applicable": true,
+                "employer5746AdditionalDiscountApplicable": false
             }
         ]
     },
