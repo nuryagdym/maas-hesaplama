@@ -441,6 +441,61 @@ describe("MonthCalculationModel", () => {
         expect(roundNumber(month.employerTotalCost)).toEqual(10000);
     });
 
+
+    it("calculate month for year 2021, from TOTAL_TO_GROSS, 30 days, 30 r&d days, amount 10000 TL, AGI Bekar, Engelli degil, Standart calisan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const employeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree);
+        expect(roundNumber(month.calculatedGrossSalary)).toEqual(8163.27);
+        expect(roundNumber(month.netSalary)).toEqual(5836);
+        expect(roundNumber(month.employerTotalSGKCost)).toEqual(3061.22);
+        expect(roundNumber(month.employerTotalCost)).toEqual(amount);
+    });
+
+    it("calculate month for year 2021, from TOTAL_TO_GROSS, 30 days, 30 r&d days, amount 10000 TL, AGI Bekar, Engelli degil, Teknokent Personeli calisan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const employeeType = employeeTypes.options.find((o) => o.id === 2);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree);
+        expect(roundNumber(month.calculatedGrossSalary)).toEqual(9855.77);
+        expect(roundNumber(month.netSalary)).toEqual(7045.99);
+        expect(roundNumber(month.employerTotalSGKCost)).toEqual(2685.70);
+        expect(roundNumber(month.employerTotalCost)).toEqual(amount);
+    });
+
+    it("calculate month for year 2021, from TOTAL_TO_GROSS, 30 days, 30 r&d days, amount 10000 TL, AGI Bekar, Engelli degil, Ar-Ge Personeli calisan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const employeeType = employeeTypes.options.find((o) => o.id === 3);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree);
+        expect(roundNumber(month.calculatedGrossSalary)).toEqual(9660.63);
+        expect(roundNumber(month.netSalary)).toEqual(6906.48);
+        expect(roundNumber(month.employerTotalSGKCost)).toEqual(2632.52);
+        expect(roundNumber(month.employerTotalCost)).toEqual(amount);
+    });
+
     const roundNumber = (num: number, precision = 2) => {
         return Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision);
     };
