@@ -71,6 +71,7 @@ export class SalaryCalculatorComponent implements OnInit {
         "avgCalculatedGrossSalary",
         "avgEmployeeSGKDeduction", "avgEmployeeSGKExemption",
         "avgEmployeeUnemploymentInsuranceDeduction", "avgEmployeeUnemploymentInsuranceExemption",
+        "avgAppliedTaxSlicesAsString",
         "avgEmployeeIncomeTax", "avgEmployerIncomeTaxExemptionAmount",
         "avgStampTax", "avgEmployerStampTaxExemption", "avgNetSalary", "avgAGIAmount", "avgFinalNetSalary",
         "avgEmployerSGKDeduction", "avgEmployerSGKExemption",

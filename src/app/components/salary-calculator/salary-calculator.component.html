@@ -415,11 +415,14 @@
                             {{yearCalculationModel.avgEmployeeUnemploymentInsuranceDeduction | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="avgEmployeeUnemploymentInsuranceExemption">
-                        <td mat-footer-cell *matFooterCellDef [attr.colspan]="2" class="exemptions">
+                        <td mat-footer-cell *matFooterCellDef class="exemptions">
                     <span class="{{yearCalculationModel.avgEmployeeUnemploymentInsuranceExemption > 0 ? 'active' : 'passive'}}">
                         {{yearCalculationModel.avgEmployeeUnemploymentInsuranceExemption | number : '1.2-2' : 'tr'}}
                     </span>
                         </td>
+                    </ng-container>
+                    <ng-container matColumnDef="avgAppliedTaxSlicesAsString">
+                        <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
                     <ng-container matColumnDef="avgEmployeeIncomeTax">
                         <td mat-footer-cell *matFooterCellDef class="deductions">
