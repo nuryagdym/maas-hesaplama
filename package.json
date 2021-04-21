@@ -1,11 +1,11 @@
 {
   "name": "salary-calculator",
   "description": "Salary calculator for Turkey",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Nuryagdy Mustapayev",
     "email": "nuryagdy@mustapayev.com",
-    "url": "https://mustapayev.com"
+    "url": "http://mustapayev.com"
   },
   "scripts": {
     "ng": "ng",

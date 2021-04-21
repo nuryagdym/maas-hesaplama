@@ -2,7 +2,7 @@
 
 Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
-* [Demo](https://mustapayev.com/maas-hesaplama/)
+* [Maaş Hesaplama Demo](http://mustapayev.com/maas-hesaplama/)
 
 ## Installation
 
@@ -27,6 +27,14 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
     ```shell
     ng build --prod --aot
     ```
+5. Run tests
+
+    ```shell
+    ng test
+    ```
+## Modules
+- Maaş hesaplama
+- Maaliyet karşılaştırma - Çalışan türüne göre maaliyetleri karşılaştırabilme.
 
 ## Calculation Modes
 
@@ -36,15 +44,23 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
 ## Features
 
-- AGİ
-- Teknokent, Ar-Ge personeli (4691 ve 5746) indirimi
-- 6111 Sayılı Kanun
-- Ar-Ge personeli eğitim durumu indirimi
-- İşveren Bağ-Kur 5 puanlık prim indirimi
-- Sakatlık durumu
-- Emekli çalışan
-- İşveren/Şirket ortağı maaş hesaplama
+- Standart Çalışan maaş hesaplaması
+- 6111 Sayılı Kanun maaş hesaplaması
+- 17103 Sayılı Kanun maaş hesaplaması
+- 27103 Sayılı Kanun maaş hesaplaması
+- Teknokent ve Ar-Ge personeli (4691 ve 5746) maaş hesaplaması
+- İşveren/Şirket ortağı maaş hesaplaması
+- İşveren Teknokent ve İşveren Ar-Ge personeli (4691 ve 5746) maaş hesaplaması
+- Ev Hizmetlerinde Çalışan maaş hesaplaması (10 günden fazla)
+- Emekli çalışan maaş hesaplama
+
+
 - Part time çalışan
+- İşveren Bağ-Kur 5 puanlık prim indirimi
+- Ar-Ge personeli eğitim durumu indirimi
+- Sakatlık durumu
+- AGİ
+- Vergi ve SGK istisnalar
 - Toplam yıllık ve dönemlik maliyetler
 - TÜBİTAK dönem ortalama maliyet
 - Aylık ortalama maliyetler
@@ -74,3 +90,5 @@ Sıralama önemli değildir, kütüphane kendisi yılları büyükten küçüğe
 - Input parametreler [fixtures.json](src/assets/fixtures.json) dosya içindedir, kolayca güncellenebilmesi için bunu da build kodların dışında bıkratım.
 - Sıralama JSON dosyada nasılsa o şekilde kullanıcıya gösterilir.
 
+## TODO
+1. Netten brüte ve Toplam Maliyete göre hesaplamalarda çalışma gün 30'dan az olduğu durumlarda doğru hesaplayamıyor.
