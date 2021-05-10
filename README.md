@@ -60,6 +60,7 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 - Ar-Ge personeli eğitim durumu indirimi
 - Sakatlık durumu
 - AGİ
+- AGİ hesaplamasını açıp kapatma
 - Vergi ve SGK istisnalar
 - Toplam yıllık ve dönemlik maliyetler
 - TÜBİTAK dönem ortalama maliyet

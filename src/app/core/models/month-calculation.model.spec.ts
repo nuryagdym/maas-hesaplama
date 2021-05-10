@@ -10,6 +10,36 @@ describe("MonthCalculationModel", () => {
     const employeeEducationTypes = parameters.EMPLOYEE_EDUCATION_TYPES;
     const calcModes = YearCalculationModel.calculationModes;
 
+    it("TEST AGI 1: calculate month for year 2021, from GROSS_TO_NET, 30 days, gross salary 10000 TL, AGI Bekar, Engelli degil, Standart calisan, Emekli Degil", () => {
+        const salary = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2021);
+        const employeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+
+        // calculate AGI
+        month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree);
+
+        expect(roundNumber(month.AGIAmount)).toEqual(268.31);
+        expect(roundNumber(month.finalNetSalary)).toEqual(7417.41);
+
+        // don't calculate AGI
+        month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, false);
+
+        expect(roundNumber(month.AGIAmount)).toEqual(0);
+        expect(roundNumber(month.finalNetSalary)).toEqual(roundNumber(month.netSalary));
+    });
+
+
     it("calculate month for year 2021, from GROSS_TO_NET, 30 days, 30 r&d days, gross salary 10000 TL, AGI Bekar, Engelli degil, Standart calisan, Emekli Degil", () => {
         const salary = 10000;
         const workedDays = 30;

@@ -41,6 +41,7 @@ export class SalaryCalculatorComponent implements OnInit {
     selectedDisability: any;
     selectedCalcMode: string;
 
+    enableAGICalculation: boolean;
     AGIIncludedNet: boolean;
     AGIIncludedTax: boolean;
     employerDiscount5746: boolean;
@@ -102,12 +103,14 @@ export class SalaryCalculatorComponent implements OnInit {
         "employerSemesterTubitakTotalCost",
     ];
 
+
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
     }
 
     ngOnInit() {
 
         this.loading = true;
+        this.enableAGICalculation = true;
         forkJoin([
             this.parametersService.yearParameters,
             this.parametersService.allParameters]
@@ -251,6 +254,8 @@ export class SalaryCalculatorComponent implements OnInit {
 
         this.yearCalculationModel.isPensioner = this.isPensioner;
         this.yearCalculationModel.employeeDisability = this.selectedDisability;
+        this.yearCalculationModel.isAGICalculationEnabled = this.enableAGICalculation;
+
         try {
             this.yearCalculationModel.calculate();
         } catch (e) {

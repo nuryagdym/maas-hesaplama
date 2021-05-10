@@ -20,12 +20,14 @@ export class YearCalculationModel {
     private _employeeEduType: EmployeeEducationType;
     private _employeeDisability: any;
     private _numOfCalculatedMonths: number;
+    private _isAGICalculationEnabled: boolean;
 
     private readonly _parameters: any;
 
     constructor(months: string[], salaryConstants: any) {
 
         this._parameters = salaryConstants;
+        this._isAGICalculationEnabled = true;
 
         this._months = [];
         let previousMonth: MonthCalculationModel;
@@ -122,6 +124,14 @@ export class YearCalculationModel {
         this._isAGIIncludedTax = value;
     }
 
+    get isAGICalculationEnabled(): boolean {
+        return this._isAGICalculationEnabled;
+    }
+
+    set isAGICalculationEnabled(value: boolean) {
+        this._isAGICalculationEnabled = value;
+    }
+
     calculate() {
         this._numOfCalculatedMonths = 0;
         let result = 0;
@@ -130,7 +140,7 @@ export class YearCalculationModel {
                 this._workedDays[i], this._researchAndDevelopmentWorkedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.exemptionRate,
                 this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax,
-                this._isPensioner, this._employeeDisability.degree);
+                this._isPensioner, this._employeeDisability.degree, this._isAGICalculationEnabled);
             if (m.calculatedGrossSalary > 0) {
                 this._numOfCalculatedMonths++;
             }
