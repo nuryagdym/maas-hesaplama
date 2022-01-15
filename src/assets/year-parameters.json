@@ -1,50 +1,94 @@
 {
     "yearParameters": [
         {
-          "year": 2021,
-          "minGrossWage": 3577.50,
-          "SGKCeil": 26831.4,
-          "taxSlices": [
-            {
-              "rate": 0.15,
-              "ceil": 24000
-            },
-            {
-              "rate": 0.2,
-              "ceil": 53000
-            },
-            {
-              "rate": 0.27,
-              "ceil": 190000
-            },
-            {
-              "rate": 0.35,
-              "ceil": 650000
-            },
-            {
-              "rate": 0.4,
-              "ceil": null
-            }
-          ],
-          "disabledMonthlyIncomeTaxDiscountBases": [
-            {
-              "degree": 1,
-              "amount": 1500
-            },
-            {
-              "degree": 2,
-              "amount": 860
-            },
-            {
-              "degree": 3,
-              "amount": 380
-            }
-          ]
+            "year": 2022,
+            "minGrossWage": 5004,
+            "SGKCeil": 37530,
+            "minWageEmployeeTaxExemption": true,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 32000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 70000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 250000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": 880000
+                },
+                {
+                    "rate": 0.4,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 2000
+                },
+                {
+                    "degree": 2,
+                    "amount": 1170
+                },
+                {
+                    "degree": 3,
+                    "amount": 500
+                }
+            ]
+        },
+        {
+            "year": 2021,
+            "minGrossWage": 3577.50,
+            "SGKCeil": 26831.4,
+            "minWageEmployeeTaxExemption": false,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 24000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 53000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 190000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": 650000
+                },
+                {
+                    "rate": 0.4,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 1500
+                },
+                {
+                    "degree": 2,
+                    "amount": 860
+                },
+                {
+                    "degree": 3,
+                    "amount": 380
+                }
+            ]
         },
         {
             "year": 2020,
             "minGrossWage": 2943,
             "SGKCeil": 22072.5,
+            "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
                     "rate": 0.15,
@@ -86,6 +130,7 @@
             "year": 2019,
             "minGrossWage": 2558.4,
             "SGKCeil": 19188,
+            "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
                     "rate": 0.15,
@@ -123,6 +168,7 @@
             "year": 2018,
             "minGrossWage": 2029.5,
             "SGKCeil": 15221.4,
+            "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
                     "rate": 0.15,
@@ -160,6 +206,7 @@
             "year": 2017,
             "minGrossWage": 1777.5,
             "SGKCeil": 13331.4,
+            "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
                     "rate": 0.15,
@@ -197,6 +244,7 @@
             "year": 2016,
             "minGrossWage": 1647,
             "SGKCeil": 10705.5,
+            "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
                     "rate": 0.15,

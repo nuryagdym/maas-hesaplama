@@ -29,7 +29,7 @@ describe("YearCalculationModel", () => {
     });
 
     it("2021, 30 gun, Gross to Net, AGI Bekar, Standart Calisan, entered amount 10000, 30 days, No Disability", () => {
-        const selectedYear = yearParameters[0];
+        const selectedYear = yearParameters[1];
         const grossSalary = 10000;
         monthSalaryInputs.fill(grossSalary);
         dayCounts.fill(yearCalculationModel.monthDayCount);

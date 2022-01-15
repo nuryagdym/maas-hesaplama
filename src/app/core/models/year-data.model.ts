@@ -13,6 +13,7 @@ export class YearDataModel {
     year: number;
     minGrossWage: number;
     SGKCeil: number;
+    minWageEmployeeTaxExemption: boolean;
     taxSlices: TaxSliceModel[];
     disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountBaseModel[];
 }

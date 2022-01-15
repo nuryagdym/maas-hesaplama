@@ -18,6 +18,7 @@ interface DisabledMonthlyIncomeTaxDiscountResponse {
 interface YearParameterResponse {
     year: number;
     minGrossWage: number;
+    minWageEmployeeTaxExemption: boolean;
     taxSlices: TaxSliceResponse[];
     disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountResponse[];
     SGKCeil: number;
@@ -153,6 +154,7 @@ export class ParametersService {
                     const newParam = new YearDataModel();
                     newParam.year = item.year;
                     newParam.minGrossWage = item.minGrossWage;
+                    newParam.minWageEmployeeTaxExemption = item.minWageEmployeeTaxExemption;
                     newParam.SGKCeil = item.SGKCeil;
 
                     newParam.taxSlices = [];
