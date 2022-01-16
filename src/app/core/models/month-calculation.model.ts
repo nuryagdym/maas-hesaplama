@@ -354,10 +354,8 @@ export class MonthCalculationModel {
         } else if (employeeType.taxMinWageBasedExemption) {
 
             if ((employeeIncomeTax - AGIAmount) > 0) {
-                const taxBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
-                const SGKBase = MonthCalculationModel.calcSGKBase(yearParams, yearParams.minGrossWage, workedDays, constants.monthDayCount);
                 const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams,
-                    employeeType, constants, taxBase, SGKBase, workedDays, isPensioner, disabilityDegree);
+                    employeeType, constants, yearParams.minGrossWage, workedDays, isPensioner, disabilityDegree);
                 const minWageExemption = Math.max((minWageBasedIncomeTax.tax - AGIAmount), 0);
                 exemption = Math.min(employeeIncomeTax - AGIAmount, minWageExemption);
             }
@@ -366,24 +364,37 @@ export class MonthCalculationModel {
         return exemption;
     }
 
-    /**
-     * @param yearParams
-     * @param employeeType
-     * @param constants
-     * @param calculatedGrossSalary bordroya esas brut ucret
-     * @param SGKBase SGK Matrahi
-     * @param workedDays
-     * @param isPensioner
-     * @param disabilityDegree
-     */
+
     public static calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams: YearDataModel,
                                                              employeeType: EmployeeType,
                                                              constants: CalculationConstants,
-                                                             calculatedGrossSalary: number,
-                                                             SGKBase: number,
+                                                             grossSalary: number,
                                                              workedDays: number,
                                                              isPensioner: boolean,
-                                                             disabilityDegree: number) {
+                                                             disabilityDegree: number,
+                                                             cumulativeIncomeTaxBase: number = 0) {
+
+        const incomeTaxBase = MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(grossSalary,
+            constants,
+            yearParams,
+            workedDays,
+            employeeType,
+            isPensioner,
+            disabilityDegree);
+
+        return MonthCalculationModel.calcEmployeeIncomeTax(cumulativeIncomeTaxBase, yearParams, employeeType, incomeTaxBase);
+    }
+
+    public static calcTaxBaseOfGivenGrossSalary(grossSalary: number,
+                                                constants: CalculationConstants,
+                                                yearParams: YearDataModel,
+                                                workedDays: number,
+                                                employeeType: EmployeeType,
+                                                isPensioner: boolean,
+                                                disabilityDegree: number) {
+
+        const taxBase = MonthCalculationModel.calcGrossSalary(grossSalary, workedDays, constants.monthDayCount);
+        const SGKBase = MonthCalculationModel.calcSGKBase(yearParams, grossSalary, workedDays, constants.monthDayCount);
 
         const employeeSGKDeduction = MonthCalculationModel.calcEmployeeSGKDeduction(isPensioner, employeeType,
             constants, SGKBase);
@@ -391,12 +402,11 @@ export class MonthCalculationModel {
             isPensioner, employeeType, constants, SGKBase);
         const employeeDisabledIncomeTaxBaseAmount = MonthCalculationModel.calcDisabledIncomeTaxBaseAmount(yearParams,
             disabilityDegree, workedDays, constants.monthDayCount);
-        const incomeTaxBase = MonthCalculationModel.calcIncomeTaxBase(calculatedGrossSalary,
+
+        return MonthCalculationModel.calcIncomeTaxBase(taxBase,
             employeeSGKDeduction,
             employeeUnemploymentInsuranceDeduction,
             employeeDisabledIncomeTaxBaseAmount);
-
-        return MonthCalculationModel.calcEmployeeIncomeTax(0, yearParams, employeeType, incomeTaxBase);
     }
 
     private static calcEmployerStampTax(employeeType: EmployeeType, stampTax: number, stampTaxExemption: number) {
