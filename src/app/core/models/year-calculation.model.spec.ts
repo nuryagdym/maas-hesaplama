@@ -2,8 +2,8 @@ import {YearCalculationModel} from "./year-calculation.model";
 import {ParametersService} from "../services/parameters.service";
 import {TestBed, async} from "@angular/core/testing";
 import {HttpClient, HttpHandler} from "@angular/common/http";
-import * as parameters from "src/assets/fixtures.json";
-import {yearParameters} from "src/assets/year-parameters.json";
+const parameters = require("src/assets/fixtures.json");
+const yearParameters = require("src/assets/year-parameters.json").yearParameters;
 
 describe("YearCalculationModel", () => {
     let yearCalculationModel: YearCalculationModel;

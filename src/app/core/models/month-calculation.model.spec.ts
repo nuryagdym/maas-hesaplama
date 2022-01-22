@@ -1,7 +1,7 @@
 import {MonthCalculationModel} from "./month-calculation.model";
 import {YearCalculationModel} from "./year-calculation.model";
-import * as parameters from "src/assets/fixtures.json";
-import {yearParameters} from "src/assets/year-parameters.json";
+const parameters = require("src/assets/fixtures.json");
+const yearParameters = require("src/assets/year-parameters.json").yearParameters;
 
 describe("MonthCalculationModel", () => {
     const AGIOptions = parameters.AGI_OPTIONS;
