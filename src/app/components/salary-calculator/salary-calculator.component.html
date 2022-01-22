@@ -39,7 +39,7 @@
                     </div>
                     <mat-form-field>
                         <mat-label>{{AGIOptions.labelText}}</mat-label>
-                        <mat-select [(ngModel)]='selectedAGIOption' [disabled]="!selectedEmployeeType.AGIApplicable"
+                        <mat-select [(ngModel)]='selectedAGIOption' [disabled]="!selectedEmployeeType.AGIApplicable || selectedYear.minWageEmployeeTaxExemption"
                                     (ngModelChange)="calculate()">
                             <mat-option *ngFor="let op of AGIOptions.options" [value]="op">
                                 {{op.text}}
