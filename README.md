@@ -1,6 +1,6 @@
 # SalaryCalculator
 
-Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
+Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
 
 * [Maaş Hesaplama Demo](http://mustapayev.com/maas-hesaplama/)
 
@@ -44,6 +44,7 @@ Maaş hesaplama için Angular 9 ile yapılmış kütüphane.
 
 ## Features
 
+- 2022 maaş hesaplaması
 - Standart Çalışan maaş hesaplaması
 - 6111 Sayılı Kanun maaş hesaplaması
 - 17103 Sayılı Kanun maaş hesaplaması
