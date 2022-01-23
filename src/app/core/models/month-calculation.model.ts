@@ -466,10 +466,9 @@ export class MonthCalculationModel {
     private static calcEmployerStampTax(
         employeeType: EmployeeType,
         stampTax: number,
-        stampTaxExemption: number,
-        employeeStampTaxExemption: number
+        stampTaxExemption: number
     ) {
-        return employeeType.employerStampTaxApplicable ? (stampTax - stampTaxExemption - employeeStampTaxExemption) : 0;
+        return employeeType.employerStampTaxApplicable ? stampTax - stampTaxExemption : 0;
     }
 
     constructor(parameters: any) {
@@ -581,7 +580,7 @@ export class MonthCalculationModel {
             this._parameters);
 
         this._employerStampTax = MonthCalculationModel.calcEmployerStampTax(employeeType,
-            this._stampTax, this._employerStampTaxExemption, this._employeeStampTaxExemption);
+            this._stampTax, this.totalStampTaxExemption);
         const incomeTaxResult = MonthCalculationModel.calcEmployeeIncomeTax(cumIncomeTaxBase, yearParams, employeeType, this.incomeTaxBase);
         this._employeeIncomeTax = incomeTaxResult.tax;
         this._appliedTaxSlices = incomeTaxResult.appliedTaxSlices;
@@ -857,7 +856,7 @@ export class MonthCalculationModel {
     }
 
     public get totalStampTaxExemption(): number {
-        return this._employerStampTaxExemption + this._employeeStampTaxExemption;
+        return Math.max(this._employerStampTaxExemption, this._employeeStampTaxExemption);
     }
 
     public get AGIAmount(): number {
