@@ -25,6 +25,7 @@ export class MonthCalculationModel {
 
     private _employerStampTax: number;
     private _employerStampTaxExemption: number;
+    private _employeeStampTaxExemption: number;
     private _employerSGKDeduction: number;
     private _employerSGKExemptionAmount: number;
     private _employerUnemploymentInsuranceDeduction: number;
@@ -124,14 +125,14 @@ export class MonthCalculationModel {
         return SGKBase * rate;
     }
 
-    public static calcStampTax(employeeType: EmployeeType, constants: CalculationConstants, yearParams: YearDataModel, grossSalary: number, workedDays: number): number {
+    public static calcStampTax(employeeType: EmployeeType,
+                               constants: CalculationConstants,
+                               yearParams: YearDataModel,
+                               grossSalary: number): number {
         if (!employeeType.stampTaxApplicable) {
             return 0;
         }
-        if (yearParams.minWageEmployeeTaxExemption) {
-            const minWageGrossSalary = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
-            return (grossSalary - minWageGrossSalary) * constants.stampTaxRate;
-        }
+
         return (grossSalary * constants.stampTaxRate);
     }
 
@@ -149,8 +150,26 @@ export class MonthCalculationModel {
             exemption = stampTaxAmount * (researchAndDevelopmentWorkedDays / workedDays);
         } else if (employeeType.taxMinWageBasedExemption) {
             const taxBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
-            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase, workedDays);
+            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
         }
+        return exemption;
+    }
+
+    public static calcEmployeeStampTaxExemption(yearParams: YearDataModel,
+                                                stampTaxAmount: number,
+                                                employeeType: EmployeeType,
+                                                constants: CalculationConstants) {
+
+        let exemption = 0;
+        if (yearParams.minWageEmployeeTaxExemption) {
+            const taxBase = MonthCalculationModel.calcGrossSalary(
+                yearParams.minGrossWage,
+                constants.monthDayCount,
+                constants.monthDayCount
+            );
+            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
+        }
+
         return exemption;
     }
 
@@ -216,10 +235,11 @@ export class MonthCalculationModel {
                                 SGKDeduction: number,
                                 employeeUnemploymentInsuranceDeduction: number,
                                 stampTax: number,
+                                stampTaxExemption: number,
                                 employeeIncomeTax: number,
                                 employeeIncomeTaxExemption): number {
-        return grossSalary - (SGKDeduction +
-            employeeUnemploymentInsuranceDeduction + stampTax + employeeIncomeTax) + employeeIncomeTaxExemption;
+        return grossSalary + stampTaxExemption + employeeIncomeTaxExemption
+            - (SGKDeduction + employeeUnemploymentInsuranceDeduction + stampTax + employeeIncomeTax);
     }
 
     public static calcEmployerSGKDeduction(isPensioner: boolean,
@@ -443,8 +463,13 @@ export class MonthCalculationModel {
             employeeDisabledIncomeTaxBaseAmount);
     }
 
-    private static calcEmployerStampTax(employeeType: EmployeeType, stampTax: number, stampTaxExemption: number) {
-        return employeeType.employerStampTaxApplicable ? (stampTax - stampTaxExemption) : 0;
+    private static calcEmployerStampTax(
+        employeeType: EmployeeType,
+        stampTax: number,
+        stampTaxExemption: number,
+        employeeStampTaxExemption: number
+    ) {
+        return employeeType.employerStampTaxApplicable ? (stampTax - stampTaxExemption - employeeStampTaxExemption) : 0;
     }
 
     constructor(parameters: any) {
@@ -515,6 +540,7 @@ export class MonthCalculationModel {
         this._employerSGKExemptionAmount = 0;
         this._employerStampTax = 0;
         this._employerStampTaxExemption = 0;
+        this._employeeStampTaxExemption = 0;
         this._appliedTaxSlices = [];
     }
 
@@ -548,11 +574,14 @@ export class MonthCalculationModel {
         this._employeeUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployeeUnemploymentInsuranceExemption(yearParams,
             employeeType, workedDays, this._parameters, this.employeeUnemploymentInsuranceDeduction);
 
-        this._stampTax = MonthCalculationModel.calcStampTax(employeeType, this._parameters, yearParams, this.calculatedGrossSalary, workedDays);
+        this._stampTax = MonthCalculationModel.calcStampTax(employeeType, this._parameters, yearParams, this.calculatedGrossSalary);
         this._employerStampTaxExemption = MonthCalculationModel.calcEmployerStampTaxExemption(yearParams, this._stampTax, employeeType,
             this._parameters, workedDays, researchAndDevelopmentWorkedDays);
+        this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams, this._stampTax, employeeType,
+            this._parameters);
 
-        this._employerStampTax = MonthCalculationModel.calcEmployerStampTax(employeeType, this._stampTax, this._employerStampTaxExemption);
+        this._employerStampTax = MonthCalculationModel.calcEmployerStampTax(employeeType,
+            this._stampTax, this._employerStampTaxExemption, this._employeeStampTaxExemption);
         const incomeTaxResult = MonthCalculationModel.calcEmployeeIncomeTax(cumIncomeTaxBase, yearParams, employeeType, this.incomeTaxBase);
         this._employeeIncomeTax = incomeTaxResult.tax;
         this._appliedTaxSlices = incomeTaxResult.appliedTaxSlices;
@@ -564,7 +593,8 @@ export class MonthCalculationModel {
         this._AGIAmount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled);
 
         this._netSalary = MonthCalculationModel.calcNetSalary(this.calculatedGrossSalary, this.employeeSGKDeduction,
-            this.employeeUnemploymentInsuranceDeduction, this.stampTax, this.employeeIncomeTax, this.employeeIncomeTaxExemptionAmount);
+            this.employeeUnemploymentInsuranceDeduction, this.stampTax, this.employeeStampTaxExemption,
+            this.employeeIncomeTax, this.employeeIncomeTaxExemptionAmount);
 
         this._employerSGKDeduction = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner,
             employeeType, this._parameters, this.SGKBase);
@@ -826,6 +856,10 @@ export class MonthCalculationModel {
         return this._employerStampTaxExemption;
     }
 
+    public get totalStampTaxExemption(): number {
+        return this._employerStampTaxExemption + this._employeeStampTaxExemption;
+    }
+
     public get AGIAmount(): number {
         return this._AGIAmount;
     }
@@ -855,5 +889,9 @@ export class MonthCalculationModel {
 
     get employeeIncomeTaxExemptionAmount(): number {
         return this._employeeIncomeTaxExemptionAmount;
+    }
+
+    get employeeStampTaxExemption(): number {
+        return this._employeeStampTaxExemption;
     }
 }

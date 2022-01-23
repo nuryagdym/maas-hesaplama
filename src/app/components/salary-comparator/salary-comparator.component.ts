@@ -50,7 +50,7 @@ export class SalaryComparatorComponent implements OnInit {
         "employerUnemploymentInsuranceDeduction",
         "totalSGKExemption",
         "employerIncomeTaxExemptionAmount",
-        "employerStampTaxExemption",
+        "totalStampTaxExemption",
         "employerTotalSGKCost",
         "employerFinalStampTax",
         "employerFinalIncomeTax",

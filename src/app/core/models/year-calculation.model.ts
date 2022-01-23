@@ -263,6 +263,15 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employerStampTaxExemption / this._numOfCalculatedMonths : 0;
     }
 
+    get totalStampTaxExemption() {
+        const totalSum = this._months.reduce((total, month) => total + month.totalStampTaxExemption, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+    get avgTotalStampTaxExemption() {
+        return this._numOfCalculatedMonths > 0 ? this.totalStampTaxExemption / this._numOfCalculatedMonths : 0;
+    }
+
+
     get netSalary() {
         const totalSum = this._months.reduce((total, month) => total + month.netSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;
