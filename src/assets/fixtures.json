@@ -39,7 +39,7 @@
         ]
     },
     "DISABILITY_OPTIONS": {
-        "labelText": "Sakatlık Durumu",
+        "labelText": "Engellilik Durumu",
         "options": [
             {
                 "degree": -1,
