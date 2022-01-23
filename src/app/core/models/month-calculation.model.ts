@@ -502,6 +502,7 @@ export class MonthCalculationModel {
         this._employeeUnemploymentInsuranceExemptionAmount = 0;
         this._employeeIncomeTax = 0;
         this._employerIncomeTaxExemptionAmount = 0;
+        this._employeeIncomeTaxExemptionAmount = 0;
         this._employeeDisabledIncomeTaxBaseAmount = 0;
 
         this._employerUnemploymentInsuranceDeduction = 0;
