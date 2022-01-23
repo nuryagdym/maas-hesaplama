@@ -89,7 +89,7 @@
                         </mat-slide-toggle>
                     </div>
                     <div>
-                        <mat-slide-toggle [(ngModel)]='enableAGICalculation' class="example-margin" (ngModelChange)="calculate()">
+                        <mat-slide-toggle [(ngModel)]='enableAGICalculation' [disabled]="selectedYear.minWageEmployeeTaxExemption" class="example-margin" (ngModelChange)="calculate()">
                             AGİ Hesapla
                         </mat-slide-toggle>
                     </div>
