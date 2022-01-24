@@ -168,6 +168,7 @@ export class MonthCalculationModel {
                 constants.monthDayCount
             );
             exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
+            exemption = Math.min(stampTaxAmount, exemption);
         }
 
         return exemption;
