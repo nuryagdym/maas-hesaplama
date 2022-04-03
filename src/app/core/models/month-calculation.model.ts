@@ -366,7 +366,6 @@ export class MonthCalculationModel {
                                                  researchAndDevelopmentWorkedDays: number,
                                                  employeeIncomeTax: number,
                                                  AGIAmount: number,
-                                                 isPensioner: boolean,
                                                  disabilityDegree: number,
                                                  cumulativeIncomeTaxBase: number = 0): number {
 
@@ -588,7 +587,7 @@ export class MonthCalculationModel {
 
         this._employeeIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployeeIncomeTaxExemption(yearParams, employeeType,
             this._parameters, employeeEduExemptionRate, isAGIIncludedTax,
-            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, 0, isPensioner, disabilityDegree, cumulativeMinWageIncomeTaxBase);
+            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, 0, disabilityDegree, cumulativeMinWageIncomeTaxBase);
 
         this._AGIAmount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled);
 
