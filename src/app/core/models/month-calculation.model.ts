@@ -9,6 +9,7 @@ export class MonthCalculationModel {
     private _employeeDisabledIncomeTaxBaseAmount: number;
     private _employerIncomeTaxExemptionAmount: number;
 
+    private _grossSalaryForTaxBaseCalculation: number;
     private _calculatedGrossSalary: number;
     /**
      * SGK Matrahı
@@ -518,6 +519,7 @@ export class MonthCalculationModel {
     }
 
     public resetFields() {
+        this._grossSalaryForTaxBaseCalculation = 0;
         this._calculatedGrossSalary = 0;
         this._SGKBase = 0;
         this._employeeSGKDeduction = 0;
@@ -549,6 +551,7 @@ export class MonthCalculationModel {
                        applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
                        isPensioner: boolean, disabilityDegree: number, isAGICalculationEnabled: boolean) {
 
+        this._grossSalaryForTaxBaseCalculation = Math.min(yearParams.minGrossWage, grossSalary);
         const cumIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeIncomeTaxBase : 0;
         const cumulativeMinWageIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeMinWageIncomeTaxBase(yearParams,
             this._parameters, employeeType, isPensioner, disabilityDegree) : 0;
@@ -754,7 +757,7 @@ export class MonthCalculationModel {
                                     isPensioner: boolean,
                                     disabilityDegree: number) {
 
-        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(yearParams.minGrossWage, constants, yearParams, this.workedDays,
+        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(this._grossSalaryForTaxBaseCalculation, constants, yearParams, this.workedDays,
             employeeType, isPensioner, disabilityDegree);
     }
 
