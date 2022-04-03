@@ -156,21 +156,38 @@ export class MonthCalculationModel {
         return exemption;
     }
 
-    public static calcEmployeeStampTaxExemption(yearParams: YearDataModel,
-                                                stampTaxAmount: number,
-                                                employeeType: EmployeeType,
-                                                constants: CalculationConstants) {
+    public static calcEmployeeStampTaxExemption(
+        yearParams: YearDataModel,
+        stampTaxAmount: number,
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        grossSalary: number,
+        workedDays: number,
+        researchAndDevelopmentWorkedDays: number,
+    ) {
 
         let exemption = 0;
+        let minWageTaxBase = 0;
         if (yearParams.minWageEmployeeTaxExemption) {
-            const taxBase = MonthCalculationModel.calcGrossSalary(
+            minWageTaxBase = MonthCalculationModel.calcGrossSalary(
                 yearParams.minGrossWage,
                 constants.monthDayCount,
                 constants.monthDayCount
             );
-            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
-            exemption = Math.min(stampTaxAmount, exemption);
+            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, minWageTaxBase);
         }
+        if (yearParams.minWageEmployeeTaxExemption && employeeType.employerEducationIncomeTaxExemption) {
+            const taxBase = MonthCalculationModel.calcGrossSalary(
+                grossSalary,
+                workedDays,
+                constants.monthDayCount
+            ) - minWageTaxBase;
+            if (taxBase > 0) {
+                exemption += MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase)
+                    * (researchAndDevelopmentWorkedDays / workedDays);
+            }
+        }
+        exemption = Math.min(stampTaxAmount, exemption);
 
         return exemption;
     }
@@ -580,7 +597,8 @@ export class MonthCalculationModel {
         this._employerStampTaxExemption = MonthCalculationModel.calcEmployerStampTaxExemption(yearParams, this._stampTax, employeeType,
             this._parameters, workedDays, researchAndDevelopmentWorkedDays);
         this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams, this._stampTax, employeeType,
-            this._parameters);
+            this._parameters, grossSalary, workedDays, researchAndDevelopmentWorkedDays);
+
 
         this._employerStampTax = MonthCalculationModel.calcEmployerStampTax(employeeType,
             this._stampTax, this.totalStampTaxExemption);
