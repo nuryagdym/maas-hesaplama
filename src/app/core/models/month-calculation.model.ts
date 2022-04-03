@@ -376,7 +376,7 @@ export class MonthCalculationModel {
             if (employeeIncomeTax > 0) {
                 const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams,
                     employeeType, constants, yearParams.minGrossWage,  constants.monthDayCount,
-                    isPensioner, disabilityDegree, cumulativeIncomeTaxBase);
+                    false, disabilityDegree, cumulativeIncomeTaxBase);
 
                 exemption = Math.min(employeeIncomeTax, minWageBasedIncomeTax.tax);
             }
