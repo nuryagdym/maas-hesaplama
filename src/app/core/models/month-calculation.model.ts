@@ -775,7 +775,7 @@ export class MonthCalculationModel {
                                     isPensioner: boolean,
                                     disabilityDegree: number) {
 
-        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(this._grossSalaryForTaxBaseCalculation, constants, yearParams, this.workedDays,
+        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(this._grossSalaryForTaxBaseCalculation, constants, yearParams, constants.monthDayCount,
             employeeType, isPensioner, disabilityDegree);
     }
 
