@@ -176,7 +176,7 @@ export class MonthCalculationModel {
             );
             exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, minWageTaxBase);
         }
-        if (yearParams.minWageEmployeeTaxExemption && employeeType.employerEducationIncomeTaxExemption) {
+        if (yearParams.minWageEmployeeTaxExemption && employeeType.researchAndDevelopmentTaxExemption) {
             const taxBase = MonthCalculationModel.calcGrossSalary(
                 grossSalary,
                 workedDays,
