@@ -505,7 +505,7 @@ export class MonthCalculationModel {
             this.resetFields();
             return;
         }
-        if (researchAndDevelopmentWorkedDays > workedDays) {
+        if (employeeType.researchAndDevelopmentTaxExemption && researchAndDevelopmentWorkedDays > workedDays) {
             throw new Error("Ar-Ge çalışma günü normal çalışma günden fazla olamaz");
         }
 
