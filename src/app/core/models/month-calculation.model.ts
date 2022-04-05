@@ -517,7 +517,7 @@ export class MonthCalculationModel {
                 researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate,
                 applyEmployerDiscount5746, isAGIIncludedTax, isPensioner, disabilityDegree, isAGICalculationEnabled);
         } else {
-            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, this._parameters.monthDayCount,
+            grossSalary = this.findGrossFromNet(yearParams, enteredAmount, workedDays, this._parameters,
                 researchAndDevelopmentWorkedDays, agiRate, employeeType, employeeEduExemptionRate,
                 applyEmployerDiscount5746, isAGIIncludedNet, isAGIIncludedTax, isPensioner, disabilityDegree, isAGICalculationEnabled);
         }
@@ -644,6 +644,7 @@ export class MonthCalculationModel {
     private findGrossFromNet(yearParams: YearDataModel,
                              enteredAmount: number,
                              workedDays: number,
+                             constants: CalculationConstants,
                              researchAndDevelopmentWorkedDays: number,
                              agiRate: number,
                              employeeType: EmployeeType,
@@ -656,9 +657,9 @@ export class MonthCalculationModel {
                              isAGICalculationEnabled: boolean,
 
     ) {
-
-        let left = enteredAmount;
-        let right = 3 * enteredAmount;
+        enteredAmount = enteredAmount * (workedDays / constants.monthDayCount);
+        let left = enteredAmount / 30;
+        let right = 30 * enteredAmount;
         let middle = (right + left) / 2;
         const itLimit = 100;
         let calcNetSalary = null;
