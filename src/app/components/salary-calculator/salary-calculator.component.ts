@@ -40,7 +40,7 @@ export class SalaryCalculatorComponent implements OnInit {
     selectedEmployeeEducationType: any;
     selectedDisability: any;
     selectedCalcMode: string;
-
+    applyMinWageTaxExemption: boolean;
     enableAGICalculation: boolean;
     AGIIncludedNet: boolean;
     AGIIncludedTax: boolean;
@@ -111,6 +111,7 @@ export class SalaryCalculatorComponent implements OnInit {
 
         this.loading = true;
         this.enableAGICalculation = true;
+        this.applyMinWageTaxExemption = true;
         forkJoin([
             this.parametersService.yearParameters,
             this.parametersService.allParameters]
@@ -255,6 +256,7 @@ export class SalaryCalculatorComponent implements OnInit {
         this.yearCalculationModel.isPensioner = this.isPensioner;
         this.yearCalculationModel.employeeDisability = this.selectedDisability;
         this.yearCalculationModel.isAGICalculationEnabled = this.enableAGICalculation;
+        this.yearCalculationModel.applyMinWageTaxExemption = this.applyMinWageTaxExemption;
 
         try {
             this.yearCalculationModel.calculate();

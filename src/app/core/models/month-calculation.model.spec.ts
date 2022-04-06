@@ -23,7 +23,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, false);
 
         expect(roundNumber(month.AGIAmount)).toEqual(268.31);
         expect(roundNumber(month.finalNetSalary)).toEqual(7417.41);
@@ -33,7 +33,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree, false);
+            disabilityOptions.options[0].degree, false, true);
 
         expect(roundNumber(month.AGIAmount)).toEqual(0);
         expect(roundNumber(month.finalNetSalary)).toEqual(roundNumber(month.netSalary));
@@ -51,7 +51,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
         expect(month.calculatedGrossSalary).toEqual(salary);
         expect(month.stampTax).toEqual(75.9);
         expect(roundNumber(month.employeeSGKDeduction)).toEqual(1400);
@@ -79,7 +79,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
         expect(roundNumber(month.calculatedGrossSalary)).toEqual(salary);
         expect(roundNumber(month.stampTax)).toEqual(75.9);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(27.15);
@@ -115,7 +115,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(50.6);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(18.1);
@@ -155,7 +155,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(27.15);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(27.15);
@@ -195,7 +195,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.employerTotalSGKCost)).toEqual(2052.81);
         expect(roundNumber(month.employerFinalIncomeTax)).toEqual(581.69);
@@ -212,7 +212,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(75.9);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(27.15);
@@ -251,7 +251,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(50.6);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(18.1);
@@ -291,7 +291,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(27.15);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(27.15);
@@ -333,7 +333,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.netSalary)).toEqual(7149.10);
 
@@ -355,7 +355,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.netSalary)).toEqual(4766.07);
 
@@ -377,7 +377,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.netSalary)).toEqual(4766.07);
 
@@ -399,7 +399,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(75.9);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
@@ -441,7 +441,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(75.9);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
@@ -485,7 +485,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             applyEmployerDiscount5746, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
 
         expect(roundNumber(month.stampTax)).toEqual(0);
         expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
@@ -510,7 +510,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
         expect(roundNumber(month.calculatedGrossSalary)).toEqual(8163.27);
         expect(roundNumber(month.netSalary)).toEqual(5836);
         expect(roundNumber(month.employerTotalSGKCost)).toEqual(3061.22);
@@ -528,7 +528,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
         expect(roundNumber(month.calculatedGrossSalary)).toEqual(9855.77);
         expect(roundNumber(month.netSalary)).toEqual(7045.99);
         expect(roundNumber(month.employerTotalSGKCost)).toEqual(2685.70);
@@ -546,7 +546,7 @@ describe("MonthCalculationModel", () => {
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
-            disabilityOptions.options[0].degree);
+            disabilityOptions.options[0].degree, true, true);
         expect(roundNumber(month.calculatedGrossSalary)).toEqual(9660.63);
         expect(roundNumber(month.netSalary)).toEqual(6906.48);
         expect(roundNumber(month.employerTotalSGKCost)).toEqual(2632.52);

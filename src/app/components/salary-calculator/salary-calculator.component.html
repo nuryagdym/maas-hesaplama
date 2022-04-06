@@ -89,6 +89,11 @@
                         </mat-slide-toggle>
                     </div>
                     <div>
+                        <mat-slide-toggle [(ngModel)]='applyMinWageTaxExemption' [disabled]="!selectedYear.minWageEmployeeTaxExemption" class="example-margin" (ngModelChange)="calculate()">
+                            Asgari Ücret İstisnası Uygulansın
+                        </mat-slide-toggle>
+                    </div>
+                    <div>
                         <mat-slide-toggle [(ngModel)]='enableAGICalculation' [disabled]="selectedYear.minWageEmployeeTaxExemption" class="example-margin" (ngModelChange)="calculate()">
                             AGİ Hesapla
                         </mat-slide-toggle>

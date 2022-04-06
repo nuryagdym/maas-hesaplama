@@ -14,6 +14,7 @@ export class YearCalculationModel {
     private _isPensioner: boolean;
     private _isAGIIncludedNet: boolean;
     private _isAGIIncludedTax: boolean;
+    private _applyMinWageTaxExemption: boolean;
     private _applyEmployerDiscount5746: boolean;
     private _AGI: any;
     private _employeeType: EmployeeType;
@@ -132,6 +133,14 @@ export class YearCalculationModel {
         this._isAGICalculationEnabled = value;
     }
 
+    get applyMinWageTaxExemption(): boolean {
+        return this._applyMinWageTaxExemption;
+    }
+
+    set applyMinWageTaxExemption(value: boolean) {
+        this._applyMinWageTaxExemption = value;
+    }
+
     calculate() {
         this._numOfCalculatedMonths = 0;
         let result = 0;
@@ -140,7 +149,9 @@ export class YearCalculationModel {
                 this._workedDays[i], this._researchAndDevelopmentWorkedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.exemptionRate,
                 this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax,
-                this._isPensioner, this._employeeDisability.degree, this._isAGICalculationEnabled);
+                this._isPensioner, this._employeeDisability.degree, this._isAGICalculationEnabled,
+                this._applyMinWageTaxExemption
+            );
             if (m.calculatedGrossSalary > 0) {
                 this._numOfCalculatedMonths++;
             }
