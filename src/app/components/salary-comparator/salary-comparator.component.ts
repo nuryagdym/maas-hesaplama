@@ -150,6 +150,7 @@ export class SalaryComparatorComponent implements OnInit {
 
         yearCalculationModel.isPensioner = false;
         yearCalculationModel.employeeDisability = this.selectedDisability;
+        yearCalculationModel.applyMinWageTaxExemption = true;
         try {
             yearCalculationModel.calculate();
         } catch (e) {
