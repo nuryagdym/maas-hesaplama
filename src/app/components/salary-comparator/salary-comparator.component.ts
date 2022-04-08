@@ -92,7 +92,6 @@ export class SalaryComparatorComponent implements OnInit {
                     this.disabilityOptions = allParams.DISABILITY_OPTIONS;
                     this.employeeEducationTypes = allParams.EMPLOYEE_EDUCATION_TYPES;
                     this.calcModes = YearCalculationModel.calculationModes;
-
                     this.employeeTypes.options = this.employeeTypes.options.filter((type) => {
                         return !!salaryComparisonConfig.employeeTypeConfigurations.find((conf) => {
                             return conf.employeeTypeId === type.id;
@@ -161,9 +160,9 @@ export class SalaryComparatorComponent implements OnInit {
     }
 
     private initEmployeeTypeCalculations() {
-
+        const standardEmployeeType = this.employeeTypes.options.find(emp => emp.id === 1);
         this.employeeTypes.options.forEach((type) => {
-            const yearCalculationModel = new YearCalculationModel(this.months, this.parameters.CALCULATION_CONSTANTS);
+            const yearCalculationModel = new YearCalculationModel(this.months, this.parameters.CALCULATION_CONSTANTS, standardEmployeeType);
             yearCalculationModel.employeeType = type;
             this.employeeTypeCalculations.push(yearCalculationModel);
 

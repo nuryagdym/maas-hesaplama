@@ -16,7 +16,7 @@ describe("MonthCalculationModel", () => {
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const employeeType = employeeTypes.options.find((o) => o.id === 1);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, employeeType);
 
         // calculate AGI
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
@@ -46,7 +46,7 @@ describe("MonthCalculationModel", () => {
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const employeeType = employeeTypes.options.find((o) => o.id === 1);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, employeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -73,8 +73,9 @@ describe("MonthCalculationModel", () => {
         const salary = 10000;
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 6);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -109,8 +110,9 @@ describe("MonthCalculationModel", () => {
         const salary = 10000;
         const workedDays = 20;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 6);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -149,8 +151,9 @@ describe("MonthCalculationModel", () => {
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = yearParams.minGrossWage;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 6);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -189,8 +192,9 @@ describe("MonthCalculationModel", () => {
         const salary = 20000;
         const workedDays = 10;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 6);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -206,8 +210,9 @@ describe("MonthCalculationModel", () => {
         const salary = 10000;
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 7);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -245,8 +250,9 @@ describe("MonthCalculationModel", () => {
         const salary = 10000;
         const workedDays = 20;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 7);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -285,8 +291,9 @@ describe("MonthCalculationModel", () => {
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = yearParams.minGrossWage;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 7);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, 0,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -327,8 +334,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = true;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = 10000;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 3);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -349,8 +357,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = true;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = 10000;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 3);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -371,8 +380,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = true;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = 10000;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 2);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -393,8 +403,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = false;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = 10000;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 4);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -435,8 +446,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = false;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = 10000;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 5);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -479,8 +491,9 @@ describe("MonthCalculationModel", () => {
         const applyEmployerDiscount5746 = true;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const salary = yearParams.minGrossWage;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 10);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -505,7 +518,7 @@ describe("MonthCalculationModel", () => {
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
         const employeeType = employeeTypes.options.find((o) => o.id === 1);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, employeeType);
         month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -522,8 +535,9 @@ describe("MonthCalculationModel", () => {
         const workedDays = 30;
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 2);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
@@ -540,8 +554,9 @@ describe("MonthCalculationModel", () => {
         const workedDays = 30;
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 3);
-        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
         month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,

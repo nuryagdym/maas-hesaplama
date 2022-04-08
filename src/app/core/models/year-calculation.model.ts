@@ -25,7 +25,7 @@ export class YearCalculationModel {
 
     private readonly _parameters: any;
 
-    constructor(months: string[], salaryConstants: any) {
+    constructor(months: string[], salaryConstants: any, standardEmployeeType: EmployeeType) {
 
         this._parameters = salaryConstants;
         this._isAGICalculationEnabled = true;
@@ -33,7 +33,7 @@ export class YearCalculationModel {
         this._months = [];
         let previousMonth: MonthCalculationModel;
         for (const m of months) {
-            const month = new MonthCalculationModel(this._parameters);
+            const month = new MonthCalculationModel(this._parameters, standardEmployeeType);
             month.monthName = m;
             month.previousMonth = previousMonth;
             previousMonth = month;

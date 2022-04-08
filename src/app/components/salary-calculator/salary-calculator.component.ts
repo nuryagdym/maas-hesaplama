@@ -126,7 +126,8 @@ export class SalaryCalculatorComponent implements OnInit {
                     this.employeeTypes = allParams.EMPLOYEE_TYPES;
                     this.disabilityOptions = allParams.DISABILITY_OPTIONS;
                     this.employeeEducationTypes = allParams.EMPLOYEE_EDUCATION_TYPES;
-                    this.yearCalculationModel = new YearCalculationModel(this.months, allParams.CALCULATION_CONSTANTS);
+                    const standardEmployeeType = this.employeeTypes.options.find(emp => emp.id === 1);
+                    this.yearCalculationModel = new YearCalculationModel(this.months, allParams.CALCULATION_CONSTANTS, standardEmployeeType);
                     this.calcModes = YearCalculationModel.calculationModes;
 
                     this.setDefaults();

@@ -9,6 +9,7 @@ describe("YearCalculationModel", () => {
     let yearCalculationModel: YearCalculationModel;
     const AGIOptions = parameters.AGI_OPTIONS;
     const employeeTypes = parameters.EMPLOYEE_TYPES;
+    const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
     const disabilityOptions = parameters.DISABILITY_OPTIONS;
     const employeeEducationTypes = parameters.EMPLOYEE_EDUCATION_TYPES;
     const calcModes = YearCalculationModel.calculationModes;
@@ -21,7 +22,7 @@ describe("YearCalculationModel", () => {
         TestBed.configureTestingModule({
             providers: [ParametersService, HttpClient, HttpHandler],
         });
-        yearCalculationModel = new YearCalculationModel(months, parameters.CALCULATION_CONSTANTS);
+        yearCalculationModel = new YearCalculationModel(months, parameters.CALCULATION_CONSTANTS, standardEmployeeType);
     }));
 
     it("should create an instance", () => {

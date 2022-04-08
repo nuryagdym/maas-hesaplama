@@ -2,6 +2,7 @@ import {TaxSliceModel, YearDataModel} from "./year-data.model";
 import {CalculationConstants, EmployeeType} from "../services/parameters.service";
 
 export class MonthCalculationModel {
+
     monthName: string;
     private _previousMonth: MonthCalculationModel;
     private _workedDays: number;
@@ -38,6 +39,7 @@ export class MonthCalculationModel {
 
     private _parameters;
 
+    private _standardEmployeeType: EmployeeType;
 
     public static calcGrossSalary(grossSalary: number, dayCount: number, monthDayCount: number): number {
         return grossSalary * dayCount / monthDayCount;
@@ -160,6 +162,7 @@ export class MonthCalculationModel {
         yearParams: YearDataModel,
         stampTaxAmount: number,
         employeeType: EmployeeType,
+        standardEmployeeType: EmployeeType,
         constants: CalculationConstants,
         grossSalary: number,
         workedDays: number,
@@ -175,7 +178,7 @@ export class MonthCalculationModel {
                 constants.monthDayCount,
                 constants.monthDayCount
             );
-            exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, minWageTaxBase);
+            exemption = MonthCalculationModel.calcStampTax(standardEmployeeType, constants, yearParams, minWageTaxBase);
         }
         if (applyMinWageTaxExemption && yearParams.minWageEmployeeTaxExemption && employeeType.researchAndDevelopmentTaxExemption) {
             const taxBase = MonthCalculationModel.calcGrossSalary(
@@ -380,6 +383,7 @@ export class MonthCalculationModel {
     public static calcEmployeeIncomeTaxExemption(
         yearParams: YearDataModel,
         employeeType: EmployeeType,
+        standardEmployeeType: EmployeeType,
         constants: CalculationConstants,
         employeeEduExemptionRate: number,
         isAGIIncludedTax: boolean,
@@ -396,7 +400,7 @@ export class MonthCalculationModel {
         if (applyMinWageTaxExemption && yearParams.minWageEmployeeTaxExemption) {
             if (employeeIncomeTax > 0) {
                 const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams,
-                    employeeType, constants, yearParams.minGrossWage,  constants.monthDayCount,
+                    standardEmployeeType, constants, yearParams.minGrossWage,  constants.monthDayCount,
                     false, disabilityDegree, cumulativeIncomeTaxBase);
 
                 exemption = Math.min(employeeIncomeTax, minWageBasedIncomeTax.tax);
@@ -496,8 +500,9 @@ export class MonthCalculationModel {
         return employeeType.employerStampTaxApplicable ? stampTax - stampTaxExemption : 0;
     }
 
-    constructor(parameters: any) {
+    constructor(parameters: any, standardEmployeeType: EmployeeType) {
         this._parameters = parameters;
+        this._standardEmployeeType = standardEmployeeType;
     }
 
     public calculate(calcMode: string, yearParams: YearDataModel,
@@ -587,7 +592,7 @@ export class MonthCalculationModel {
         this._grossSalaryForTaxBaseCalculation = Math.min(yearParams.minGrossWage, grossSalary);
         const cumIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeIncomeTaxBase : 0;
         const cumulativeMinWageIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeMinWageIncomeTaxBase(yearParams,
-            this._parameters, employeeType, isPensioner, disabilityDegree) : 0;
+            this._parameters, this._standardEmployeeType, isPensioner, disabilityDegree) : 0;
         // some calculations are depended to others, so the order of execution matters
         this._calculatedGrossSalary = MonthCalculationModel.calcGrossSalary(grossSalary, workedDays, this._parameters.monthDayCount);
 
@@ -613,6 +618,7 @@ export class MonthCalculationModel {
         this._employerStampTaxExemption = MonthCalculationModel.calcEmployerStampTaxExemption(yearParams, this._stampTax, employeeType,
             this._parameters, workedDays, researchAndDevelopmentWorkedDays);
         this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams, this._stampTax, employeeType,
+            this._standardEmployeeType,
             this._parameters, grossSalary, workedDays, researchAndDevelopmentWorkedDays, applyMinWageTaxExemption);
 
 
@@ -623,7 +629,7 @@ export class MonthCalculationModel {
         this._appliedTaxSlices = incomeTaxResult.appliedTaxSlices;
 
         this._employeeIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployeeIncomeTaxExemption(yearParams, employeeType,
-            this._parameters, employeeEduExemptionRate, isAGIIncludedTax,
+            this._standardEmployeeType, this._parameters, employeeEduExemptionRate, isAGIIncludedTax,
             researchAndDevelopmentWorkedDays, this.employeeIncomeTax, 0, disabilityDegree, cumulativeMinWageIncomeTaxBase,
             applyMinWageTaxExemption
             );
