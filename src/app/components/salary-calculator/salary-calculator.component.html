@@ -256,30 +256,51 @@
                     </ng-container>
                     <ng-container matColumnDef="totalStampTaxExemption">
                         <th mat-header-cell *matHeaderCellDef class="exemptions ">
-                            <span class="{{yearCalculationModel.totalStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                            <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
                                 Damga<br>Vergisi<br>İstisnası
                             </span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span class="{{element.totalStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.totalStampTaxExemption | number : '1.2-2' : 'tr'}}
+                            <span class="{{element.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.employerStampTaxExemption | number : '1.2-2' : 'tr'}}
                             </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
-                    <span class="{{yearCalculationModel.totalStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                        {{yearCalculationModel.totalStampTaxExemption | number : '1.2-2' : 'tr'}}
-                    </span>
+                            <span class="{{yearCalculationModel.employerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                {{yearCalculationModel.employerStampTaxExemption | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="AGIAmount">
+                        <th mat-header-cell *matHeaderCellDef class="{{selectedYear.minWageEmployeeTaxExemption > 0 ? 'exemptions' : ''}}">
+                            <span *ngIf="selectedYear.minWageEmployeeTaxExemption" class="{{yearCalculationModel.employeeMinWageTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                Asgari Ücret<br>Vergi İstisnası<br>(G.V. + D.V.)
+                            </span>
+                            <span *ngIf="!selectedYear.minWageEmployeeTaxExemption">
+                                AGI
+                            </span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="{{selectedYear.minWageEmployeeTaxExemption > 0 ? 'exemptions' : ''}}">
+                            <span *ngIf="selectedYear.minWageEmployeeTaxExemption" class="{{yearCalculationModel.employeeMinWageTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                {{element.employeeMinWageTaxExemptionAmount | number : '1.2-2' : 'tr'}}
+                            </span>
+                            <span *ngIf="!selectedYear.minWageEmployeeTaxExemption">
+                                {{element.AGIAmount | number : '1.2-2' : 'tr'}}
+                            </span>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef class="{{selectedYear.minWageEmployeeTaxExemption > 0 ? 'exemptions' : ''}}">
+                            <span *ngIf="selectedYear.minWageEmployeeTaxExemption" class="{{yearCalculationModel.employeeMinWageTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                {{yearCalculationModel.employeeMinWageTaxExemptionAmount | number : '1.2-2' : 'tr'}}
+                            </span>
+                            <span *ngIf="!selectedYear.minWageEmployeeTaxExemption">
+                                {{yearCalculationModel.AGIAmount | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="netSalary">
                         <th mat-header-cell *matHeaderCellDef> Net Ücret</th>
                         <td mat-cell *matCellDef="let element"> {{element.netSalary | number : '1.2-2' : 'tr'}} </td>
                         <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.netSalary | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="AGIAmount">
-                        <th mat-header-cell *matHeaderCellDef>AGI</th>
-                        <td mat-cell *matCellDef="let element"> {{element.AGIAmount | number : '1.2-2' : 'tr'}} </td>
-                        <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.AGIAmount | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="finalNetSalary">
                         <th mat-header-cell *matHeaderCellDef> Maaş</th>
@@ -451,16 +472,23 @@
                     </ng-container>
                     <ng-container matColumnDef="avgTotalStampTaxExemption">
                         <td mat-footer-cell *matFooterCellDef class="exemptions">
-                    <span class="{{yearCalculationModel.avgTotalStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                        {{yearCalculationModel.avgTotalStampTaxExemption | number : '1.2-2' : 'tr'}}
+                    <span class="{{yearCalculationModel.avgEmployerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                        {{yearCalculationModel.avgEmployerStampTaxExemption | number : '1.2-2' : 'tr'}}
                     </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="avgAGIAmount" class="{{selectedYear.minWageEmployeeTaxExemption > 0 ? 'active' : 'passive'}}">
+                        <td mat-footer-cell *matFooterCellDef>
+                            <span *ngIf="selectedYear.minWageEmployeeTaxExemption" class="{{yearCalculationModel.avgEmployeeMinWageTaxExemptionAmount > 0 ? 'active' : 'passive'}}">
+                                {{yearCalculationModel.avgEmployeeMinWageTaxExemptionAmount | number : '1.2-2' : 'tr'}}
+                            </span>
+                            <span *ngIf="!selectedYear.minWageEmployeeTaxExemption">
+                                {{yearCalculationModel.avgAGIAmount | number : '1.2-2' : 'tr'}}
+                            </span>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="avgNetSalary">
                         <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.avgNetSalary | number : '1.2-2' : 'tr'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="avgAGIAmount">
-                        <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.avgAGIAmount | number : '1.2-2' : 'tr'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="avgFinalNetSalary">
                         <td mat-footer-cell *matFooterCellDef> {{yearCalculationModel.avgFinalNetSalary | number : '1.2-2' : 'tr'}}

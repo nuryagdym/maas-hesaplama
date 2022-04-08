@@ -370,6 +370,15 @@ export class YearCalculationModel {
         return this._numOfCalculatedMonths > 0 ? this.employerIncomeTaxExemptionAmount / this._numOfCalculatedMonths : 0;
     }
 
+    get employeeMinWageTaxExemptionAmount() {
+        const totalSum = this._months.reduce((total, month) => total + month.employeeMinWageTaxExemptionAmount, 0);
+        return isNaN(totalSum) ? 0 : totalSum;
+    }
+
+    get avgEmployeeMinWageTaxExemptionAmount() {
+        return this._numOfCalculatedMonths > 0 ? this.employeeMinWageTaxExemptionAmount / this._numOfCalculatedMonths : 0;
+    }
+
     get avgEmployerFinalIncomeTax() {
         return this._numOfCalculatedMonths > 0 ? this.employerFinalIncomeTax / this._numOfCalculatedMonths : 0;
     }

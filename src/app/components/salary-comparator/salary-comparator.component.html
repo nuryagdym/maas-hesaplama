@@ -142,8 +142,8 @@
                             <span class="active">Damga<br>Vergisi<br>İstisnası</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="exemptions">
-                            <span class="{{element.avgTotalStampTaxExemption > 0 ? 'active' : 'passive'}}">
-                                {{element.avgTotalStampTaxExemption | number : '1.2-2' : 'tr'}}
+                            <span class="{{element.avgEmployerStampTaxExemption > 0 ? 'active' : 'passive'}}">
+                                {{element.avgEmployerStampTaxExemption | number : '1.2-2' : 'tr'}}
                             </span>
                         </td>
                     </ng-container>
