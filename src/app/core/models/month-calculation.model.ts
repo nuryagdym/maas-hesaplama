@@ -154,7 +154,7 @@ export class MonthCalculationModel {
             exemption = stampTaxAmount;
         } else if (employeeType.researchAndDevelopmentTaxExemption) {
             exemption = Math.max(stampTaxAmount - employeeStampTaxExemptionAmount, 0) * (researchAndDevelopmentWorkedDays / workedDays);
-        } else if (employeeType.taxMinWageBasedExemption) {
+        } else if (!yearParams.minWageEmployeeTaxExemption && employeeType.taxMinWageBasedExemption) {
             const taxBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
         }
