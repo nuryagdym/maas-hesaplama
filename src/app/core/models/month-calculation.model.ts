@@ -84,11 +84,12 @@ export class MonthCalculationModel {
 
     public static calcEmployeeSGKExemption(yearParams: YearDataModel,
                                            employeeType: EmployeeType,
+                                           isPensioner: boolean,
                                            workedDays: number,
                                            constants: CalculationConstants,
                                            employeeSGKDeduction: number): number {
         let exemption = 0;
-        if (!employeeType.SGKApplicable) {
+        if (!employeeType.SGKApplicable || isPensioner) {
             return exemption;
         }
         if (employeeType.SGKMinWageBasedExemption) {
@@ -191,11 +192,12 @@ export class MonthCalculationModel {
 
     public static calcEmployeeUnemploymentInsuranceExemption(yearParams: YearDataModel,
                                                              employeeType: EmployeeType,
+                                                             isPensioner: boolean,
                                                              workedDays: number,
                                                              constants: CalculationConstants,
                                                              employeeUnemploymentInsuranceDeduction: number): number {
         let exemption = 0;
-        if (!employeeType.unemploymentInsuranceApplicable) {
+        if (!employeeType.unemploymentInsuranceApplicable || isPensioner) {
             return exemption;
         }
 
@@ -346,7 +348,7 @@ export class MonthCalculationModel {
                                                              isPensioner: boolean,
                                                              employerUnemploymentInsuranceDeduction: number) {
         let exemption = 0;
-        if (!employeeType.employerUnemploymentInsuranceApplicable) {
+        if (!employeeType.employerUnemploymentInsuranceApplicable || isPensioner) {
             return exemption;
         }
         if (employeeType.SGKMinWageBasedExemption) {
@@ -605,13 +607,16 @@ export class MonthCalculationModel {
             this._parameters, this.SGKBase);
 
         this._employeeSGKExemptionAmount = MonthCalculationModel.calcEmployeeSGKExemption(yearParams, employeeType,
+            isPensioner,
             workedDays, this._parameters, this.employeeSGKDeduction);
 
         this._employeeUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployeeUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
 
         this._employeeUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployeeUnemploymentInsuranceExemption(yearParams,
-            employeeType, workedDays, this._parameters, this.employeeUnemploymentInsuranceDeduction);
+            employeeType,
+            isPensioner,
+            workedDays, this._parameters, this.employeeUnemploymentInsuranceDeduction);
 
         this._stampTax = MonthCalculationModel.calcStampTax(employeeType, this._parameters, yearParams, this.calculatedGrossSalary);
         this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams, this._stampTax, employeeType,
