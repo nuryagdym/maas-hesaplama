@@ -288,15 +288,15 @@ export class MonthCalculationModel {
                                            researchAndDevelopmentWorkedDays: number,
                                            employerSGKDeduction: number): number {
         let exemption = 0;
-        if (!employeeType.employerSGKApplicable) {
+        if (!employeeType.employerSGKApplicable || isPensioner) {
             return exemption;
         }
 
-        if (!isPensioner && applyEmployerDiscount5746 && employeeType.employerSGKDiscount5746Applicable) {
+        if (applyEmployerDiscount5746 && employeeType.employerSGKDiscount5746Applicable) {
             exemption += SGKBase * constants.employer.employerDiscount5746;
         }
 
-        if (!isPensioner && employeeType.employer5746AdditionalDiscountApplicable) {
+        if (employeeType.employer5746AdditionalDiscountApplicable) {
             if (applyEmployerDiscount5746 && employeeType.employerSGKDiscount5746Applicable) {
                 exemption += SGKBase
                     * (researchAndDevelopmentWorkedDays / workedDays)
