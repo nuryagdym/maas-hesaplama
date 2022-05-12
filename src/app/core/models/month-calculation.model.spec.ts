@@ -568,6 +568,145 @@ describe("MonthCalculationModel", () => {
         expect(roundNumber(month.employerTotalCost)).toEqual(amount);
     });
 
+    it("calculate month for year 2022, from GROSS_TO_NET, 30 days, 30 r&d days, amount 10000 TL, AGI Bekar, Engelli degil, Standart Çalışan, Emekli", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const employeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, true,
+            disabilityOptions.options[0].degree, true, true);
+        expect(roundNumber(month.netSalary)).toEqual(8462.59);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
+        expect(roundNumber(month.employerTotalCost)).toEqual(12450 );
+    });
+
+    it("calculate month for year 2022, from GROSS_TO_NET, 20 days, 30 r&d days, amount min wage TL, Engelli degil, Standart Çalışan, Emekli degil", () => {
+
+        const workedDays = 23;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const amount = yearParams.minGrossWage;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const employeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+        expect(roundNumber(month.employerStampTax)).toEqual(0);
+        expect(roundNumber(month.stampTax)).toEqual(29.12);
+        expect(roundNumber(month.employeeStampTaxExemption)).toEqual(29.12);
+    });
+
+    it("calculate month for year 2022, from NET_TO_GROSS, 10 days, 30 r&d days, amount min wage TL, Engelli degil, Standart Çalışan, Emekli degil", () => {
+
+        const workedDays = 10;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const amount = yearParams.minGrossWage;
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const employeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[1].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+        expect(roundNumber(month.netSalary)).toEqual(amount * (workedDays / 30));
+    });
+
+    it("calculate month for year 2022, from GROSS_TO_NET, 30 days, 20 r&d days, amount 10000 TL, Engelli degil, 5746, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 20;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const employeeType5746 = employeeTypes.options.find((o) => o.id === 3);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType5746, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+
+        expect(roundNumber(month.netSalary)).toEqual(7850.37);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(25.28);
+        expect(roundNumber(month.employerIncomeTaxExemptionAmount)).toEqual(339.73);
+        expect(roundNumber(month.employerStampTax)).toEqual(12.64);
+        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(297.26);
+        expect(roundNumber(month.employerTotalCost)).toEqual(11226.94);
+    });
+
+    it("calculate month for year 2022, from GROSS_TO_NET, 30 days, Disabled Min Wage Exemption, amount 10000 TL, Engelli degil, Standart Çalışan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            standardEmployeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, false);
+
+        expect(roundNumber(month.netSalary)).toEqual(7149.1);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
+        expect(roundNumber(month.employerIncomeTaxExemptionAmount)).toEqual(0);
+        expect(roundNumber(month.employerStampTax)).toEqual(75.9);
+        expect(roundNumber(month.employerFinalIncomeTax)).toEqual(1275);
+        expect(roundNumber(month.employerTotalCost)).toEqual(12250);
+    });
+
+    it("calculate month for year 2022, from GROSS_TO_NET, 30 days, amount 10000 TL, Engelli degil, Standart Çalışan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const employerEmployeeType = employeeTypes.options.find((o) => o.id === 5);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employerEmployeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+
+        expect(roundNumber(month.netSalary)).toEqual(9100.09);
+        expect(roundNumber(month.employeeIncomeTaxExemptionAmount)).toEqual(638.01);
+        expect(roundNumber(month.employeeStampTaxExemption)).toEqual(37.98);
+        expect(roundNumber(month.employerTotalCost)).toEqual(10000);
+    });
+
+
+    it("calculate month for year 2022, from GROSS_TO_NET, 30 days, amount 10000 TL, Engelli degil, 17103 & 27103 Çalışan, Emekli Degil", () => {
+        const amount = 10000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = yearParameters.find((y) => y.year === 2022);
+        const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
+        const employeeType17103 = employeeTypes.options.find((o) => o.id === 7);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            employeeType17103, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+
+        expect(roundNumber(month.netSalary)).toEqual(7825.09);
+        expect(roundNumber(month.employeeIncomeTaxExemptionAmount)).toEqual(638.01);
+        expect(roundNumber(month.employeeStampTaxExemption)).toEqual(37.98);
+        expect(roundNumber(month.employerStampTaxExemption)).toEqual(0);
+        expect(roundNumber(month.employerTotalCost)).toEqual(8500);
+    });
+
     const roundNumber = (num: number, precision = 2) => {
         return Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision);
     };
