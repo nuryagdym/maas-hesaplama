@@ -94,14 +94,14 @@ describe("YearCalculationModel", () => {
         expect(roundNumber(yearCalculationModel.employeeSGKDeduction)).toEqual(9800);
         expect(roundNumber(yearCalculationModel.employeeUnemploymentInsuranceDeduction)).toEqual(700);
         expect(roundNumber(yearCalculationModel.employeeIncomeTax)).toEqual(10300);
-        expect(roundNumber(yearCalculationModel.netSalary)).toEqual(53400.63);
-        expect(roundNumber(yearCalculationModel.finalNetSalary)).toEqual(53400.63);
+        expect(roundNumber(yearCalculationModel.netSalary)).toEqual( 54852.47);
+        expect(roundNumber(yearCalculationModel.finalNetSalary)).toEqual( 54852.47);
         expect(roundNumber(yearCalculationModel.employerSGKDeduction)).toEqual(14350);
         expect(roundNumber(yearCalculationModel.employerUnemploymentInsuranceDeduction)).toEqual(1400);
         expect(roundNumber(yearCalculationModel.employerTotalSGKCost)).toEqual(26250);
-        expect(roundNumber(yearCalculationModel.employeeMinWageTaxExemptionAmount)).toEqual(4731.93);
-        expect(roundNumber(yearCalculationModel.employerStampTax)).toEqual(265.44);
-        expect(roundNumber(yearCalculationModel.employerFinalIncomeTax)).toEqual(5833.93);
+        expect(roundNumber(yearCalculationModel.employeeMinWageTaxExemptionAmount)).toEqual(6183.77);
+        expect(roundNumber(yearCalculationModel.employerStampTax)).toEqual(198.63);
+        expect(roundNumber(yearCalculationModel.employerFinalIncomeTax)).toEqual(4448.9);
         expect(roundNumber(yearCalculationModel.employerTotalCost)).toEqual(85750);
     });
 

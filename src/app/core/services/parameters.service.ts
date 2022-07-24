@@ -2,7 +2,12 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {YearDataModel, TaxSliceModel, DisabledMonthlyIncomeTaxDiscountBaseModel} from "../models/year-data.model";
+import {
+    YearDataModel,
+    TaxSliceModel,
+    DisabledMonthlyIncomeTaxDiscountBaseModel,
+    MinGrossWage
+} from "../models/year-data.model";
 import {environment} from "src/environments/environment";
 
 interface TaxSliceResponse {
@@ -17,7 +22,7 @@ interface DisabledMonthlyIncomeTaxDiscountResponse {
 
 interface YearParameterResponse {
     year: number;
-    minGrossWage: number;
+    minGrossWages: MinGrossWage[];
     minWageEmployeeTaxExemption: boolean;
     taxSlices: TaxSliceResponse[];
     disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountResponse[];
@@ -153,9 +158,8 @@ export class ParametersService {
                 response.yearParameters.forEach(item => {
                     const newParam = new YearDataModel();
                     newParam.year = item.year;
-                    newParam.minGrossWage = item.minGrossWage;
+                    newParam.minGrossWages = item.minGrossWages;
                     newParam.minWageEmployeeTaxExemption = item.minWageEmployeeTaxExemption;
-                    newParam.SGKCeil = item.SGKCeil;
 
                     newParam.taxSlices = [];
                     item.taxSlices.forEach(it => {

@@ -185,7 +185,7 @@ export class SalaryComparatorComponent implements OnInit {
         this.researchAndDevelopmentDayCounts = new Array(this.months.length);
         this.researchAndDevelopmentDayCounts.fill(this.researchAndDevelopmentWorkedDays);
 
-        this.salaryInput = this.selectedYear.minGrossWage;
+        this.salaryInput = this.selectedYear.minGrossWages[0].amount;
         this.monthSalaryInputs = new Array(this.months.length);
         this.monthSalaryInputs.fill(this.salaryInput);
 

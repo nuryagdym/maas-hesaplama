@@ -1,9 +1,10 @@
-import {TaxSliceModel, YearDataModel} from "./year-data.model";
+import {MinGrossWage, TaxSliceModel, YearDataModel} from "./year-data.model";
 import {CalculationConstants, EmployeeType} from "../services/parameters.service";
 
 export class MonthCalculationModel {
 
     monthName: string;
+    monthNumber: number;
     private _previousMonth: MonthCalculationModel;
     private _workedDays: number;
     private _researchAndDevelopmentWorkedDays: number;
@@ -37,9 +38,17 @@ export class MonthCalculationModel {
 
     private _appliedTaxSlices: TaxSliceModel[] = [];
 
-    private _parameters;
+    private readonly _parameters;
 
-    private _standardEmployeeType: EmployeeType;
+    private readonly _standardEmployeeType: EmployeeType;
+
+    public static getMinGrossWage(yearParams: YearDataModel, monthNumber: number): MinGrossWage {
+        for (const minWage of yearParams.minGrossWages) {
+            if (monthNumber >= minWage.startMonth) {
+                return minWage;
+            }
+        }
+    }
 
     public static calcGrossSalary(grossSalary: number, dayCount: number, monthDayCount: number): number {
         return grossSalary * dayCount / monthDayCount;
@@ -53,8 +62,13 @@ export class MonthCalculationModel {
             (employeeSGKDeduction + employeeUnemploymentInsuranceDeduction + employeeDisabledIncomeTaxBaseAmount);
     }
 
-    public static calcSGKBase(yearParams: YearDataModel, grossSalary: number, workedDays: number, monthDayCount: number): number {
-        return Math.min(grossSalary, yearParams.SGKCeil) * workedDays / monthDayCount;
+    public static calcSGKBase(
+        minGrossWage: MinGrossWage,
+        grossSalary: number,
+        workedDays: number,
+        monthDayCount: number,
+    ): number {
+        return Math.min(grossSalary, minGrossWage.SGKCeil) * workedDays / monthDayCount;
     }
 
     public static calcDisabledIncomeTaxBaseAmount(yearParams: YearDataModel,
@@ -82,22 +96,24 @@ export class MonthCalculationModel {
         return SGKBase * rate;
     }
 
-    public static calcEmployeeSGKExemption(yearParams: YearDataModel,
-                                           employeeType: EmployeeType,
-                                           isPensioner: boolean,
-                                           workedDays: number,
-                                           constants: CalculationConstants,
-                                           employeeSGKDeduction: number): number {
+    public static calcEmployeeSGKExemption(
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        isPensioner: boolean,
+        workedDays: number,
+        constants: CalculationConstants,
+        employeeSGKDeduction: number
+    ): number {
         let exemption = 0;
         if (!employeeType.SGKApplicable || isPensioner) {
             return exemption;
         }
         if (employeeType.SGKMinWageBasedExemption) {
-            exemption = yearParams.minGrossWage * constants.employee.SGKDeductionRate
+            exemption = minGrossWage.amount * constants.employee.SGKDeductionRate
                 * workedDays / constants.monthDayCount;
         } else if (employeeType.SGKMinWageBased17103Exemption) {
             const totalSGKRate = this.calcTotalSGKRate(constants);
-            exemption = (yearParams.minGrossWage / totalSGKRate) * constants.employee.SGKDeductionRate
+            exemption = (minGrossWage.amount / totalSGKRate) * constants.employee.SGKDeductionRate
                 * workedDays / constants.monthDayCount;
             exemption = Math.min(employeeSGKDeduction, exemption);
         }
@@ -129,10 +145,12 @@ export class MonthCalculationModel {
         return SGKBase * rate;
     }
 
-    public static calcStampTax(employeeType: EmployeeType,
-                               constants: CalculationConstants,
-                               yearParams: YearDataModel,
-                               grossSalary: number): number {
+    public static calcStampTax(
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        yearParams: YearDataModel,
+        grossSalary: number
+    ): number {
         if (!employeeType.stampTaxApplicable) {
             return 0;
         }
@@ -142,6 +160,7 @@ export class MonthCalculationModel {
 
     public static calcEmployerStampTaxExemption(
         yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
         stampTaxAmount: number,
         employeeType: EmployeeType,
         constants: CalculationConstants,
@@ -156,7 +175,7 @@ export class MonthCalculationModel {
         } else if (employeeType.researchAndDevelopmentTaxExemption) {
             exemption = Math.max(stampTaxAmount - employeeStampTaxExemptionAmount, 0) * (researchAndDevelopmentWorkedDays / workedDays);
         } else if (!yearParams.minWageEmployeeTaxExemption && employeeType.taxMinWageBasedExemption) {
-            const taxBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
+            const taxBase = MonthCalculationModel.calcGrossSalary(minGrossWage.amount, workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcStampTax(employeeType, constants, yearParams, taxBase);
         }
         return exemption;
@@ -164,6 +183,7 @@ export class MonthCalculationModel {
 
     public static calcEmployeeStampTaxExemption(
         yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
         stampTaxAmount: number,
         employeeType: EmployeeType,
         standardEmployeeType: EmployeeType,
@@ -178,7 +198,7 @@ export class MonthCalculationModel {
         let minWageTaxBase = 0;
         if (applyMinWageTaxExemption && yearParams.minWageEmployeeTaxExemption) {
             minWageTaxBase = MonthCalculationModel.calcGrossSalary(
-                yearParams.minGrossWage,
+                minGrossWage.amount,
                 constants.monthDayCount,
                 constants.monthDayCount
             );
@@ -190,24 +210,27 @@ export class MonthCalculationModel {
         return exemption;
     }
 
-    public static calcEmployeeUnemploymentInsuranceExemption(yearParams: YearDataModel,
-                                                             employeeType: EmployeeType,
-                                                             isPensioner: boolean,
-                                                             workedDays: number,
-                                                             constants: CalculationConstants,
-                                                             employeeUnemploymentInsuranceDeduction: number): number {
+    public static calcEmployeeUnemploymentInsuranceExemption(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        isPensioner: boolean,
+        workedDays: number,
+        constants: CalculationConstants,
+        employeeUnemploymentInsuranceDeduction: number
+    ): number {
         let exemption = 0;
         if (!employeeType.unemploymentInsuranceApplicable || isPensioner) {
             return exemption;
         }
 
         if (employeeType.SGKMinWageBasedExemption) {
-            exemption = yearParams.minGrossWage
+            exemption = minGrossWage.amount
                 * constants.employee.unemploymentInsuranceRate
                 * workedDays / constants.monthDayCount;
         } else if (employeeType.SGKMinWageBased17103Exemption) {
             const totalSGKRate = this.calcTotalSGKRate(constants);
-            exemption = (yearParams.minGrossWage / totalSGKRate) * constants.employee.unemploymentInsuranceRate
+            exemption = (minGrossWage.amount / totalSGKRate) * constants.employee.unemploymentInsuranceRate
                 * workedDays / constants.monthDayCount;
             exemption = Math.min(employeeUnemploymentInsuranceDeduction, exemption);
         }
@@ -280,15 +303,18 @@ export class MonthCalculationModel {
         return SGKBase * rate;
     }
 
-    public static calcEmployerSGKExemption(yearParams: YearDataModel,
-                                           employeeType: EmployeeType,
-                                           constants: CalculationConstants,
-                                           SGKBase: number,
-                                           isPensioner: boolean,
-                                           applyEmployerDiscount5746: boolean,
-                                           workedDays: number,
-                                           researchAndDevelopmentWorkedDays: number,
-                                           employerSGKDeduction: number): number {
+    public static calcEmployerSGKExemption(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        SGKBase: number,
+        isPensioner: boolean,
+        applyEmployerDiscount5746: boolean,
+        workedDays: number,
+        researchAndDevelopmentWorkedDays: number,
+        employerSGKDeduction: number
+    ): number {
         let exemption = 0;
         if (!employeeType.employerSGKApplicable || isPensioner) {
             return exemption;
@@ -309,11 +335,11 @@ export class MonthCalculationModel {
                     constants.employer.SGKDeductionRate * constants.employer.SGK5746AdditionalDiscount;
             }
         } else if (employeeType.SGKMinWageBasedExemption) {
-            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage, workedDays, constants.monthDayCount);
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(minGrossWage.amount, workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, employeeType, constants, minWageSGKBase);
         } else if (employeeType.SGKMinWageBased17103Exemption) {
             const totalSGKRate = this.calcTotalSGKRate(constants);
-            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate,
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(minGrossWage.amount / totalSGKRate,
                 workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner, employeeType, constants, minWageSGKBase);
             exemption = Math.min(employerSGKDeduction, exemption);
@@ -340,24 +366,26 @@ export class MonthCalculationModel {
         return SGKBase * rate;
     }
 
-    public static calcEmployerUnemploymentInsuranceExemption(yearParams: YearDataModel,
-                                                             employeeType: EmployeeType,
-                                                             constants: CalculationConstants,
-                                                             SGKBase: number,
-                                                             workedDays: number,
-                                                             isPensioner: boolean,
-                                                             employerUnemploymentInsuranceDeduction: number) {
+    public static calcEmployerUnemploymentInsuranceExemption(
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        SGKBase: number,
+        workedDays: number,
+        isPensioner: boolean,
+        employerUnemploymentInsuranceDeduction: number
+    ) {
         let exemption = 0;
         if (!employeeType.employerUnemploymentInsuranceApplicable || isPensioner) {
             return exemption;
         }
         if (employeeType.SGKMinWageBasedExemption) {
-            exemption = yearParams.minGrossWage
+            exemption = minGrossWage.amount
                 * (workedDays / constants.monthDayCount)
                 * constants.employer.unemploymentInsuranceRate;
         } else if (employeeType.SGKMinWageBased17103Exemption) {
             const totalSGKRate = this.calcTotalSGKRate(constants);
-            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(yearParams.minGrossWage / totalSGKRate,
+            const minWageSGKBase = MonthCalculationModel.calcGrossSalary(minGrossWage.amount / totalSGKRate,
                 workedDays, constants.monthDayCount);
             exemption = MonthCalculationModel.calcEmployerUnemploymentInsuranceDeduction(isPensioner,
                 employeeType, constants, minWageSGKBase);
@@ -366,23 +394,26 @@ export class MonthCalculationModel {
         return exemption;
     }
 
-    public static calcAGI(yearParams: YearDataModel,
-                          AGIRate: number,
-                          employeeType: EmployeeType,
-                          employeeTax: number,
-                          isAGICalculationEnabled: boolean,
+    public static calcAGI(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        AGIRate: number,
+        employeeType: EmployeeType,
+        employeeTax: number,
+        isAGICalculationEnabled: boolean,
     ) {
         if (!isAGICalculationEnabled || !employeeType.AGIApplicable || yearParams.minWageEmployeeTaxExemption) {
             return 0;
         }
 
-        const agi = yearParams.minGrossWage * AGIRate * yearParams.taxSlices[0].rate;
+        const agi = minGrossWage.amount * AGIRate * yearParams.taxSlices[0].rate;
 
         return Math.min(agi, employeeTax);
     }
 
     public static calcEmployeeIncomeTaxExemption(
         yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
         employeeType: EmployeeType,
         standardEmployeeType: EmployeeType,
         constants: CalculationConstants,
@@ -400,8 +431,10 @@ export class MonthCalculationModel {
 
         if (applyMinWageTaxExemption && yearParams.minWageEmployeeTaxExemption) {
             if (employeeIncomeTax > 0) {
-                const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams,
-                    standardEmployeeType, constants, yearParams.minGrossWage,  constants.monthDayCount,
+                const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(
+                    yearParams,
+                    minGrossWage,
+                    standardEmployeeType, constants, minGrossWage.amount,  constants.monthDayCount,
                     false, disabilityDegree, cumulativeIncomeTaxBase);
 
                 exemption = Math.min(employeeIncomeTax, minWageBasedIncomeTax.tax);
@@ -413,6 +446,7 @@ export class MonthCalculationModel {
 
     public static calcEmployerIncomeTaxExemption(
         yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
         employeeType: EmployeeType,
         constants: CalculationConstants,
         employeeEduExemptionRate: number,
@@ -438,8 +472,16 @@ export class MonthCalculationModel {
         } else if (applyMinWageTaxExemption && employeeType.taxMinWageBasedExemption && !yearParams.minWageEmployeeTaxExemption) {
 
             if ((employeeIncomeTax - AGIAmount) > 0) {
-                const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams,
-                    employeeType, constants, yearParams.minGrossWage, workedDays, isPensioner, disabilityDegree);
+                const minWageBasedIncomeTax = MonthCalculationModel.calcEmployeeIncomeTaxOfTheGivenGrossSalary(
+                    yearParams,
+                    minGrossWage,
+                    employeeType,
+                    constants,
+                    minGrossWage.amount,
+                    workedDays,
+                    isPensioner,
+                    disabilityDegree
+                );
                 const minWageExemption = Math.max((minWageBasedIncomeTax.tax - AGIAmount), 0);
                 exemption = Math.min(employeeIncomeTax - AGIAmount, minWageExemption);
             }
@@ -449,36 +491,44 @@ export class MonthCalculationModel {
     }
 
 
-    public static calcEmployeeIncomeTaxOfTheGivenGrossSalary(yearParams: YearDataModel,
-                                                             employeeType: EmployeeType,
-                                                             constants: CalculationConstants,
-                                                             grossSalary: number,
-                                                             workedDays: number,
-                                                             isPensioner: boolean,
-                                                             disabilityDegree: number,
-                                                             cumulativeIncomeTaxBase: number = 0) {
-
-        const incomeTaxBase = MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(grossSalary,
+    public static calcEmployeeIncomeTaxOfTheGivenGrossSalary(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        grossSalary: number,
+        workedDays: number,
+        isPensioner: boolean,
+        disabilityDegree: number,
+        cumulativeIncomeTaxBase: number = 0
+    ) {
+        const incomeTaxBase = MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(
+            grossSalary,
             constants,
             yearParams,
+            minGrossWage,
             workedDays,
             employeeType,
             isPensioner,
-            disabilityDegree);
+            disabilityDegree
+        );
 
         return MonthCalculationModel.calcEmployeeIncomeTax(cumulativeIncomeTaxBase, yearParams, employeeType, incomeTaxBase);
     }
 
-    public static calcTaxBaseOfGivenGrossSalary(grossSalary: number,
-                                                constants: CalculationConstants,
-                                                yearParams: YearDataModel,
-                                                workedDays: number,
-                                                employeeType: EmployeeType,
-                                                isPensioner: boolean,
-                                                disabilityDegree: number) {
+    public static calcTaxBaseOfGivenGrossSalary(
+        grossSalary: number,
+        constants: CalculationConstants,
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        workedDays: number,
+        employeeType: EmployeeType,
+        isPensioner: boolean,
+        disabilityDegree: number
+    ) {
 
         const taxBase = MonthCalculationModel.calcGrossSalary(grossSalary, workedDays, constants.monthDayCount);
-        const SGKBase = MonthCalculationModel.calcSGKBase(yearParams, grossSalary, workedDays, constants.monthDayCount);
+        const SGKBase = MonthCalculationModel.calcSGKBase(minGrossWage, grossSalary, workedDays, constants.monthDayCount);
 
         const employeeSGKDeduction = MonthCalculationModel.calcEmployeeSGKDeduction(isPensioner, employeeType,
             constants, SGKBase);
@@ -504,6 +554,7 @@ export class MonthCalculationModel {
     constructor(parameters: any, standardEmployeeType: EmployeeType) {
         this._parameters = parameters;
         this._standardEmployeeType = standardEmployeeType;
+        this.monthNumber = 1;
     }
 
     public calculate(calcMode: string, yearParams: YearDataModel,
@@ -543,9 +594,8 @@ export class MonthCalculationModel {
             this.resetFields();
             throw new Error("hesaplama başarısız");
         }
-        if (grossSalary < yearParams.minGrossWage) {
-            grossSalary = yearParams.minGrossWage;
-        }
+
+        grossSalary = Math.max(grossSalary, MonthCalculationModel.getMinGrossWage(yearParams, this.monthNumber).amount);
 
         this._calculate(yearParams, grossSalary, workedDays, researchAndDevelopmentWorkedDays,
             agiRate, employeeType, employeeEduExemptionRate, applyEmployerDiscount5746,
@@ -582,22 +632,31 @@ export class MonthCalculationModel {
         this._appliedTaxSlices = [];
     }
 
-    private _calculate(yearParams: YearDataModel,
-                       grossSalary: number, workedDays: number, researchAndDevelopmentWorkedDays: number, agiRate: number,
-                       employeeType: EmployeeType, employeeEduExemptionRate: number,
-                       applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
-                       isPensioner: boolean, disabilityDegree: number, isAGICalculationEnabled: boolean,
-                       applyMinWageTaxExemption: boolean
+    private _calculate(
+        yearParams: YearDataModel,
+        grossSalary: number, workedDays: number, researchAndDevelopmentWorkedDays: number, agiRate: number,
+        employeeType: EmployeeType, employeeEduExemptionRate: number,
+        applyEmployerDiscount5746: boolean, isAGIIncludedTax: boolean,
+        isPensioner: boolean, disabilityDegree: number, isAGICalculationEnabled: boolean,
+        applyMinWageTaxExemption: boolean
     ) {
 
-        this._grossSalaryForTaxBaseCalculation = Math.min(yearParams.minGrossWage, grossSalary);
+        const minGrossWage = MonthCalculationModel.getMinGrossWage(yearParams, this.monthNumber);
+
+        this._grossSalaryForTaxBaseCalculation = Math.min(minGrossWage.amount, grossSalary);
         const cumIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeIncomeTaxBase : 0;
-        const cumulativeMinWageIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeMinWageIncomeTaxBase(yearParams,
-            this._parameters, this._standardEmployeeType, isPensioner, disabilityDegree) : 0;
-        // some calculations are depended to others, so the order of execution matters
+        const cumulativeMinWageIncomeTaxBase = this._previousMonth ? this._previousMonth.cumulativeMinWageIncomeTaxBase(
+            yearParams,
+            minGrossWage,
+            this._parameters,
+            this._standardEmployeeType,
+            isPensioner,
+            disabilityDegree
+        ) : 0;
+        // some calculations are depend on others, so the order of execution matters
         this._calculatedGrossSalary = MonthCalculationModel.calcGrossSalary(grossSalary, workedDays, this._parameters.monthDayCount);
 
-        this._SGKBase = MonthCalculationModel.calcSGKBase(yearParams, grossSalary,
+        this._SGKBase = MonthCalculationModel.calcSGKBase(minGrossWage, grossSalary,
             workedDays, this._parameters.monthDayCount);
 
         this._employeeDisabledIncomeTaxBaseAmount = MonthCalculationModel.calcDisabledIncomeTaxBaseAmount(yearParams,
@@ -606,23 +665,30 @@ export class MonthCalculationModel {
         this._employeeSGKDeduction = MonthCalculationModel.calcEmployeeSGKDeduction(isPensioner, employeeType,
             this._parameters, this.SGKBase);
 
-        this._employeeSGKExemptionAmount = MonthCalculationModel.calcEmployeeSGKExemption(yearParams, employeeType,
+        this._employeeSGKExemptionAmount = MonthCalculationModel.calcEmployeeSGKExemption(minGrossWage, employeeType,
             isPensioner,
             workedDays, this._parameters, this.employeeSGKDeduction);
 
         this._employeeUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployeeUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
 
-        this._employeeUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployeeUnemploymentInsuranceExemption(yearParams,
+        this._employeeUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployeeUnemploymentInsuranceExemption(
+            yearParams,
+            minGrossWage,
             employeeType,
             isPensioner,
             workedDays, this._parameters, this.employeeUnemploymentInsuranceDeduction);
 
         this._stampTax = MonthCalculationModel.calcStampTax(employeeType, this._parameters, yearParams, this.calculatedGrossSalary);
-        this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams, this._stampTax, employeeType,
+
+        this._employeeStampTaxExemption = MonthCalculationModel.calcEmployeeStampTaxExemption(yearParams,
+            minGrossWage,
+            this._stampTax, employeeType,
             this._standardEmployeeType,
             this._parameters, grossSalary, workedDays, researchAndDevelopmentWorkedDays, applyMinWageTaxExemption);
-        this._employerStampTaxExemption = MonthCalculationModel.calcEmployerStampTaxExemption(yearParams, this._stampTax, employeeType,
+        this._employerStampTaxExemption = MonthCalculationModel.calcEmployerStampTaxExemption(yearParams,
+            minGrossWage,
+            this._stampTax, employeeType,
             this._parameters, workedDays, researchAndDevelopmentWorkedDays, this._employeeStampTaxExemption);
 
 
@@ -632,13 +698,19 @@ export class MonthCalculationModel {
         this._employeeIncomeTax = incomeTaxResult.tax;
         this._appliedTaxSlices = incomeTaxResult.appliedTaxSlices;
 
-        this._employeeIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployeeIncomeTaxExemption(yearParams, employeeType,
+        this._employeeIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployeeIncomeTaxExemption(
+            yearParams,
+            minGrossWage,
+            employeeType,
             this._standardEmployeeType, this._parameters, employeeEduExemptionRate, isAGIIncludedTax,
-            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, 0, disabilityDegree, cumulativeMinWageIncomeTaxBase,
+            researchAndDevelopmentWorkedDays, this.employeeIncomeTax, 0, disabilityDegree,
+            cumulativeMinWageIncomeTaxBase,
             applyMinWageTaxExemption
-            );
+        );
 
-        this._AGIAmount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled);
+        this._AGIAmount = MonthCalculationModel.calcAGI(yearParams,
+            minGrossWage,
+            agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled);
 
         this._netSalary = MonthCalculationModel.calcNetSalary(this.calculatedGrossSalary, this.employeeSGKDeduction,
             this.employeeUnemploymentInsuranceDeduction, this.stampTax, this.employeeStampTaxExemption,
@@ -650,19 +722,30 @@ export class MonthCalculationModel {
         this._employerSGKDeduction = MonthCalculationModel.calcEmployerSGKDeduction(isPensioner,
             employeeType, this._parameters, this.SGKBase);
 
-        this._employerSGKExemptionAmount = MonthCalculationModel.calcEmployerSGKExemption(yearParams, employeeType,
+        this._employerSGKExemptionAmount = MonthCalculationModel.calcEmployerSGKExemption(
+            yearParams,
+            minGrossWage,
+            employeeType,
             this._parameters, this.SGKBase, isPensioner, applyEmployerDiscount5746,
             workedDays, researchAndDevelopmentWorkedDays, this.employerSGKDeduction);
 
         this._employerUnemploymentInsuranceDeduction = MonthCalculationModel.calcEmployerUnemploymentInsuranceDeduction(
             isPensioner, employeeType, this._parameters, this.SGKBase);
 
-        this._employerUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployerUnemploymentInsuranceExemption(yearParams,
+        this._employerUnemploymentInsuranceExemptionAmount = MonthCalculationModel.calcEmployerUnemploymentInsuranceExemption(
+            minGrossWage,
             employeeType, this._parameters, this.SGKBase, workedDays, isPensioner, this.employerUnemploymentInsuranceDeduction);
 
-        this._AGIAmount = MonthCalculationModel.calcAGI(yearParams, agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled);
+        this._AGIAmount = MonthCalculationModel.calcAGI(
+            yearParams,
+            minGrossWage,
+            agiRate, employeeType, this.employeeIncomeTax, isAGICalculationEnabled
+        );
 
-        this._employerIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployerIncomeTaxExemption(yearParams, employeeType,
+        this._employerIncomeTaxExemptionAmount = MonthCalculationModel.calcEmployerIncomeTaxExemption(
+            yearParams,
+            minGrossWage,
+            employeeType,
             this._parameters, employeeEduExemptionRate, isAGIIncludedTax, workedDays,
             researchAndDevelopmentWorkedDays, this.employeeIncomeTax, this.AGIAmount,
             this._employeeIncomeTaxExemptionAmount, isPensioner, disabilityDegree, applyMinWageTaxExemption);
@@ -806,23 +889,44 @@ export class MonthCalculationModel {
         return this.incomeTaxBase;
     }
 
-    public calcMinWageIncomeTaxBase(yearParams: YearDataModel,
-                                    employeeType: EmployeeType,
-                                    constants: CalculationConstants,
-                                    isPensioner: boolean,
-                                    disabilityDegree: number) {
-
-        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(this._grossSalaryForTaxBaseCalculation, constants, yearParams, constants.monthDayCount,
-            employeeType, isPensioner, disabilityDegree);
+    public calcMinWageIncomeTaxBase(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        employeeType: EmployeeType,
+        constants: CalculationConstants,
+        isPensioner: boolean,
+        disabilityDegree: number
+    ) {
+        return MonthCalculationModel.calcTaxBaseOfGivenGrossSalary(
+            this._grossSalaryForTaxBaseCalculation,
+            constants,
+            yearParams,
+            minGrossWage,
+            constants.monthDayCount,
+            employeeType, isPensioner, disabilityDegree
+        );
     }
 
-    public cumulativeMinWageIncomeTaxBase(yearParams: YearDataModel, constants: CalculationConstants,
-                                          employeeType: EmployeeType, isPensioner: boolean, disabilityDegree: number) {
+    public cumulativeMinWageIncomeTaxBase(
+        yearParams: YearDataModel,
+        minGrossWage: MinGrossWage,
+        constants: CalculationConstants,
+        employeeType: EmployeeType,
+        isPensioner: boolean,
+        disabilityDegree: number
+    ) {
         if (this._previousMonth) {
-            return this.calcMinWageIncomeTaxBase(yearParams, employeeType, constants, isPensioner, disabilityDegree)
-                + this._previousMonth.cumulativeMinWageIncomeTaxBase(yearParams, constants, employeeType, isPensioner, disabilityDegree);
+            return this.calcMinWageIncomeTaxBase(yearParams, minGrossWage, employeeType, constants, isPensioner, disabilityDegree)
+                + this._previousMonth.cumulativeMinWageIncomeTaxBase(
+                    yearParams,
+                    minGrossWage,
+                    constants,
+                    employeeType,
+                    isPensioner,
+                    disabilityDegree
+                );
         }
-        return this.calcMinWageIncomeTaxBase(yearParams, employeeType, constants, isPensioner, disabilityDegree);
+        return this.calcMinWageIncomeTaxBase(yearParams, minGrossWage, employeeType, constants, isPensioner, disabilityDegree);
     }
 
 

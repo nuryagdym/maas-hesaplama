@@ -31,13 +31,16 @@ export class YearCalculationModel {
         this._isAGICalculationEnabled = true;
 
         this._months = [];
-        let previousMonth: MonthCalculationModel;
+        let previousMonth: MonthCalculationModel = null;
+        let i = 1;
         for (const m of months) {
             const month = new MonthCalculationModel(this._parameters, standardEmployeeType);
             month.monthName = m;
+            month.monthNumber = i;
             month.previousMonth = previousMonth;
             previousMonth = month;
             this._months.push(month);
+            i++;
         }
     }
 

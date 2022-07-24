@@ -8,11 +8,16 @@ export class DisabledMonthlyIncomeTaxDiscountBaseModel {
     amount: number;
 }
 
+export class MinGrossWage {
+    startMonth: number;
+    amount: number;
+    SGKCeil: number;
+}
+
 export class YearDataModel {
 
     year: number;
-    minGrossWage: number;
-    SGKCeil: number;
+    minGrossWages: MinGrossWage[];
     minWageEmployeeTaxExemption: boolean;
     taxSlices: TaxSliceModel[];
     disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountBaseModel[];

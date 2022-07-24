@@ -14,6 +14,7 @@ import {forkJoin} from "rxjs";
 import {finalize} from "rxjs/operators";
 import * as XLSX from "xlsx";
 import {DatePipe} from "@angular/common";
+import {MonthCalculationModel} from "../../core/models/month-calculation.model";
 
 @Component({
     selector: "app-salary-calculator",
@@ -131,7 +132,11 @@ export class SalaryCalculatorComponent implements OnInit {
                     this.disabilityOptions = allParams.DISABILITY_OPTIONS;
                     this.employeeEducationTypes = allParams.EMPLOYEE_EDUCATION_TYPES;
                     const standardEmployeeType = this.employeeTypes.options.find(emp => emp.id === 1);
-                    this.yearCalculationModel = new YearCalculationModel(this.months, allParams.CALCULATION_CONSTANTS, standardEmployeeType);
+                    this.yearCalculationModel = new YearCalculationModel(
+                        this.months,
+                        allParams.CALCULATION_CONSTANTS,
+                        standardEmployeeType
+                    );
                     this.calcModes = YearCalculationModel.calculationModes;
 
                     this.setDefaults();
@@ -154,7 +159,7 @@ export class SalaryCalculatorComponent implements OnInit {
 
         this.monthSalaryInputs = new Array(this.months.length);
 
-        this.monthSalaryInputs.fill(this.selectedYear.minGrossWage);
+        this.fillMonthWages();
 
         this.selectedCalcMode = this.calcModes.options[0].id;
         this.selectedAGIOption = this.AGIOptions.options[0];
@@ -269,6 +274,13 @@ export class SalaryCalculatorComponent implements OnInit {
             this._snackBar.open(e, null, {
                 duration: 3 * 1000,
             });
+        }
+    }
+
+    private fillMonthWages()
+    {
+        for (let i = 1; i <= this.monthSalaryInputs.length; i++) {
+            this.monthSalaryInputs[i - 1] = MonthCalculationModel.getMinGrossWage(this.selectedYear, i).amount;
         }
     }
 }

@@ -2,8 +2,18 @@
     "yearParameters": [
         {
             "year": 2022,
-            "minGrossWage": 5004,
-            "SGKCeil": 37530,
+            "minGrossWages": [
+                {
+                    "startMonth": 7,
+                    "amount": 6471,
+                    "SGKCeil": 48532.5
+                },
+                {
+                    "startMonth": 1,
+                    "amount": 5004,
+                    "SGKCeil": 37530
+                }
+            ],
             "minWageEmployeeTaxExemption": true,
             "taxSlices": [
                 {
@@ -44,8 +54,13 @@
         },
         {
             "year": 2021,
-            "minGrossWage": 3577.50,
-            "SGKCeil": 26831.4,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 3577.50,
+                    "SGKCeil": 26831.4
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
@@ -86,8 +101,13 @@
         },
         {
             "year": 2020,
-            "minGrossWage": 2943,
-            "SGKCeil": 22072.5,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 2943,
+                    "SGKCeil": 22072.5
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
@@ -128,8 +148,13 @@
         },
         {
             "year": 2019,
-            "minGrossWage": 2558.4,
-            "SGKCeil": 19188,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 2558.4,
+                    "SGKCeil": 19188
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
@@ -166,8 +191,13 @@
         },
         {
             "year": 2018,
-            "minGrossWage": 2029.5,
-            "SGKCeil": 15221.4,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 2029.5,
+                    "SGKCeil": 15221.4
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
@@ -204,8 +234,13 @@
         },
         {
             "year": 2017,
-            "minGrossWage": 1777.5,
-            "SGKCeil": 13331.4,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 1777.5,
+                    "SGKCeil": 13331.4
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {
@@ -242,8 +277,13 @@
         },
         {
             "year": 2016,
-            "minGrossWage": 1647,
-            "SGKCeil": 10705.5,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 1647,
+                    "SGKCeil": 10705.5
+                }
+            ],
             "minWageEmployeeTaxExemption": false,
             "taxSlices": [
                 {

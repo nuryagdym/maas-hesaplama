@@ -150,7 +150,7 @@ describe("MonthCalculationModel", () => {
 
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
-        const salary = yearParams.minGrossWage;
+        const salary = MonthCalculationModel.getMinGrossWage(yearParams, 1).amount;
         const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 6);
         const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
@@ -290,7 +290,7 @@ describe("MonthCalculationModel", () => {
 
         const workedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2021);
-        const salary = yearParams.minGrossWage;
+        const salary = MonthCalculationModel.getMinGrossWage(yearParams, 1).amount;
         const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 7);
         const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
@@ -490,7 +490,7 @@ describe("MonthCalculationModel", () => {
         const researchAndDevWorkedDays = 0;
         const applyEmployerDiscount5746 = true;
         const yearParams = yearParameters.find((y) => y.year === 2021);
-        const salary = yearParams.minGrossWage;
+        const salary = MonthCalculationModel.getMinGrossWage(yearParams, 1).amount;
         const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 10);
         const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
@@ -591,11 +591,11 @@ describe("MonthCalculationModel", () => {
         const workedDays = 23;
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2022);
-        const amount = yearParams.minGrossWage;
+        const salary = MonthCalculationModel.getMinGrossWage(yearParams, 1).amount;
         const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 1);
         const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
-        month.calculate(calcModes.options[0].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+        month.calculate(calcModes.options[0].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
@@ -610,16 +610,16 @@ describe("MonthCalculationModel", () => {
         const workedDays = 10;
         const researchAndDevelopmentWorkedDays = 30;
         const yearParams = yearParameters.find((y) => y.year === 2022);
-        const amount = yearParams.minGrossWage;
+        const salary = MonthCalculationModel.getMinGrossWage(yearParams, 1).amount;
         const standardEmployeeType = employeeTypes.options.find((o) => o.id === 1);
         const employeeType = employeeTypes.options.find((o) => o.id === 1);
         const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
-        month.calculate(calcModes.options[1].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+        month.calculate(calcModes.options[1].id, yearParams, salary, workedDays, researchAndDevelopmentWorkedDays,
             AGIOptions.options[0].rate,
             employeeType, employeeEducationTypes.options[0].exemptionRate,
             false, false, false, false,
             disabilityOptions.options[0].degree, true, true);
-        expect(roundNumber(month.netSalary)).toEqual(amount * (workedDays / 30));
+        expect(roundNumber(month.netSalary)).toEqual(salary * (workedDays / 30));
     });
 
     it("calculate month for year 2022, from GROSS_TO_NET, 30 days, 20 r&d days, amount 10000 TL, Engelli degil, 5746, Emekli Degil", () => {
