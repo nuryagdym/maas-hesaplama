@@ -91,6 +91,3 @@ Sıralama önemli değildir, kütüphane kendisi yılları büyükten küçüğe
 
 - Input parametreler [fixtures.json](src/assets/fixtures.json) dosya içindedir, kolayca güncellenebilmesi için bunu da build kodların dışında bıkratım.
 - Sıralama JSON dosyada nasılsa o şekilde kullanıcıya gösterilir.
-
-## TODO
-1. Netten brüte ve Toplam Maliyete göre hesaplamalarda çalışma gün 30'dan az olduğu durumlarda doğru hesaplayamıyor.
