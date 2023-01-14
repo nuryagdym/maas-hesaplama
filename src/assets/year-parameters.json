@@ -1,6 +1,58 @@
 {
     "yearParameters": [
         {
+            "year": 2023,
+            "minGrossWages": [
+                {
+                    "startMonth": 7,
+                    "amount": 10008,
+                    "SGKCeil": 75060
+                },
+                {
+                    "startMonth": 1,
+                    "amount": 10008,
+                    "SGKCeil": 75060
+                }
+            ],
+            "minWageEmployeeTaxExemption": true,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 70000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 150000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 550000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": 1900000
+                },
+                {
+                    "rate": 0.4,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 4400
+                },
+                {
+                    "degree": 2,
+                    "amount": 2600
+                },
+                {
+                    "degree": 3,
+                    "amount": 1100
+                }
+            ]
+        },
+        {
             "year": 2022,
             "minGrossWages": [
                 {
