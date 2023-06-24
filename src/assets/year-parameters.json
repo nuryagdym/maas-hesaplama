@@ -5,8 +5,8 @@
             "minGrossWages": [
                 {
                     "startMonth": 7,
-                    "amount": 10008,
-                    "SGKCeil": 75060
+                    "amount": 13414.5,
+                    "SGKCeil": 100608.9
                 },
                 {
                     "startMonth": 1,
