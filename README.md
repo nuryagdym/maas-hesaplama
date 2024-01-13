@@ -2,7 +2,7 @@
 
 Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
 
-* [Maaş Hesaplama Demo](http://mustapayev.com/maas-hesaplama/)
+* [Maaş Hesaplama Demo](https://mustapayev.com/maas-hesaplama/)
 
 ## Installation
 
@@ -44,7 +44,6 @@ Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
 
 ## Features
 
-- 2022 maaş hesaplaması
 - Standart Çalışan maaş hesaplaması
 - 6111 Sayılı Kanun maaş hesaplaması
 - 17103 Sayılı Kanun maaş hesaplaması
@@ -72,8 +71,6 @@ Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
 - Ayın TL tutarı girildiğinde bir sonraki ay tutarları otomatik doldurulur
 
 ## Notes
-
-- Her yıl için 1 asgari ücret belirelenebilir, dolasıyla asgari ücretin yılda 2 kere zamlandığı durumu desteklemez. Yeterli kadar istek olursa üzerinde çalışabilirim.
 
 - Asgari ücretin altında hesaplama yapmamaktadır, asgari ücretten daha düşük değer girilirse asgari ücrete göre hesaplama yapar.
 
