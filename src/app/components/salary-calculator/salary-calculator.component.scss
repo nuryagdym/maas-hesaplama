@@ -1,4 +1,4 @@
-.group-header{
+.group-header {
     text-align: center;
     font-size: 1rem;
 }
@@ -17,64 +17,103 @@
 }
 
 
-th > .mat-form-field, td > .mat-form-field, th > .mat-slide-toggle{
+th > .mat-mdc-form-field, td > .mat-mdc-form-field, th > .mat-mdc-slide-toggle {
     width: 90%;
     margin-top: 0.5rem;
 }
 
-th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+th.mat-mdc-header-cell, td.mat-mdc-cell, td.mat-mdc-footer-cell {
     padding-left: 5px;
     padding-right: 5px;
 }
 
-th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type{
+th.mat-mdc-header-cell:last-of-type, td.mat-mdc-cell:last-of-type, td.mat-mdc-footer-cell:last-of-type {
     padding-right: 0;
 }
-th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+
+th.mat-mdc-header-cell:first-of-type, td.mat-mdc-cell:first-of-type, td.mat-mdc-footer-cell:first-of-type {
     padding-left: 0;
 }
 
-.calculation-card{
-    .mat-card-content{
+.calculation-card {
+    .mat-mdc-card-content {
         overflow-x: auto;
     }
 }
-.th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+
+.th.mat-mdc-header-cell, td.mat-mdc-cell, td.mat-mdc-footer-cell {
     min-width: 5rem;
 }
 
 
-::ng-deep .mat-select-panel-wrap .mat-select-panel {
+::ng-deep .mat-mdc-select-panel-wrap .mat-mdc-select-panel {
     max-width: 400px;
 }
 
 ::ng-deep {
-    .mat-table {
+    .mat-mdc-table {
         tbody {
-            .mat-row {
-                .mat-cell {
-                    .mat-form-field {
+            --mat-form-field-container-height: 30px;
+
+            .mat-mdc-row {
+                .mat-mdc-cell {
+                    .mat-mdc-form-field {
                         margin-top: 0;
-                        .mat-form-field-wrapper {
+
+                        .mat-mdc-text-field-wrapper {
                             padding-bottom: 0;
-                            .mat-form-field-infix {
+                            padding-left: 0;
+                            padding-right: 0;
+
+                            .mat-mdc-form-field-infix {
+                                padding-top: 0;
+                                padding-bottom: 0;
                                 border-top: none;
-                                width: 65px;
+                                font-size: 0.9rem;
+                                background-color: white;
+
+                                input {
+                                    background-color: white;
+                                    text-align: center;
+                                }
                             }
-                            .mat-form-field-underline {
+
+                            .mat-mdc-form-field-underline {
                                 position: initial;
                             }
                         }
                     }
+
+                    .mat-mdc-form-field-subscript-wrapper {
+                        position: absolute;
+                        display: none;
+                    }
                 }
             }
-            tr.mat-row, tr.mat-footer-row {
+
+            tr.mat-mdc-row, tr.mat-mdc-footer-row {
                 height: 40px;
             }
         }
-        .th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+
+        .th.mat-mdc-header-cell, td.mat-mdc-cell, td.mat-mdc-footer-cell {
             min-width: initial;
         }
     }
 }
 
+.mat-mdc-table {
+    tbody {
+        .mat-mdc-row {
+            .mat-mdc-cell {
+                .mat-mdc-form-field {
+                    .mat-mdc-text-field-wrapper {
+                        .mat-mdc-form-field-infix {
+                            max-width: 75px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

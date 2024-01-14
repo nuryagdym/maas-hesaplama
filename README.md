@@ -1,6 +1,6 @@
 # SalaryCalculator
 
-Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
+Maaş hesaplama için Angular 17 ile yapılmış kütüphane.
 
 * [Maaş Hesaplama Demo](https://mustapayev.com/maas-hesaplama/)
 
@@ -25,7 +25,7 @@ Maaş hesaplama için Angular 12 ile yapılmış kütüphane.
 4. Build the library
 
     ```shell
-    ng build --prod --aot
+    ng build
     ```
 5. Run tests
 

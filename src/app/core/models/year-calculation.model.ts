@@ -1,37 +1,35 @@
 import {MonthCalculationModel} from "./month-calculation.model";
 import {YearDataModel} from "./year-data.model";
-import {EmployeeEducationType, EmployeeType} from "../services/parameters.service";
+import {AGIOption, DisabilityOption, EmployeeEducationType, EmployeeType} from "../services/parameters.service";
 
 export class YearCalculationModel {
 
-    private _year: YearDataModel;
-    private readonly _months: MonthCalculationModel[];
-    private _enteredAmounts: number[];
-    private _workedDays: number[];
-    private _researchAndDevelopmentWorkedDays: number[];
+    private _year: YearDataModel | undefined;
+    private readonly _months: MonthCalculationModel[] = [];
+    private _enteredAmounts: number[] = [];
+    private _workedDays: number[] = [];
+    private _researchAndDevelopmentWorkedDays: number[] = [];
 
-    private _calcMode: string;
-    private _isPensioner: boolean;
-    private _isAGIIncludedNet: boolean;
-    private _isAGIIncludedTax: boolean;
-    private _applyMinWageTaxExemption: boolean;
-    private _applyEmployerDiscount5746: boolean;
-    private _AGI: any;
-    private _employeeType: EmployeeType;
-    private _employeeEduType: EmployeeEducationType;
-    private _employeeDisability: any;
-    private _numOfCalculatedMonths: number;
-    private _isAGICalculationEnabled: boolean;
+    private _calcMode: string = 'GROSS_TO_NET';
+    private _isPensioner: boolean = false;
+    private _isAGIIncludedNet: boolean = false;
+    private _isAGIIncludedTax: boolean = true;
+    private _applyMinWageTaxExemption: boolean = true;
+    private _applyEmployerDiscount5746: boolean = false;
+    private _AGI: AGIOption | undefined;
+    private _employeeType: EmployeeType | undefined;
+    private _employeeEduType: EmployeeEducationType | undefined;
+    private _employeeDisability: DisabilityOption | undefined;
+    private _numOfCalculatedMonths: number = 0;
+    private _isAGICalculationEnabled: boolean = true;
 
     private readonly _parameters: any;
 
     constructor(months: string[], salaryConstants: any, standardEmployeeType: EmployeeType) {
 
         this._parameters = salaryConstants;
-        this._isAGICalculationEnabled = true;
 
-        this._months = [];
-        let previousMonth: MonthCalculationModel = null;
+        let previousMonth: MonthCalculationModel | undefined = undefined;
         let i = 1;
         for (const m of months) {
             const month = new MonthCalculationModel(this._parameters, standardEmployeeType);
@@ -80,11 +78,11 @@ export class YearCalculationModel {
         this._isAGIIncludedNet = is;
     }
 
-    set AGI(agi: any) {
+    set AGI(agi: AGIOption) {
         this._AGI = agi;
     }
 
-    get employeeType(): EmployeeType {
+    get employeeType(): EmployeeType | undefined {
         return this._employeeType;
     }
 
@@ -100,7 +98,7 @@ export class YearCalculationModel {
         this._applyEmployerDiscount5746 = apply;
     }
 
-    set employeeDisability(d: any) {
+    set employeeDisability(d: DisabilityOption) {
         this._employeeDisability = d;
     }
 
@@ -146,9 +144,17 @@ export class YearCalculationModel {
 
     calculate() {
         this._numOfCalculatedMonths = 0;
-        let result = 0;
         this._months.forEach((m, i) => {
-            result = m.calculate(this._calcMode, this._year, this._enteredAmounts[i],
+            if (
+              undefined === this._year
+              || undefined === this._AGI
+              || undefined === this._employeeType
+              || undefined === this._employeeEduType
+              || undefined === this._employeeDisability
+            ) {
+              throw new Error('Year calculation parameters are not initialized');
+            }
+            m.calculate(this._calcMode, this._year, this._enteredAmounts[i],
                 this._workedDays[i], this._researchAndDevelopmentWorkedDays[i],
                 this._AGI.rate, this._employeeType, this._employeeEduType.exemptionRate,
                 this._applyEmployerDiscount5746, this._isAGIIncludedNet, this._isAGIIncludedTax,
@@ -169,243 +175,243 @@ export class YearCalculationModel {
         return this._months;
     }
 
-    get totalWorkDays() {
+    get totalWorkDays(): number {
         const totalSum = this._months.reduce((total, month) => total + month.workedDays, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgWorkDays() {
+    get avgWorkDays(): number {
         return this._numOfCalculatedMonths > 0 ? this.totalWorkDays / this._numOfCalculatedMonths : 0;
     }
 
-    get totalResearchAndDevelopmentWorkedDays() {
+    get totalResearchAndDevelopmentWorkedDays(): number {
         const totalSum = this._months.reduce((total, month) => total + month.researchAndDevelopmentWorkedDays, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgResearchAndDevelopmentWorkedDays() {
+    get avgResearchAndDevelopmentWorkedDays(): number {
         return this._numOfCalculatedMonths > 0 ? this.totalResearchAndDevelopmentWorkedDays / this._numOfCalculatedMonths : 0;
     }
 
-    get calculatedGrossSalary() {
+    get calculatedGrossSalary(): number {
         const totalSum = this._months.reduce((total, month) => total + month.calculatedGrossSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgCalculatedGrossSalary() {
+    get avgCalculatedGrossSalary(): number {
         return this._numOfCalculatedMonths > 0 ? this.calculatedGrossSalary / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeSGKDeduction() {
+    get employeeSGKDeduction(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeSGKDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeSGKDeduction() {
+    get avgEmployeeSGKDeduction(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeSGKDeduction / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeSGKExemption() {
+    get employeeSGKExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeSGKExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeSGKExemption() {
+    get avgEmployeeSGKExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeSGKExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeFinalSGKDeduction() {
+    get employeeFinalSGKDeduction(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeFinalSGKDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeFinalSGKDeduction() {
+    get avgEmployeeFinalSGKDeduction(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeFinalSGKDeduction / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeUnemploymentInsuranceDeduction() {
+    get employeeUnemploymentInsuranceDeduction(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeUnemploymentInsuranceDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeUnemploymentInsuranceDeduction() {
+    get avgEmployeeUnemploymentInsuranceDeduction(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeUnemploymentInsuranceDeduction / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeUnemploymentInsuranceExemption() {
+    get employeeUnemploymentInsuranceExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeUnemploymentInsuranceExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeUnemploymentInsuranceExemption() {
+    get avgEmployeeUnemploymentInsuranceExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeUnemploymentInsuranceExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeIncomeTax() {
+    get employeeIncomeTax(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeIncomeTax, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeIncomeTax() {
+    get avgEmployeeIncomeTax(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeIncomeTax / this._numOfCalculatedMonths : 0;
     }
 
-    get stampTax() {
+    get stampTax(): number {
         const totalSum = this._months.reduce((total, month) => total + month.stampTax, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgStampTax() {
+    get avgStampTax(): number {
         return this._numOfCalculatedMonths > 0 ? this.stampTax / this._numOfCalculatedMonths : 0;
     }
 
-    get employerStampTax() {
+    get employerStampTax(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerStampTax, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerStampTax() {
+    get avgEmployerStampTax(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerStampTax / this._numOfCalculatedMonths : 0;
     }
 
-    get employerStampTaxExemption() {
+    get employerStampTaxExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerStampTaxExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerStampTaxExemption() {
+    get avgEmployerStampTaxExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerStampTaxExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get totalStampTaxExemption() {
+    get totalStampTaxExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.totalStampTaxExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
-    get avgTotalStampTaxExemption() {
+    get avgTotalStampTaxExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.totalStampTaxExemption / this._numOfCalculatedMonths : 0;
     }
 
 
-    get netSalary() {
+    get netSalary(): number {
         const totalSum = this._months.reduce((total, month) => total + month.netSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgNetSalary() {
+    get avgNetSalary(): number {
         return this._numOfCalculatedMonths > 0 ? this.netSalary / this._numOfCalculatedMonths : 0;
     }
 
-    get AGIAmount() {
+    get AGIAmount(): number {
         const totalSum = this._months.reduce((total, month) => total + month.AGIAmount, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgAGIAmount() {
+    get avgAGIAmount(): number {
         return this._numOfCalculatedMonths > 0 ? this.AGIAmount / this._numOfCalculatedMonths : 0;
     }
 
-    get finalNetSalary() {
+    get finalNetSalary(): number {
         const totalSum = this._months.reduce((total, month) => total + month.finalNetSalary, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgFinalNetSalary() {
+    get avgFinalNetSalary(): number {
         return this._numOfCalculatedMonths > 0 ? this.finalNetSalary / this._numOfCalculatedMonths : 0;
     }
 
-    get employerSGKDeduction() {
+    get employerSGKDeduction(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerSGKDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerSGKDeduction() {
+    get avgEmployerSGKDeduction(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerSGKDeduction / this._numOfCalculatedMonths : 0;
     }
 
-    get employerSGKExemption() {
+    get employerSGKExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerSGKExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerSGKExemption() {
+    get avgEmployerSGKExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerSGKExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get employerTotalSGKCost() {
+    get employerTotalSGKCost(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerTotalSGKCost, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerTotalSGKCost() {
+    get avgEmployerTotalSGKCost(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerTotalSGKCost / this._numOfCalculatedMonths : 0;
     }
 
-    get employerUnemploymentInsuranceDeduction() {
+    get employerUnemploymentInsuranceDeduction(): number {
 
         const totalSum = this._months.reduce((total, month) => total + month.employerUnemploymentInsuranceDeduction, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerUnemploymentInsuranceDeduction() {
+    get avgEmployerUnemploymentInsuranceDeduction(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerUnemploymentInsuranceDeduction / this._numOfCalculatedMonths : 0;
     }
 
-    get employerUnemploymentInsuranceExemption() {
+    get employerUnemploymentInsuranceExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerUnemploymentInsuranceExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerUnemploymentInsuranceExemption() {
+    get avgEmployerUnemploymentInsuranceExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerUnemploymentInsuranceExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get employerFinalIncomeTax() {
+    get employerFinalIncomeTax(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerFinalIncomeTax, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get employerIncomeTaxExemptionAmount() {
+    get employerIncomeTaxExemptionAmount(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerIncomeTaxExemptionAmount, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployerIncomeTaxExemptionAmount() {
+    get avgEmployerIncomeTaxExemptionAmount(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerIncomeTaxExemptionAmount / this._numOfCalculatedMonths : 0;
     }
 
-    get employeeMinWageTaxExemptionAmount() {
+    get employeeMinWageTaxExemptionAmount(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employeeMinWageTaxExemptionAmount, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgEmployeeMinWageTaxExemptionAmount() {
+    get avgEmployeeMinWageTaxExemptionAmount(): number {
         return this._numOfCalculatedMonths > 0 ? this.employeeMinWageTaxExemptionAmount / this._numOfCalculatedMonths : 0;
     }
 
-    get avgEmployerFinalIncomeTax() {
+    get avgEmployerFinalIncomeTax(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerFinalIncomeTax / this._numOfCalculatedMonths : 0;
     }
 
-    get totalSGKExemption() {
+    get totalSGKExemption(): number {
         const totalSum = this._months.reduce((total, month) => total + month.totalSGKExemption, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
-    get avgTotalSGKExemption() {
+    get avgTotalSGKExemption(): number {
         return this._numOfCalculatedMonths > 0 ? this.totalSGKExemption / this._numOfCalculatedMonths : 0;
     }
 
-    get employerTotalCost() {
+    get employerTotalCost(): number {
         const totalSum = this._months.reduce((total, month) => total + month.employerTotalCost, 0);
         return isNaN(totalSum) ? 0 : totalSum;
     }
 
 
-    get avgEmployerTotalCost() {
+    get avgEmployerTotalCost(): number {
         return this._numOfCalculatedMonths > 0 ? this.employerTotalCost / this._numOfCalculatedMonths : 0;
     }
 
-    getSemesterWorkedDays(half: "first" | "second") {
+    getSemesterWorkedDays(half: "first" | "second"): number {
         let l = 0;
         let r = this._months.length - 6;
         if (half === "second") {
@@ -419,11 +425,11 @@ export class YearCalculationModel {
         return workedDays;
     }
 
-    getSemesterTubitakAvgCost(half: "first" | "second") {
+    getSemesterTubitakAvgCost(half: "first" | "second"): number {
         return this.yearHalfEmployerAvgTotalCost(half, false) *  (this.monthDayCount * 6) / this.getSemesterWorkedDays(half);
     }
 
-    employerHalfTotalCost(half: "first" | "second") {
+    employerHalfTotalCost(half: "first" | "second"): number {
         let l = 0;
         let r = this._months.length - 6;
         if (half === "second") {

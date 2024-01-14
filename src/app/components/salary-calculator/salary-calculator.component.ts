@@ -9,47 +9,73 @@ import {
     ParametersService,
     AGIOptions
 } from "../../core/services/parameters.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {forkJoin} from "rxjs";
 import {finalize} from "rxjs/operators";
 import * as XLSX from "xlsx";
-import {DatePipe} from "@angular/common";
+import {CommonModule, DatePipe, DecimalPipe} from "@angular/common";
 import {MonthCalculationModel} from "../../core/models/month-calculation.model";
+import {NgxCurrencyDirective} from "ngx-currency";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
+import {MatTableModule} from "@angular/material/table";
+import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: "app-salary-calculator",
+    standalone: true,
     templateUrl: "./salary-calculator.component.html",
     styleUrls: ["./salary-calculator.component.scss"],
+    imports: [
+        NgxCurrencyDirective,
+        CommonModule,
+        FormsModule,
+        MatInputModule,
+        MatTableModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        MatCardModule,
+        MatIconModule,
+        MatSnackBarModule,
+    ],
+    providers: [
+        DecimalPipe,
+    ]
 })
 export class SalaryCalculatorComponent implements OnInit {
 
-    yearParameters: YearDataModel[];
-    yearCalculationModel: YearCalculationModel;
-    months: string[];
-    monthSalaryInputs: number[];
-    dayCounts: number[];
-    researchAndDevelopmentDayCounts: number[];
+    yearParameters: YearDataModel[] = [];
+    yearCalculationModel: YearCalculationModel | undefined;
+    months: string[] = [];
+    monthSalaryInputs: number[] = [];
+    dayCounts: number[] = [];
+    researchAndDevelopmentDayCounts: number[] = [];
     AGIOptions: AGIOptions;
     employeeTypes: EmployeeTypes;
     employeeEducationTypes: EmployeeEducationTypes;
     disabilityOptions: DisabilityOptions;
     calcModes: any;
 
-    selectedYear: YearDataModel;
+    selectedYear: YearDataModel | undefined;
     selectedAGIOption: any;
-    selectedEmployeeType: EmployeeType;
+    selectedEmployeeType: EmployeeType | undefined;
     selectedEmployeeEducationType: any;
     selectedDisability: any;
-    selectedCalcMode: string;
-    applyMinWageTaxExemption: boolean;
-    enableAGICalculation: boolean;
-    AGIIncludedNet: boolean;
-    AGIIncludedTax: boolean;
-    employerDiscount5746: boolean;
-    isPensioner: boolean;
-    showEmployerCosts: boolean;
+    selectedCalcMode: string = "GROSS_TO_NET";
+    applyMinWageTaxExemption: boolean = true;
+    enableAGICalculation: boolean = false;
+    AGIIncludedNet: boolean = false;
+    AGIIncludedTax: boolean = true;
+    employerDiscount5746: boolean = false;
+    isPensioner: boolean = false;
+    showEmployerCosts: boolean = true;
 
-    loading = false;
+    loading: boolean = false;
 
     displayedColumns: string[] = ["monthName", "dayInput", "researchAndDevelopmentDayInput", "salaryInput", "calculatedGrossSalary",
         "employeeSGKDeduction", "employeeSGKExemption", "employeeUnemploymentInsuranceDeduction", "employeeUnemploymentInsuranceExemption",
@@ -86,13 +112,13 @@ export class SalaryCalculatorComponent implements OnInit {
         "avgEmployerFinalIncomeTax", "avgEmployerTotalCost"];
     avgColumnsToDisplay: string[] = [];
 
-    forthGroupColCount = 1;
-    groupHeaderDisplayedColumns = [
+    forthGroupColCount: number = 1;
+    groupHeaderDisplayedColumns: string[] = [
         "first-group",
         "second-group",
         "third-group",
         "forth-group"];
-    groupHeaderColumnsToDisplay = [];
+    groupHeaderColumnsToDisplay: string[] = [];
 
     employerColumns: string[] = ["employerSGKDeduction", "employerSGKExemption",
         "employerFinalIncomeTax", "employerUnemploymentInsuranceDeduction",
@@ -110,41 +136,55 @@ export class SalaryCalculatorComponent implements OnInit {
 
 
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
+        this.calcModes = YearCalculationModel.calculationModes;
+        this.AGIOptions = {
+            labelText: "Eş ve Çocuk Durumu",
+            options: []
+        }
+        this.employeeTypes = {
+            labelText: "Çalışan Türü",
+            options: [],
+        }
+        this.employeeEducationTypes = {
+            labelText: "Eğitim Durumu",
+            options: []
+        }
+        this.disabilityOptions = {
+            labelText: "Engellilik Durumu",
+            options: []
+        }
     }
 
     ngOnInit() {
-
         this.loading = true;
-        this.enableAGICalculation = true;
-        this.applyMinWageTaxExemption = true;
         forkJoin([
             this.parametersService.yearParameters,
-            this.parametersService.allParameters]
-        )
+            this.parametersService.allParameters,
+        ])
             .pipe(finalize(() => {
-
             }))
-            .subscribe(([yearParameters, allParams]) => {
+            .subscribe({
+                next: ([yearParameters, allParams]) => {
                     this.months = allParams.MONTHS;
                     this.yearParameters = yearParameters;
                     this.AGIOptions = allParams.AGI_OPTIONS;
                     this.employeeTypes = allParams.EMPLOYEE_TYPES;
                     this.disabilityOptions = allParams.DISABILITY_OPTIONS;
                     this.employeeEducationTypes = allParams.EMPLOYEE_EDUCATION_TYPES;
-                    const standardEmployeeType = this.employeeTypes.options.find(emp => emp.id === 1);
+                    const standardEmployeeType = <EmployeeType>this.employeeTypes.options.find(emp => emp.id === 1);
                     this.yearCalculationModel = new YearCalculationModel(
                         this.months,
                         allParams.CALCULATION_CONSTANTS,
                         standardEmployeeType
                     );
-                    this.calcModes = YearCalculationModel.calculationModes;
 
                     this.setDefaults();
                     this.loading = false;
                 },
-                err => {
+                error: err => {
                     alert(err.url + " dosyası yüklenemedi");
-                });
+                }
+            });
     }
 
     private setDefaults() {
@@ -152,6 +192,12 @@ export class SalaryCalculatorComponent implements OnInit {
         this.selectedYear = this.yearParameters[0];
 
         this.dayCounts = new Array(this.months.length);
+        if (undefined === this.yearCalculationModel) {
+            this._snackBar.open("year calculation model is not initialized", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         this.dayCounts.fill(this.yearCalculationModel.monthDayCount);
 
         this.researchAndDevelopmentDayCounts = new Array(this.months.length);
@@ -214,21 +260,33 @@ export class SalaryCalculatorComponent implements OnInit {
         }
     }
 
-    priceInputChanged(index, value) {
+    priceInputChanged(index: number, value: number) {
         for (let i = index; i < this.monthSalaryInputs.length; i++) {
             this.monthSalaryInputs[i] = value;
         }
         this.calculate();
     }
 
-    onDayCountChange(index) {
+    onDayCountChange(index: number) {
+        if (undefined === this.yearCalculationModel) {
+            this._snackBar.open("year calculation model is not initialized", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         this.dayCounts[index] = Math.min(this.dayCounts[index], this.yearCalculationModel.monthDayCount);
         // researchAndDevelopmentDayCounts should not be greater than regular work days
         this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index], this.dayCounts[index]);
         this.calculate();
     }
 
-    onResearchAndDevelopmentDayCountChange(index) {
+    onResearchAndDevelopmentDayCountChange(index: number) {
+        if (undefined === this.yearCalculationModel) {
+            this._snackBar.open("year calculation model is not initialized", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         this.researchAndDevelopmentDayCounts[index] = Math.min(this.researchAndDevelopmentDayCounts[index],
             this.yearCalculationModel.monthDayCount);
         if (this.researchAndDevelopmentDayCounts[index] > this.dayCounts[index]) {
@@ -251,6 +309,24 @@ export class SalaryCalculatorComponent implements OnInit {
     }
 
     calculate() {
+        if (undefined === this.yearCalculationModel) {
+            this._snackBar.open("year calculation model is not initialized", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
+        if (undefined === this.selectedYear) {
+            this._snackBar.open("year is not selected", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
+        if (undefined === this.selectedEmployeeType) {
+            this._snackBar.open("employee type is not selected", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         this.yearCalculationModel.year = this.selectedYear;
         this.yearCalculationModel.calculationMode = this.selectedCalcMode;
         this.yearCalculationModel.AGI = this.selectedAGIOption;
@@ -270,15 +346,22 @@ export class SalaryCalculatorComponent implements OnInit {
 
         try {
             this.yearCalculationModel.calculate();
-        } catch (e) {
-            this._snackBar.open(e, null, {
-                duration: 3 * 1000,
-            });
+        } catch (error) {
+            if (error instanceof Error) {
+                this._snackBar.open(error.message, undefined, {
+                    duration: 3 * 1000,
+                });
+            }
         }
     }
 
-    private fillMonthWages()
-    {
+    private fillMonthWages() {
+        if (undefined === this.selectedYear) {
+            this._snackBar.open("year is not selected", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         for (let i = 1; i <= this.monthSalaryInputs.length; i++) {
             this.monthSalaryInputs[i - 1] = MonthCalculationModel.getMinGrossWage(this.selectedYear, i).amount;
         }
