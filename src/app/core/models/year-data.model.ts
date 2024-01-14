@@ -1,24 +1,35 @@
 export class TaxSliceModel {
-    rate: number;
-    ceil: number;
+    constructor(
+        public rate: number,
+        public ceil: number
+    ) {
+    }
 }
 
 export class DisabledMonthlyIncomeTaxDiscountBaseModel {
-    degree: number;
-    amount: number;
+    constructor(
+        public degree: number,
+        public amount: number
+    ) {
+    }
 }
 
 export class MinGrossWage {
-    startMonth: number;
-    amount: number;
-    SGKCeil: number;
+    constructor(
+        public startMonth: number,
+        public amount: number,
+        public SGKCeil: number,
+    ) {
+    }
 }
 
 export class YearDataModel {
-
-    year: number;
-    minGrossWages: MinGrossWage[];
-    minWageEmployeeTaxExemption: boolean;
-    taxSlices: TaxSliceModel[];
-    disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountBaseModel[];
+    constructor(
+        public year: number,
+        public minGrossWages: MinGrossWage[],
+        public minWageEmployeeTaxExemption: boolean,
+        public taxSlices: TaxSliceModel[],
+        public disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountBaseModel[],
+    ) {
+    }
 }

@@ -1,8 +1,8 @@
-<ng-container *ngIf="!loading">
+<ng-container *ngIf="!loading && selectedYear">
     <div class="container">
         <mat-card class="example-card">
             <mat-card-content>
-                <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
+                <div class="containerX">
                     <div>
                         <mat-form-field>
                             <mat-label>{{calcModes.labelText}}</mat-label>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="containerX" fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutAlign.xs="center">
+                <div class="containerX">
                     <mat-form-field>
                         <mat-label>Maaş</mat-label>
                         <input type="text" matInput
@@ -78,7 +78,7 @@
                                 [(ngModel)]='employerDiscount5746[i]' class="example-margin" (ngModelChange)="calculate(i)">
                                 5510/5746 İndirimi
                             </mat-slide-toggle>
-                            <mat-form-field *ngIf="element.employeeType.employerEducationIncomeTaxExemption">
+                            <mat-form-field *ngIf="element.employeeType.employerEducationIncomeTaxExemption" style="display: block; margin-top: 5px">
                                 <mat-select [(ngModel)]='employeeTypesEducationType[i]'
                                             (ngModelChange)="calculate(i)">
                                     <mat-option *ngFor="let op of employeeEducationTypes.options" [value]="op">
@@ -193,10 +193,11 @@
             </mat-card-content>
         </mat-card>
         <!-- Comparison Table END -->
-        <div class="mat-card">
-            <p>* Tabloda gösterilen değerler yıllık ortamala değerlerdir.<br>* Hesaplamalar 30 iş günü üzerinden yapılmaktadır.
-            </p>
-
-        </div>
+        <mat-card style="box-shadow: initial">
+            <mat-card-content>
+                <p>* Tabloda gösterilen değerler yıllık ortamala değerlerdir.<br>* Hesaplamalar 30 iş günü üzerinden yapılmaktadır.
+                </p>
+            </mat-card-content>
+        </mat-card>
     </div>
 </ng-container>

@@ -8,7 +8,7 @@ import {
     DisabledMonthlyIncomeTaxDiscountBaseModel,
     MinGrossWage
 } from "../models/year-data.model";
-import {environment} from "src/environments/environment";
+import {environment} from "../../../environments/environment";
 
 interface TaxSliceResponse {
     rate: number;
@@ -71,12 +71,13 @@ export interface EmployeeEducationType {
 
 export interface DisabilityOptions {
     labelText: string;
-    options:
-        {
-            id: number;
-            degree: number;
-            text: string;
-        }[];
+    options: DisabilityOption[];
+}
+
+export interface DisabilityOption {
+    id: number;
+    degree: number;
+    text: string;
 }
 
 export interface EmployeeTypes {
@@ -113,12 +114,13 @@ export interface EmployeeType {
 
 export interface AGIOptions {
     labelText: string;
-    options:
-        {
-            id: number;
-            text: string;
-            rate: number;
-        }[];
+    options: AGIOption[];
+}
+
+export interface AGIOption {
+    id: number;
+    text: string;
+    rate: number;
 }
 
 
@@ -156,26 +158,23 @@ export class ParametersService {
 
                 const params: YearDataModel[] = [];
                 response.yearParameters.forEach(item => {
-                    const newParam = new YearDataModel();
-                    newParam.year = item.year;
-                    newParam.minGrossWages = item.minGrossWages;
-                    newParam.minWageEmployeeTaxExemption = item.minWageEmployeeTaxExemption;
-
-                    newParam.taxSlices = [];
+                    const taxSlices: TaxSliceModel[] = [];
                     item.taxSlices.forEach(it => {
-                        const taxSlice = new TaxSliceModel();
-                        taxSlice.rate = it.rate;
-                        taxSlice.ceil = it.ceil;
-                        newParam.taxSlices.push(taxSlice);
+                        taxSlices.push(new TaxSliceModel(it.rate, it.ceil));
                     });
 
-                    newParam.disabledMonthlyIncomeTaxDiscountBases = [];
+                    const disabledMonthlyIncomeTaxDiscountBases: DisabledMonthlyIncomeTaxDiscountBaseModel[] = [];
                     item.disabledMonthlyIncomeTaxDiscountBases.forEach(it => {
-                        const base = new DisabledMonthlyIncomeTaxDiscountBaseModel();
-                        base.degree = it.degree;
-                        base.amount = it.amount;
-                        newParam.disabledMonthlyIncomeTaxDiscountBases.push(base);
+                        disabledMonthlyIncomeTaxDiscountBases.push(new DisabledMonthlyIncomeTaxDiscountBaseModel(it.degree, it.amount));
                     });
+
+                  const newParam = new YearDataModel(
+                    item.year,
+                    item.minGrossWages,
+                    item.minWageEmployeeTaxExemption,
+                    taxSlices,
+                    disabledMonthlyIncomeTaxDiscountBases,
+                  );
 
                     params.push(newParam);
                 });

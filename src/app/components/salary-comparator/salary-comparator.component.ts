@@ -6,39 +6,64 @@ import {
     EmployeeEducationTypes,
     EmployeeTypes,
     ParametersService,
-    AGIOptions, EmployeeEducationType,
+    AGIOptions,
+    EmployeeEducationType,
+    EmployeeType,
 } from "../../core/services/parameters.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {forkJoin} from "rxjs";
 import {finalize} from "rxjs/operators";
 import * as XLSX from "xlsx";
-import {DatePipe} from "@angular/common";
+import {CommonModule, DatePipe} from "@angular/common";
+import {NgxCurrencyDirective} from "ngx-currency";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
+import {MatTableModule} from "@angular/material/table";
+import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: "app-salary-comparator",
+    standalone: true,
     templateUrl: "./salary-comparator.component.html",
-    styleUrls: ["./salary-comparator.component.scss"]
+    styleUrls: ["./salary-comparator.component.scss"],
+    imports: [
+        NgxCurrencyDirective,
+        CommonModule,
+        FormsModule,
+        MatInputModule,
+        MatTableModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        MatCardModule,
+        MatIconModule,
+        MatSnackBarModule,
+    ],
 })
 export class SalaryComparatorComponent implements OnInit {
 
-    yearParameters: YearDataModel[];
-    employeeTypeCalculations: YearCalculationModel[];
+    yearParameters: YearDataModel[] = [];
+    employeeTypeCalculations: YearCalculationModel[] = [];
     AGIOptions: AGIOptions;
     employeeTypes: EmployeeTypes;
     employeeEducationTypes: EmployeeEducationTypes;
     disabilityOptions: DisabilityOptions;
     calcModes: any;
 
-    selectedYear: YearDataModel;
-    salaryInput: number;
-    selectedCalcMode: string;
+    selectedYear: YearDataModel | undefined;
+    salaryInput: number = 0;
+    selectedCalcMode: string = "GROSS_TO_NET";
     selectedAGIOption: any;
     selectedDisability: any;
     employeeTypesEducationType: EmployeeEducationType[] = [];
     employerDiscount5746: boolean[] = [];
 
-    AGIIncludedNet: boolean;
-    AGIIncludedTax: boolean;
+    AGIIncludedNet: boolean = false;
+    AGIIncludedTax: boolean = true;
 
     loading = false;
 
@@ -60,15 +85,30 @@ export class SalaryComparatorComponent implements OnInit {
     ];
 
     private parameters: any;
-    private months: string[];
-    private monthSalaryInputs: number[];
-    private dayCounts: number[];
-    private researchAndDevelopmentDayCounts: number[];
-    private workedDays: number;
-    private researchAndDevelopmentWorkedDays: number;
+    private months: string[] = [];
+    private monthSalaryInputs: number[] = [];
+    private dayCounts: number[] = [];
+    private researchAndDevelopmentDayCounts: number[] = [];
+    private workedDays: number = 0;
+    private researchAndDevelopmentWorkedDays: number = 0;
 
     constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
-
+        this.AGIOptions = {
+            labelText: "Eş ve Çocuk Durumu",
+            options: []
+        }
+        this.employeeTypes = {
+            labelText: "Çalışan Türü",
+            options: [],
+        }
+        this.employeeEducationTypes = {
+            labelText: "Eğitim Durumu",
+            options: []
+        }
+        this.disabilityOptions = {
+            labelText: "Engellilik Durumu",
+            options: []
+        }
     }
 
     ngOnInit() {
@@ -83,7 +123,7 @@ export class SalaryComparatorComponent implements OnInit {
             .pipe(finalize(() => {
 
             }))
-            .subscribe(([yearParameters, allParams, salaryComparisonConfig]) => {
+            .subscribe({next: ([yearParameters, allParams, salaryComparisonConfig]) => {
                     this.months = allParams.MONTHS;
                     this.parameters = allParams;
                     this.yearParameters = yearParameters;
@@ -102,12 +142,12 @@ export class SalaryComparatorComponent implements OnInit {
                     this.calculateAll();
                     this.loading = false;
                 },
-                err => {
+                error: err => {
                     alert(err.url + " dosyası yüklenemedi");
-                });
+                }});
     }
 
-    priceInputChanged(index, value) {
+    priceInputChanged(index: number, value: number) {
         for (let i = index; i < this.monthSalaryInputs.length; i++) {
             this.monthSalaryInputs[i] = value;
         }
@@ -134,9 +174,14 @@ export class SalaryComparatorComponent implements OnInit {
         }
     }
 
-    calculate(i) {
+    calculate(i: number) {
         const yearCalculationModel: YearCalculationModel = this.employeeTypeCalculations[i];
-
+        if (undefined === this.selectedYear) {
+            this._snackBar.open("year is not selected", undefined, {
+                duration: 3 * 1000,
+            });
+            return;
+        }
         yearCalculationModel.year = this.selectedYear;
         yearCalculationModel.calculationMode = this.selectedCalcMode;
         yearCalculationModel.AGI = this.selectedAGIOption;
@@ -153,15 +198,17 @@ export class SalaryComparatorComponent implements OnInit {
         yearCalculationModel.applyMinWageTaxExemption = true;
         try {
             yearCalculationModel.calculate();
-        } catch (e) {
-            this._snackBar.open(e, null, {
-                duration: 3 * 1000,
-            });
+        } catch (error) {
+            if (error instanceof Error) {
+                this._snackBar.open(error.message, undefined, {
+                    duration: 3 * 1000,
+                });
+            }
         }
     }
 
     private initEmployeeTypeCalculations() {
-        const standardEmployeeType = this.employeeTypes.options.find(emp => emp.id === 1);
+        const standardEmployeeType = <EmployeeType>this.employeeTypes.options.find(emp => emp.id === 1);
         this.employeeTypes.options.forEach((type) => {
             const yearCalculationModel = new YearCalculationModel(this.months, this.parameters.CALCULATION_CONSTANTS, standardEmployeeType);
             yearCalculationModel.employeeType = type;
