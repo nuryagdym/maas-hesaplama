@@ -1,6 +1,53 @@
 {
     "yearParameters": [
         {
+            "year": 2025,
+            "minGrossWages": [
+                {
+                    "startMonth": 1,
+                    "amount": 26005.50,
+                    "SGKCeil": 195041.40
+                }
+            ],
+            "minWageEmployeeTaxExemption": true,
+            "taxSlices": [
+                {
+                    "rate": 0.15,
+                    "ceil": 158000
+                },
+                {
+                    "rate": 0.2,
+                    "ceil": 330000
+                },
+                {
+                    "rate": 0.27,
+                    "ceil": 1200000
+                },
+                {
+                    "rate": 0.35,
+                    "ceil": 4300000
+                },
+                {
+                    "rate": 0.4,
+                    "ceil": null
+                }
+            ],
+            "disabledMonthlyIncomeTaxDiscountBases": [
+                {
+                    "degree": 1,
+                    "amount": 9900
+                },
+                {
+                    "degree": 2,
+                    "amount": 5700
+                },
+                {
+                    "degree": 3,
+                    "amount": 2400
+                }
+            ]
+        },
+        {
             "year": 2024,
             "minGrossWages": [
                 {
