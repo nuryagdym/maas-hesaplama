@@ -13,7 +13,7 @@ import {
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {forkJoin} from "rxjs";
 import {finalize} from "rxjs/operators";
-import * as XLSX from "xlsx";
+import {utils, WorkBook, WorkSheet, writeFileXLSX} from "xlsx";
 import {CommonModule, DatePipe} from "@angular/common";
 import {NgxCurrencyDirective} from "ngx-currency";
 import {FormsModule} from "@angular/forms";
@@ -162,14 +162,14 @@ export class SalaryComparatorComponent implements OnInit {
     exportExcel() {
         /* table id is passed over here */
         const element = document.getElementById("salary-compare-table");
-        const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {raw: true, display: true});
+        const ws: WorkSheet = utils.table_to_sheet(element, {raw: true, display: true});
 
         /* generate workbook and add the worksheet */
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Sayfa1");
+        const wb: WorkBook = utils.book_new();
+        utils.book_append_sheet(wb, ws, "Sayfa1");
 
         /* save to file */
-        XLSX.writeFile(wb, "maas-karsilastirma-tablosu-" + (new DatePipe("en-US")).transform(Date.now(), "yyyy-MM-dd") + ".xlsx");
+        writeFileXLSX(wb, "maas-karsilastirma-tablosu-" + (new DatePipe("en-US")).transform(Date.now(), "yyyy-MM-dd") + ".xlsx");
     }
 
     calculateAll() {
