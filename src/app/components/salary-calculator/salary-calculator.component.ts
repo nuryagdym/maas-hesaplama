@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {YearDataModel} from "../../core/models/year-data.model";
 import {YearCalculationModel} from "../../core/models/year-calculation.model";
 import {
@@ -13,7 +13,8 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {forkJoin} from "rxjs";
 import {finalize} from "rxjs/operators";
 import * as XLSX from "xlsx";
-import {CommonModule, DatePipe, DecimalPipe} from "@angular/common";
+import {CommonModule, DatePipe, DecimalPipe, registerLocaleData} from "@angular/common";
+import localeTr from "@angular/common/locales/tr";
 import {MonthCalculationModel} from "../../core/models/month-calculation.model";
 import {NgxCurrencyDirective} from "ngx-currency";
 import {FormsModule} from "@angular/forms";
@@ -27,7 +28,6 @@ import {MatIconModule} from "@angular/material/icon";
 
 @Component({
     selector: "app-salary-calculator",
-    standalone: true,
     templateUrl: "./salary-calculator.component.html",
     styleUrls: ["./salary-calculator.component.scss"],
     imports: [
@@ -135,7 +135,11 @@ export class SalaryCalculatorComponent implements OnInit {
     ];
 
 
-    constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
+    constructor(
+        private parametersService: ParametersService,
+        private _snackBar: MatSnackBar,
+        private cdr: ChangeDetectorRef
+    ) {
         this.calcModes = YearCalculationModel.calculationModes;
         this.AGIOptions = {
             labelText: "Eş ve Çocuk Durumu",
@@ -156,6 +160,7 @@ export class SalaryCalculatorComponent implements OnInit {
     }
 
     ngOnInit() {
+        registerLocaleData(localeTr);
         this.loading = true;
         forkJoin([
             this.parametersService.yearParameters,
@@ -180,6 +185,7 @@ export class SalaryCalculatorComponent implements OnInit {
 
                     this.setDefaults();
                     this.loading = false;
+                    this.cdr.detectChanges();
                 },
                 error: err => {
                     alert(err.url + " dosyası yüklenemedi");

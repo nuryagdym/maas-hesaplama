@@ -1,29 +1,27 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {ComponentFixture, inject, TestBed, waitForAsync} from "@angular/core/testing";
 
 import {SalaryCalculatorComponent} from "./salary-calculator.component";
-import {HttpClientModule} from "@angular/common/http";
 
 describe("SalaryCalculatorComponent", () => {
     let component: SalaryCalculatorComponent;
     let fixture: ComponentFixture<SalaryCalculatorComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 SalaryCalculatorComponent,
-                HttpClientModule,
             ],
         })
             .compileComponents();
     }));
 
-    beforeEach(() => {
+    beforeEach(waitForAsync(() => {
         fixture = TestBed.createComponent(SalaryCalculatorComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-    });
+    }));
 
-    it("should create", () => {
+    it("should create", waitForAsync(inject([], () => {
         expect(component).toBeTruthy();
-    });
+    })));
 });

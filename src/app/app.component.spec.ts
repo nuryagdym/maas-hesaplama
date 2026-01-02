@@ -1,17 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import {inject, TestBed, waitForAsync} from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from "@angular/common/http";
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent, HttpClientModule],
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [AppComponent],
     }).compileComponents();
-  });
+  }));
 
-  it('should create the app', () => {
+  it('should create the app', waitForAsync(inject([], () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
+  })));
 });

@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {YearDataModel} from "../../core/models/year-data.model";
 import {YearCalculationModel} from "../../core/models/year-calculation.model";
 import {
@@ -92,7 +92,11 @@ export class SalaryComparatorComponent implements OnInit {
     private workedDays: number = 0;
     private researchAndDevelopmentWorkedDays: number = 0;
 
-    constructor(private parametersService: ParametersService, private _snackBar: MatSnackBar) {
+    constructor(
+        private parametersService: ParametersService,
+        private _snackBar: MatSnackBar,
+        private cdr: ChangeDetectorRef
+    ) {
         this.AGIOptions = {
             labelText: "Eş ve Çocuk Durumu",
             options: []
@@ -141,6 +145,7 @@ export class SalaryComparatorComponent implements OnInit {
                     this.initEmployeeTypeCalculations();
                     this.calculateAll();
                     this.loading = false;
+                    this.cdr.detectChanges();
                 },
                 error: err => {
                     alert(err.url + " dosyası yüklenemedi");

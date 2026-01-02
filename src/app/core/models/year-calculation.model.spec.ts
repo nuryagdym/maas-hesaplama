@@ -1,6 +1,6 @@
 import {YearCalculationModel} from "./year-calculation.model";
 import {DisabilityOptions, EmployeeType, EmployeeTypes, ParametersService} from "../services/parameters.service";
-import {TestBed, async} from "@angular/core/testing";
+import {TestBed, waitForAsync} from "@angular/core/testing";
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {YearDataModel} from "./year-data.model";
 
@@ -20,7 +20,7 @@ describe("YearCalculationModel", () => {
     const dayCounts = new Array(months.length);
     const researchAndDevelopmentDayCounts = new Array(months.length);
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [ParametersService, HttpClient, HttpHandler],
         });
