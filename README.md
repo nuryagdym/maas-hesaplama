@@ -1,6 +1,6 @@
 # SalaryCalculator
 
-Maaş hesaplama için Angular 17 ile yapılmış kütüphane.
+Maaş hesaplama için Angular ile yapılmış kütüphane.
 
 * [Maaş Hesaplama Demo](https://mustapayev.com/maas-hesaplama/)
 
@@ -15,7 +15,8 @@ Maaş hesaplama için Angular 17 ile yapılmış kütüphane.
 
     ```shell
     cd maas-hesaplama
-    npm install
+    npm install --force
+    npm install -g @angular/cli
     ```
 3.  Start serving
 

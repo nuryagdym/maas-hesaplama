@@ -1,17 +1,15 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {ComponentFixture, TestBed, waitForAsync} from "@angular/core/testing";
 
 import {SalaryComparatorComponent} from "./salary-comparator.component";
-import {HttpClientModule} from "@angular/common/http";
 
 describe("SalaryComparatorComponent", () => {
     let component: SalaryComparatorComponent;
     let fixture: ComponentFixture<SalaryComparatorComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 SalaryComparatorComponent,
-                HttpClientModule,
             ]
         })
             .compileComponents();
