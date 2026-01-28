@@ -799,8 +799,10 @@ export class MonthCalculationModel {
             calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIAmount : this.netSalary;
             if (calcNetSalary > enteredAmount) {
                 right = middle;
-            } else {
+            } else if (calcNetSalary < enteredAmount) {
                 left = middle;
+            } else {
+                break;
             }
             middle = (right + left) / 2;
         }
@@ -846,8 +848,10 @@ export class MonthCalculationModel {
             calcTotalCost = this.employerTotalCost;
             if (calcTotalCost > enteredAmount) {
                 right = middle;
-            } else {
+            } else if (calcTotalCost < enteredAmount) {
                 left = middle;
+            } else {
+                break;
             }
             middle = (right + left) / 2;
         }

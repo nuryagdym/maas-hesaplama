@@ -716,6 +716,24 @@ describe("MonthCalculationModel", () => {
         expect(roundNumber(month.employerTotalCost)).toEqual(8500);
     });
 
+
+    it("calculate month for year 2026, from TOTAL_TO_GROSS, 30 days, amount 80000 TL, Engelli degil, Isveren, Emekli Degil", () => {
+        const amount = 80000;
+        const workedDays = 30;
+        const researchAndDevelopmentWorkedDays = 30;
+        const yearParams = <YearDataModel>yearParameters.find((y) => y.year === 2026);
+        const standardEmployeeType = <EmployeeType>employeeTypes.options.find((o) => o.id === 5);
+        const month = new MonthCalculationModel(parameters.CALCULATION_CONSTANTS, standardEmployeeType);
+        month.calculate(calcModes.options[2].id, yearParams, amount, workedDays, researchAndDevelopmentWorkedDays,
+            AGIOptions.options[0].rate,
+            standardEmployeeType, employeeEducationTypes.options[0].exemptionRate,
+            false, false, false, false,
+            disabilityOptions.options[0].degree, true, true);
+
+        expect(roundNumber(month.employerTotalCost)).toEqual(80000);
+    });
+
+
     const roundNumber = (num: number, precision = 2) => {
         return Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision);
     };
