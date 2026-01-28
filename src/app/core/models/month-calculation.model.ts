@@ -784,7 +784,7 @@ export class MonthCalculationModel {
         let middle = (right + left) / 2;
         const itLimit = 100;
         let calcNetSalary = 0;
-        for (let i = 0; i < itLimit && Math.abs(calcNetSalary - enteredAmount) > 0.0001; i++) {
+        for (let i = 0; i < itLimit; i++) {
 
             // could not find
             if (right < left) {
@@ -797,12 +797,15 @@ export class MonthCalculationModel {
                 applyMinWageTaxExemption
             );
             calcNetSalary = isAGIIncludedNet ? this.netSalary + this.AGIAmount : this.netSalary;
+
+            if (Math.abs(calcNetSalary - enteredAmount) < 0.0001) {
+                return middle;
+            }
+
             if (calcNetSalary > enteredAmount) {
                 right = middle;
-            } else if (calcNetSalary < enteredAmount) {
-                left = middle;
             } else {
-                break;
+                left = middle;
             }
             middle = (right + left) / 2;
         }
@@ -835,7 +838,7 @@ export class MonthCalculationModel {
         const itLimit = 100;
         let calcTotalCost = 0;
         let i;
-        for (i = 0; i < itLimit && Math.abs(calcTotalCost - enteredAmount) > 0.0001; i++) {
+        for (i = 0; i < itLimit; i++) {
 
             // could not find
             if (right < left) {
@@ -846,12 +849,15 @@ export class MonthCalculationModel {
                 employeeEduExemptionRate, applyEmployerDiscount5746, isAGIIncludedTax,
                 isPensioner, disabilityDegree, isAGICalculationEnabled, applyMinWageTaxExemption);
             calcTotalCost = this.employerTotalCost;
+
+            if (Math.abs(calcTotalCost - enteredAmount) < 0.0001) {
+                return middle;
+            }
+
             if (calcTotalCost > enteredAmount) {
                 right = middle;
-            } else if (calcTotalCost < enteredAmount) {
-                left = middle;
             } else {
-                break;
+                left = middle;
             }
             middle = (right + left) / 2;
         }
